@@ -1,16 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Tutorial from '../views/Tutorial.vue'
 import Axios from '../views/Axios.vue'
 import Lifecycle from '../views/Lifecycle.vue'
+import Home from '../views/Home.vue'
+import History from '../views/History.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Tutorial',
+    component: Tutorial
   },
   {
     path: '/axios',
@@ -21,6 +23,16 @@ const routes = [
     path: '/lifecycle',
     name: 'Lifecycle',
     component: Lifecycle
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: History
   }
 ]
 
