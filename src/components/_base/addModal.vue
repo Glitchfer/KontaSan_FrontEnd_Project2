@@ -1,45 +1,91 @@
-/* ===== Link Setup =====*/
-.beranda {
-  width: 30px;
-  height: 30px;
-  background-color: #f24f8b00;
+<template>
+  <!-- Add Menu (MODAL) -->
+  <div id="addModal" class="add-menu modal">
+    <div class="blocking">
+      <div class="form">
+        <form action>
+          <table border="0">
+            <tr>
+              <td colspan="2">Add Item</td>
+            </tr>
+            <tr>
+              <td>
+                <label for="name-list">Name</label>
+              </td>
+              <td>
+                <div class="input-name">
+                  <input type="text" name id="name-list" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for>Image</label>
+              </td>
+              <td>
+                <div class="input-img">
+                  <input type="text" name id />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="input-price">Price</label>
+              </td>
+              <td>
+                <div class="input-price">
+                  <input type="text" name id="input-price" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="input-ctgr">Category</label>
+              </td>
+              <td>
+                <div class="input-category">
+                  <select name id>
+                    <option value>Category</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="btn-gate3">
+        <div class="add-button">
+          <button class="button">Add</button>
+        </div>
+        <div class="cancel2-button">
+          <button class="button canc">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Addmodal',
+  components: {}
+}
+</script>
+
+<style scoped>
+/* default buttun for all start*/
+.button {
+  font-family: 'Airbnb Cereal App Medium';
+  padding: 0;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
   display: inline-block;
-  text-indent: -9999px;
-  position: absolute;
-  z-index: 5;
-  top: -3px;
-  left: 20px;
+  cursor: pointer;
 }
-
-.histo {
-  width: 30px;
-  height: 35px;
-  background-color: #01ff5600;
-  display: inline-block;
-  text-indent: -9999px;
-  position: absolute;
-  z-index: 5;
-  top: 0px;
-  left: 2px;
-}
-
-.menuhome {
-  width: 30px;
-  height: 35px;
-  background-color: #01ff5600;
-  display: inline-block;
-  position: absolute;
-  z-index: 5;
-  top: 0px;
-  left: 2px;
-}
-
-/* ================= */
-.selected {
-  display: none;
-}
-
-/* ===== Checkout Menu ===== */
+/*default button end*/
+/* ===== Add Modal ===== */
 .add-menu {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -48,9 +94,8 @@
   left: 0;
   right: 0;
   z-index: 15;
-  display: block;
+  /* display: block; */
 }
-
 .add-menu .blocking {
   margin: 100px auto 0;
   width: 550px;
@@ -136,12 +181,11 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url(../gambar/arrowdown.png);
+  background-image: url(../../assets/gambar/arrowdown.png);
   background-repeat: no-repeat;
   background-size: 15px auto, 100%;
   background-position: right 10px top 50%, 0 0;
 }
-
 /* ===== Button ===== */
 .btn-gate3 {
   position: absolute;
@@ -195,58 +239,9 @@
   height: 38px;
 }
 
-.trigger button {
-  display: none;
-}
-
 /* ===== Responsive ===== */
-
 @media (max-width: 768px) {
-  /* .kontainer-extra {
-        display: none;
-    } */
-
-  .trigger button {
-    display: block;
-    position: fixed;
-    width: 20px;
-    height: 5px;
-    background-color: #83ff2500;
-    border: #38810000;
-    z-index: 10;
-    bottom: 24.6px;
-    right: 54px;
-  }
-
-  .kontainer-kosong {
-    z-index: 10;
-  }
-
-  .beranda {
-    width: 30px;
-    height: 30px;
-    background-color: #f24f8b00;
-    display: inline-block;
-    text-indent: -9999px;
-    position: absolute;
-    z-index: 5;
-    top: -3px;
-    left: 0px;
-  }
-
-  .histo {
-    width: 30px;
-    height: 35px;
-    background-color: #01ff5600;
-    display: inline-block;
-    text-indent: -9999px;
-    position: absolute;
-    z-index: 5;
-    top: 0px;
-    left: 2px;
-  }
 }
-
 @media (max-width: 576px) {
   .add-menu .blocking {
     width: 85%;
@@ -321,3 +316,4 @@
     width: 45%;
   }
 }
+</style>

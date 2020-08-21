@@ -43,7 +43,7 @@
 <script>
 import Navbar from '../components/_base/Navbar'
 export default {
-  name: 'Home',
+  name: 'Tutor',
   data() {
     return {
       name: 'Arif RAhman',
