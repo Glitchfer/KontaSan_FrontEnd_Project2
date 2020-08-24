@@ -58,7 +58,7 @@
           <button class="button">Add</button>
         </div>
         <div class="cancel2-button">
-          <button class="button canc">Cancel</button>
+          <button class="button canc" @click="addOff()">Cancel</button>
         </div>
       </div>
     </div>
@@ -68,7 +68,12 @@
 <script>
 export default {
   name: 'Addmodal',
-  components: {}
+  components: {},
+  methods: {
+    addOff() {
+      document.querySelector('#addModal').style.display = 'none'
+    }
+  }
 }
 </script>
 

@@ -21,7 +21,7 @@
         <b-col cols="12" sm="12" md="12" lg="12" class="cart">
           <h3 class="cart">
             Cart
-            <b-badge pill variant="info">0</b-badge>
+            <b-badge pill variant="info">{{count}}</b-badge>
           </h3>
         </b-col>
       </b-col>
@@ -31,7 +31,15 @@
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  // data() {
+  //   return {
+  //     // count: 0
+  //   }
+  // },
+  props: ['count'],
+  computed: {},
+  methods: {}
 }
 </script>
 

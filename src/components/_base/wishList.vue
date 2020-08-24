@@ -1,6 +1,6 @@
 <template>
   <!-- if filled -->
-  <div class="wishlist">
+  <div class="wishlist" v-bind:style="num > 0 ? isTrue : isFalse">
     <div class="list">
       <!-- selected item -->
       <Cartitem />
@@ -11,6 +11,17 @@
 import Cartitem from '../_base/cartItem'
 export default {
   name: 'Wishlist',
+  data() {
+    return {
+      isTrue: {
+        display: 'block'
+      },
+      isFalse: {
+        display: 'none'
+      }
+    }
+  },
+  props: ['num'],
   components: {
     Cartitem
   }

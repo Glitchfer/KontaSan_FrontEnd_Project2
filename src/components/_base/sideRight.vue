@@ -1,11 +1,11 @@
 <template>
   <b-col cols="5" sm="5" md="3" lg="4" class="side-right">
     <!-- mascot if empty-->
-    <Mascot />
+    <Mascot v-bind:num="count" />
     <!-- wishlist  if filled-->
-    <Wishlist />
+    <Wishlist v-bind:num="count" />
     <!-- checkout if filled-->
-    <Checkoutbtn />
+    <Checkoutbtn v-bind:num="count" @reset="reset" />
   </b-col>
 </template>
 <script>
@@ -18,10 +18,17 @@ export default {
   data() {
     return {}
   },
+  props: ['count'],
   components: {
     Mascot,
     Wishlist,
     Checkoutbtn
+  },
+  computed: {},
+  methods: {
+    reset(data) {
+      this.$emit('resetCount', data)
+    }
   }
 }
 </script>

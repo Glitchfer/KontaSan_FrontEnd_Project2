@@ -1,6 +1,6 @@
 <template>
   <!-- Checkout Button -->
-  <div class="checkout">
+  <div class="checkout" v-bind:style="num > 0 ? isTrue : isFalse">
     <div class="text-total">
       <h5 class="total">Total :</h5>
       <h5 class="harga">Rp. 105.000*</h5>
@@ -8,7 +8,7 @@
     </div>
     <div class="btn-gate">
       <div class="check-button">
-        <button id="checkout" class="button" v-on:click="checkoutModal()">Checkout</button>
+        <button id="checkout" class="button" v-on:click="checkoutModalOn()">Checkout</button>
       </div>
       <div class="cancel-button cancelBtn">
         <button v-on:click="cancel()" class="button">Cancel</button>
@@ -19,7 +19,30 @@
 
 <script>
 export default {
-  name: 'Checkoutbtn'
+  name: 'Checkoutbtn',
+  data() {
+    return {
+      isTrue: {
+        display: 'block'
+      },
+      isFalse: {
+        display: 'none'
+      }
+    }
+  },
+  props: ['num'],
+  computed: {},
+  methods: {
+    checkoutModalOn() {
+      document.querySelector('#checkoutModal').style.display = 'block'
+    },
+    cancel() {
+      this.$emit('reset', 0)
+      // document.querySelector('.wishlist').style.display = 'none'
+      // document.querySelector('.checkout').style.display = 'none'
+      // document.querySelector('.badge-info').innerHTML = 0
+    }
+  }
 }
 </script>
 

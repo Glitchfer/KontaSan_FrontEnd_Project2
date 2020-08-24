@@ -15,7 +15,12 @@
 
 <script>
 export default {
-  name: 'Fixednav'
+  name: 'Fixednav',
+  methods: {
+    addOn() {
+      document.querySelector('#addModal').style.display = 'block'
+    }
+  }
 }
 </script>
 

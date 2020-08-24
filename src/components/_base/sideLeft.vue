@@ -14,7 +14,17 @@
 
 <script>
 export default {
-  name: 'Left'
+  name: 'Left',
+  data() {
+    return {}
+  },
+  components: {},
+  computed: {},
+  methods: {
+    addOn() {
+      document.querySelector('#addModal').style.display = 'block'
+    }
+  }
 }
 </script>
 

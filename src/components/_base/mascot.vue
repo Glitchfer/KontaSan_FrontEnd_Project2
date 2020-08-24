@@ -1,6 +1,6 @@
 <template>
   <!-- if empty -->
-  <b-col cols="12" sm="12" md="12" lg="12" class="mascot">
+  <b-col cols="12" sm="12" md="12" lg="12" class="mascot" v-bind:style="num > 0 ? isTrue : isFalse">
     <div class="mascot-img"></div>
     <h1 class="empty">Your cart is empty</h1>
     <h6>Please add some item from the menu</h6>
@@ -9,7 +9,18 @@
 
 <script>
 export default {
-  name: 'Mascot'
+  name: 'Mascot',
+  data() {
+    return {
+      isTrue: {
+        display: 'none'
+      },
+      isFalse: {
+        display: 'block'
+      }
+    }
+  },
+  props: ['num']
 }
 </script>
 

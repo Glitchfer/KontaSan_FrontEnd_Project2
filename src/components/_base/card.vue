@@ -49,7 +49,7 @@ export default {
   // selectMenu() {
   //   const selected = document.getElementsByClassName('selected')
   //   const cartCount = selected.length
-  //   const badge = document.getElementsByClassName('badge-info')[0]
+  // const badge = document.getElementsByClassName('badge-info')[0]
   //   const code = cartCount
   //   badge.innerHTML = code
   //   selected[0].style.display = 'block'

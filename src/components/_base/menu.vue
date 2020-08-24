@@ -1,11 +1,11 @@
 <template>
   <b-col cols="6" sm="6" md="6" lg="4" class="menu-one b1">
-    <div v-on:click="selectMenu()" class="img1 a1">
+    <div class="img1 a1" v-bind:style="{backgroundImage: `url('${image}')`}">
       <div class="selected">
         <div class="ceklis"></div>
       </div>
-      <p class="nama">Espresso</p>
-      <p class="harga">Rp. 10.000</p>
+      <p class="nama">{{nama}}</p>
+      <p class="harga">{{harga}}</p>
     </div>
   </b-col>
 </template>
@@ -13,7 +13,12 @@
 <script>
 export default {
   name: 'Menu',
-  components: {}
+  data() {
+    return {}
+  },
+  props: ['nama', 'harga', 'image'],
+  components: {},
+  method: {}
 }
 </script>
 
@@ -30,13 +35,13 @@ export default {
   border-radius: 5px;
 }
 
-.menu {
+/* .menu {
   margin: 0;
   padding: 15px;
   display: flex;
   position: relative;
   row-gap: 18px;
-}
+} */
 
 p.nama {
   text-align: left;
@@ -69,7 +74,7 @@ p.harga {
 .img1 {
   width: 90%;
   height: 74.3%;
-  background-image: url(../../assets/gambar/img0.png);
+  /* background-image: url(../../assets/gambar/img0.png); */
   background-size: cover;
   background-repeat: round;
   background-position: 0px 0;
@@ -85,11 +90,11 @@ p.harga {
   position: absolute;
   border-radius: 5px 5px 0 0;
   z-index: 1;
-  /* display: block; */
+  display: none;
 }
 
 .dark {
-  display: none;
+  display: block;
 }
 
 .ceklis {
@@ -101,6 +106,6 @@ p.harga {
   background-repeat: round;
   position: relative;
   z-index: 2;
-  /* display: none; */
+  /* display: block; */
 }
 </style>

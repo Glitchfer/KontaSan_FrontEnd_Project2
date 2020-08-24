@@ -2,7 +2,7 @@
   <!-- Checkout Menu (MODAL) -->
   <div id="checkoutModal" class="checkout-menu chkModal">
     <div class="blocking">
-      <span class="exit">&times;</span>
+      <span class="exit" v-on:click="checkoutModalOff()">&times;</span>
       <div class="form">
         <form action>
           <table>
@@ -48,11 +48,11 @@
       </div>
       <div class="btn-gate2">
         <div class="print-button">
-          <button class="button">Print</button>
+          <button class="button" @click="reset()">Print</button>
         </div>
         <p>Or</p>
         <div class="send-button">
-          <button class="button">Send Email</button>
+          <button class="button" @click="reset()">Send Email</button>
         </div>
       </div>
     </div>
@@ -62,7 +62,15 @@
 <script>
 export default {
   name: 'Checkoutmodal',
-  components: {}
+  components: {},
+  methods: {
+    checkoutModalOff() {
+      document.querySelector('#checkoutModal').style.display = 'none'
+    },
+    reset() {
+      this.$emit('reset', 0)
+    }
+  }
 }
 </script>
 
