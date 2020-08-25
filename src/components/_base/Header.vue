@@ -12,7 +12,8 @@
           <h1 class="judul">Food Items</h1>
         </b-col>
         <b-col cols="1" sm="1" md="1" lg="1" class="search">
-          <div class="search-img"></div>
+          <div type="submit" class="search-img" @click.prevent="search"></div>
+          <input class="srcInput" type="search" placeholder="Search.." v-model="srcInput" />
         </b-col>
       </b-col>
     </b-col>
@@ -30,16 +31,27 @@
 </template>
 
 <script>
+// import axios from 'axios'
 export default {
   name: 'Header',
-  // data() {
-  //   return {
-  //     // count: 0
-  //   }
-  // },
-  props: ['count'],
+  data() {
+    return {
+      srcInput: '',
+      isSrcClicked: true,
+      page: 1,
+      limit: 2
+    }
+  },
+  props: ['count', 'nextPage'],
   computed: {},
-  methods: {}
+
+  methods: {
+    search() {
+      this.$emit('srcValue', this.srcInput)
+      this.$emit('searchBy', this.srcInput)
+      this.$emit('isSrcClicked', this.isSrcClicked)
+    }
+  }
 }
 </script>
 
@@ -139,6 +151,17 @@ div.search {
 .beranda:hover {
   width: 25px;
   height: 25px;
+}
+.srcInput {
+  position: absolute;
+  width: 210%;
+  right: 50px;
+  border: 1px solid #ddd;
+}
+form {
+  border: 1px solid black;
+  width: 100px;
+  height: 30px;
 }
 @media (max-width: 768px) {
   /* ===== Header ===== */

@@ -26,7 +26,7 @@
         </ul>
         <!-- <v-on></v-on> -->
         <button v-on:click="boom()">Click Meh !</button>
-        <input type="text" v-on:keyup.enter="search" />
+        <input type="search" v-on:keyup.enter="search" />
         <button @click="boom()">Awas meledak !</button>
         <br />
         <!-- <v-bind></v-bind> -->

@@ -21,6 +21,7 @@ export default {
     }
   },
   props: ['productInfo', 'paginationInfo', 'limit', 'page'],
+  // turnOn the comment to active pagination
   updated() {
     this.$emit('crntPage', this.currentPage)
   },
@@ -41,13 +42,22 @@ export default {
 }
 .pagination {
   position: absolute;
+  font-size: 13px;
+  top: 0px;
   right: 0;
   border: 1px solid black;
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
+
 .mt-3 {
   position: absolute;
-  /* border: 1px solid black; */
+  width: 150px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: antiquewhite;
   top: -25%;
-  left: 75px;
+  left: 0;
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
 </style>

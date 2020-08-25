@@ -2,19 +2,19 @@
   <b-col cols="12" sm="12" md="8" lg="7" class="mid">
     <b-row cols="12" sm="12" md="12" lg="12" class="menu">
       <b-col
+        v-show="srcIsClick === true"
         cols="6"
         sm="6"
         md="6"
         lg="4"
         class="menu-one b1"
-        v-for="(item, index) in products"
+        v-for="(item, index) in srcData"
         :key="index"
       >
         <div
           class="img1 a1"
           v-bind:style="{backgroundImage: `url('${item.img}')`}"
           v-on:click="selectMenu(index)"
-          @click="selectedDisplay(count)"
         >
           <div v-if="count < 1" class="selected">
             <!-- :class="{dark: index === isActive}" -->
@@ -30,8 +30,42 @@
           <p class="harga">{{'Rp. ' + item.product_price}}</p>
         </div>
       </b-col>
+      <b-col
+        v-show="srcIsClick === false"
+        cols="6"
+        sm="6"
+        md="6"
+        lg="4"
+        class="menu-one b1"
+        v-for="(item, index) in products"
+        :key="index"
+      >
+        <!-- :disabled="product_qty === 1" -->
+        <div
+          class="img1 a1"
+          v-bind:style="{backgroundImage: `url('${item.img}')`}"
+          v-on:click="selectMenu(index)"
+          @click="selectedDisplay(index)"
+        >
+          <div v-if="count < 1" class="selected">
+            <div class="ceklis"></div>
+          </div>
+          <div v-else class="selected" v-bind:style="isActive === index ? displayOnn : displayOff">
+            <div class="ceklis"></div>
+          </div>
+          <p class="nama">{{item.product_name}}</p>
+          <p class="harga">{{'Rp. ' + item.product_price}}</p>
+        </div>
+      </b-col>
     </b-row>
-    <div cols="12" sm="12" md="12" lg="12" class="paginationBorder">
+    <div v-if="srcIsClick === true" cols="12" sm="12" md="12" lg="12" class="paginationBorder">
+      <Pagination
+        v-bind:productInfo="srcData"
+        v-bind:paginationInfo="srcPage"
+        @crntPage="currenPage"
+      />
+    </div>
+    <div v-else cols="12" sm="12" md="12" lg="12" class="paginationBorder">
       <Pagination
         v-bind:productInfo="products"
         v-bind:paginationInfo="paginationInfo"
@@ -39,13 +73,6 @@
         v-bind:page="page"
         @crntPage="currenPage"
       />
-      <!-- <Pagination2
-        v-bind:productInfo="products"
-        v-bind:paginationInfo="paginationInfo"
-        v-bind:limit="limit"
-        v-bind:page="page"
-        @crntPage="currenPage"
-      />-->
     </div>
   </b-col>
 </template>
@@ -53,13 +80,12 @@
 <script>
 import axios from 'axios'
 import Pagination from '../_base/pagination'
-// import Pagination2 from '../_base/pagination2'
 export default {
   name: 'Main',
   data() {
     return {
       page: 1,
-      limit: 9,
+      limit: 6,
       products: [],
       isActive: null,
       displayOnn: {
@@ -69,21 +95,25 @@ export default {
         display: 'none'
       },
       paginationInfo: {}
+      // srcData: [],
+      // srcPage: [],
+      // srcInput: ''
     }
   },
-  props: ['count'],
+  props: ['count', 'srcData', 'srcPage', 'srcIsClick', 'valSrc'],
   components: {
     Pagination
-    // Pagination2
   },
   created() {
     this.get_product()
   },
   methods: {
     selectMenu(a) {
-      this.$emit('increment', 1)
-      console.log(a)
+      this.$emit('increment', 1, a)
       this.isActive = a
+    },
+    checkMenu(data) {
+      this.products.some((item) => item.product_id === data.product_id)
     },
     selectedDisplay(c) {
       //   const pick = document.getElementsByClassName('a1')
@@ -108,10 +138,11 @@ export default {
           console.log(error)
         })
     },
+    // turnOff the comment to active pagination
     currenPage(value) {
       this.page = value
       this.get_product(this.page)
-      // console.log(value)
+      // this.$emit('srcCrnPage', value)
     }
   }
 }
@@ -119,8 +150,6 @@ export default {
 
 <style scoped>
 .mid {
-  /* klo udah jadi heightnya bisa di hapus */
-  /* height: 630px; */
   padding: 0;
   background-color: rgba(190, 195, 202, 0.3);
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.2);
@@ -177,7 +206,6 @@ p.harga {
 .img1 {
   width: 90%;
   height: 74.3%;
-  /* background-image: url(../../assets/gambar/img0.png); */
   background-size: cover;
   background-repeat: round;
   background-position: 0px 0;
@@ -215,7 +243,6 @@ p.harga {
   background-repeat: round;
   position: relative;
   z-index: 2;
-  /* display: block; */
 }
 /* ===== Pagination Border====== */
 .paginationBorder {
