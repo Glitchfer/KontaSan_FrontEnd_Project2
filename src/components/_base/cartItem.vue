@@ -32,7 +32,6 @@ export default {
 /* default buttun for all start*/
 .button {
   padding: 0;
-  /* background-color: rgba(130, 222, 58, 0.2); */
   border: none;
   color: white;
   text-align: center;

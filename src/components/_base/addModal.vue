@@ -3,18 +3,18 @@
   <div id="addModal" class="add-menu modal">
     <div class="blocking">
       <div class="form">
-        <form action>
+        <form action v-on:submit.prevent="addBtn">
           <table border="0">
             <tr>
-              <td colspan="2">Add Item</td>
+              <td colspan="2">{{btnName1 + ' Item'}}</td>
             </tr>
             <tr>
               <td>
-                <label for="name-list">Name</label>
+                <label for="name-list">{{inputName}}</label>
               </td>
               <td>
                 <div class="input-name">
-                  <input type="text" name id="name-list" />
+                  <input type="text" name id="name-list" v-model="form.product_name" />
                 </div>
               </td>
             </tr>
@@ -24,7 +24,7 @@
               </td>
               <td>
                 <div class="input-img">
-                  <input type="text" name id />
+                  <input type="text" v-model="form.img" :disabled="btnName1 === 'Delete'" />
                 </div>
               </td>
             </tr>
@@ -34,7 +34,13 @@
               </td>
               <td>
                 <div class="input-price">
-                  <input type="text" name id="input-price" />
+                  <input
+                    type="text"
+                    name
+                    id="input-price"
+                    v-model="form.product_price"
+                    :disabled="btnName1 === 'Delete'"
+                  />
                 </div>
               </td>
             </tr>
@@ -44,34 +50,140 @@
               </td>
               <td>
                 <div class="input-category">
-                  <select name id>
-                    <option value>Category</option>
+                  <select v-model="form.category_id" :disabled="btnName1 === 'Delete'">
+                    <option value="1">Food</option>
+                    <option value="2">Beverage</option>
+                    <option value="5">Dessert</option>
                   </select>
                 </div>
               </td>
             </tr>
           </table>
+          <div class="input-status">
+            <p>Status</p>
+            <select v-model="form.product_status" :disabled="btnName1 === 'Delete'">
+              <option value="0">Inactive</option>
+              <option value="1">Active</option>
+            </select>
+          </div>
+          <div class="btn-gate3">
+            <div class="add-button">
+              <button type="submit" class="button" @click="btnFunc(btnName1)">{{btnName1}}</button>
+            </div>
+            <div class="cancel2-button">
+              <button class="button canc" @click="addOff()">Cancel</button>
+            </div>
+          </div>
+          <div v-if="isSuccess === true ? isSuccess : isError" class="addMsg">
+            <p>{{msg}}</p>
+          </div>
+          <div class="ex-button1">
+            <button type="button" class="button" @click="btnFunc(btnName2)">{{btnName2}}</button>
+          </div>
+          <div class="ex-button2">
+            <button type="button" class="button" @click="btnFunc(btnName3)">{{btnName3}}</button>
+          </div>
         </form>
-      </div>
-      <div class="btn-gate3">
-        <div class="add-button">
-          <button class="button">Add</button>
-        </div>
-        <div class="cancel2-button">
-          <button class="button canc" @click="addOff()">Cancel</button>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Addmodal',
+  data() {
+    return {
+      form: {
+        product_name: '',
+        product_price: null,
+        product_status: null,
+        category_id: null,
+        img: ''
+      },
+      isSuccess: false,
+      isError: false,
+      msg: '',
+      isUpdate: false,
+      btnName1: 'Add',
+      btnName2: 'Update',
+      btnName3: 'Delete',
+      inputName: 'Name'
+    }
+  },
+  updated() {
+    if (this.btnName1 === 'Update') {
+      return (this.inputName = 'Product id')
+    } else if (this.btnName1 === 'Delete') {
+      return (this.inputName = 'Product id')
+    } else {
+      return (this.inputName = 'Name')
+    }
+  },
   components: {},
+  computed: {},
   methods: {
+    btnFunc(btn) {
+      if (btn === 'Delete') {
+        this.btnName1 = 'Delete'
+        this.btnName2 = 'Update'
+        this.btnName3 = 'Add'
+      } else if (btn === 'Update') {
+        this.btnName1 = 'Update'
+        this.btnName2 = 'Add'
+        this.btnName3 = 'Delete'
+      } else {
+        this.btnName1 = 'Add'
+        this.btnName2 = 'Update'
+        this.btnName3 = 'Delete'
+      }
+    },
     addOff() {
-      document.querySelector('#addModal').style.display = 'none'
+      this.$emit('addOff', false)
+    },
+    addBtn() {
+      console.log(this.form)
+      if (this.btnName1 === 'Update') {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/product/${this.form.product_name}`,
+            this.form
+          )
+          .then((response) => {
+            console.log(response)
+            this.isSuccess = true
+            this.msg = response.data.msg
+          })
+          .catch((error) => {
+            this.msg = error.response.data.msg
+            this.isError = true
+          })
+      } else if (this.btnName1 === 'Delete') {
+        axios
+          .delete(`http://127.0.0.1:3001/product/${this.form.product_name}`)
+          .then((response) => {
+            console.log(response)
+            this.isSuccess = true
+            this.msg = response.data.msg
+          })
+          .catch((error) => {
+            this.msg = error.response.data.msg
+            this.isError = true
+          })
+      } else {
+        axios
+          .post('http://127.0.0.1:3001/product', this.form)
+          .then((response) => {
+            console.log(response)
+            this.isSuccess = true
+            this.msg = response.data.msg
+          })
+          .catch((error) => {
+            this.msg = error.response.data.msg
+            this.isError = true
+          })
+      }
     }
   }
 }
@@ -99,7 +211,7 @@ export default {
   left: 0;
   right: 0;
   z-index: 15;
-  /* display: block; */
+  display: block;
 }
 .add-menu .blocking {
   margin: 100px auto 0;
@@ -115,7 +227,7 @@ export default {
   position: absolute;
   margin-top: 10px;
   width: 92%;
-  height: 320px;
+  height: 98%;
   left: 5%;
 }
 
@@ -168,6 +280,8 @@ export default {
 }
 
 .input-price input {
+  color: rgb(107, 103, 103);
+  font-size: 15px;
   width: 65%;
   height: 40px;
   border-radius: 5px;
@@ -243,7 +357,79 @@ export default {
   width: 98%;
   height: 38px;
 }
+.addMsg {
+  color: rgba(107, 112, 107, 0.781);
+  position: absolute;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 14px;
+  height: 25px;
+  display: block;
+  top: 5px;
+  left: 30%;
+  background-color: #a9aaa94b;
+}
+.ex-button1 {
+  margin-right: 10px;
+  position: absolute;
+  width: 50px;
+  bottom: 25px;
+  order: 2;
+}
 
+.ex-button1 .button {
+  font-size: 12px;
+  width: 100%;
+  height: 30px;
+  background-color: #3c3d3d;
+  border-radius: 10px;
+}
+.ex-button1 .button:hover,
+.ex-button2 .button:hover {
+  background-color: #626363;
+}
+.ex-button2 {
+  margin-right: 10px;
+  position: absolute;
+  width: 50px;
+  bottom: 25px;
+  left: 60px;
+  order: 2;
+}
+
+.ex-button2 .button {
+  font-size: 12px;
+  width: 100%;
+  height: 30px;
+  background-color: #3c3d3d;
+  border-radius: 10px;
+}
+.input-status {
+  font-size: 20px;
+  position: absolute;
+  width: 220px;
+  height: 30px;
+  display: flex;
+  left: -10px;
+  bottom: 85px;
+}
+.input-status p {
+  position: absolute;
+  top: 0px;
+  margin: 0;
+}
+.input-status select {
+  box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.3);
+  font-size: 15px;
+  border: 1px solid rgba(128, 127, 127, 0.527);
+  position: absolute;
+  top: 0;
+  height: 30px;
+  width: 93px;
+  right: 0;
+  border-radius: 5px;
+  color: rgb(107, 103, 103);
+}
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
 }
@@ -254,6 +440,25 @@ export default {
   }
 
   /* ===== button ====== */
+  .ex-button1 {
+    width: 40px;
+    bottom: 18px;
+  }
+
+  .ex-button1 .button {
+    font-size: 8px;
+    height: 25px;
+  }
+  .ex-button2 {
+    width: 40px;
+    bottom: 18px;
+    left: 50px;
+  }
+
+  .ex-button2 .button {
+    font-size: 8px;
+    height: 25px;
+  }
   .btn-gate3 {
     width: 190px;
     height: 31.5px;
@@ -285,7 +490,7 @@ export default {
   /* ===== Add menu ====== */
   .add-menu .blocking .form {
     width: 93%;
-    height: 270px;
+    height: 97%;
     left: 3%;
   }
 
@@ -319,6 +524,25 @@ export default {
   .input-category select {
     font-size: 14px;
     width: 45%;
+  }
+  .input-status {
+    font-size: 12px;
+    width: 120px;
+    height: 30px;
+    display: flex;
+    left: 250px;
+    bottom: 80px;
+  }
+  .input-status p {
+    top: 5px;
+    margin-right: 5px;
+  }
+  .input-status select {
+    font-size: 12px;
+    top: 15%;
+    height: 20px;
+    width: 70px;
+    border-radius: 05px;
   }
 }
 </style>

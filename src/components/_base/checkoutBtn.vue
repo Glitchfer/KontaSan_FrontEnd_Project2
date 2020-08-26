@@ -34,13 +34,10 @@ export default {
   computed: {},
   methods: {
     checkoutModalOn() {
-      document.querySelector('#checkoutModal').style.display = 'block'
+      this.$emit('checkoutModalOn', true)
     },
     cancel() {
-      this.$emit('reset', 0)
-      // document.querySelector('.wishlist').style.display = 'none'
-      // document.querySelector('.checkout').style.display = 'none'
-      // document.querySelector('.badge-info').innerHTML = 0
+      this.$emit('reset', 0, [])
     }
   }
 }

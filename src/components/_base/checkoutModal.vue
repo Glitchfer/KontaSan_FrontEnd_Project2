@@ -65,10 +65,10 @@ export default {
   components: {},
   methods: {
     checkoutModalOff() {
-      document.querySelector('#checkoutModal').style.display = 'none'
+      this.$emit('checkoutModalOff', false)
     },
     reset() {
-      this.$emit('reset', 0)
+      this.$emit('reset', 0, [])
     }
   }
 }
@@ -97,7 +97,7 @@ export default {
   left: 0;
   right: 0;
   z-index: 50;
-  display: none;
+  display: block;
 }
 
 .checkout-menu .blocking {

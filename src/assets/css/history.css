@@ -146,9 +146,9 @@ div.navi-img {
 }
 
 .add-img {
-  width: 35px;
-  height: 35px;
-  background-image: url(../gambar/add2.png);
+  width: 45px;
+  height: 45px;
+  background-image: url(../gambar/setting.png);
   background-size: cover;
   position: absolute;
   bottom: 10px;
@@ -594,9 +594,9 @@ div.navi-img {
   }
 
   .plus-img {
-    width: 30px;
-    height: 30px;
-    background-image: url(../gambar/add2.png);
+    width: 35px;
+    height: 35px;
+    background-image: url(../gambar/setting.png);
     background-size: cover;
     position: absolute;
     right: 46px;
@@ -619,8 +619,8 @@ div.navi-img {
 
   .plus-img:hover {
     top: 10px;
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
   }
 
   /*///////////////////--Main Content Orders--///////////////////////////////// */

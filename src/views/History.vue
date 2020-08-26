@@ -17,12 +17,12 @@
       <aside class="side-left col-1 col-sm-1 col-md-1 col-lg-1">
         <div class="navi-img col-12 col-sm-12 col-md-12 col-lg-12">
           <div class="fork-img">
-            <a href="checkout.html" class="menuhome" target="_self"></a>
+            <router-link to="/home" class="menuHome">Home</router-link>
           </div>
           <div class="history-img">
-            <a href="history.html" class="histo" target="_self"></a>
+            <router-link to="/history" class="histo">history</router-link>
           </div>
-          <div id="addclk" class="add-img"></div>
+          <div id="addclk" class="add-img" @click="addClick()"></div>
         </div>
       </aside>
       <!-- ----//////////////////////////////------Graph menu-------////////////////////////////////////////////////////////////---------------- -->
@@ -237,7 +237,7 @@
       <button id="addClick"></button>
     </div>
     <!-- -----///////////////////////////////------Add Data menu-----//////////////////////////////////////////////////////////////////----------- -->
-    <div id="addModal" class="add-menu modal">
+    <div v-if="isTrue === true" id="addModal" class="add-menu modal">
       <div class="blocking">
         <div class="form">
           <form action>
@@ -292,10 +292,10 @@
         </div>
         <div class="btn-gate3">
           <div class="add-button">
-            <button class="button">Add</button>
+            <button class="button" @click="sendClick()">Add</button>
           </div>
           <div class="cancel2-button">
-            <button class="button canc">Cancel</button>
+            <button class="button canc" @click="cancelClick()">Cancel</button>
           </div>
         </div>
       </div>
@@ -303,6 +303,37 @@
   </b-container>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      isTrue: null
+    }
+  },
+  methods: {
+    addClick() {
+      this.isTrue = true
+    },
+    cancelClick() {
+      this.isTrue = false
+    },
+    sendClick() {}
+  }
+}
+</script>
+<style scoped>
+.menuHome {
+  width: 30px;
+  height: 30px;
+  background-color: #f24f8b00;
+  display: inline-block;
+  text-indent: -9999px;
+  position: relative;
+  z-index: 5;
+  top: -3px;
+  left: -2.5px;
+}
+</style>
 <!--<style scoped src="../assets/css/home.css">
 </style>-->
 <style scoped src="../assets/css/homeselect.css">

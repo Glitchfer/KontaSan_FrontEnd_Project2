@@ -2,14 +2,15 @@
   <b-container fluid class="bag">
     <Header
       v-bind:count="num"
+      v-bind:srcNextPage="nextPage"
       @isSrcClicked="isSrcClicked"
       @srcValue="srcValue"
-      @searchBy="searchBy"
+      @srcResponse="srcResponse"
     />
-
+    <!-- @searchBy="searchBy" -->
     <b-row class="slot-two">
       <!-- aside-left -->
-      <Left />
+      <Left @addShow="addOn" />
       <!-- Main -->
       <!-- <Mid /> -->
       <Main
@@ -18,18 +19,31 @@
         v-bind:srcPage="srcResPage"
         v-bind:srcIsClick="isSrc"
         v-bind:valSrc="srcVal"
-        @srcCrnPage="srcCrnPage"
         @increment="cartCount"
+        @selectedItem="selectedItem"
+        @srcCrnPage="srcCrnPage"
       />
       <!-- aside-right -->
-      <Right v-bind:count="num" @resetCount="reset" />
+      <Right
+        v-bind:count="num"
+        @resetCount="reset"
+        @checkoutModalOn="checkoutModalOn"
+        @increase="inc"
+        @decrease="dec"
+        v-bind:cartItemMap="cartItemMap"
+        v-bind:cartItem="cartItem"
+      />
     </b-row>
     <!-- Responsive Navbar-->
-    <Fixednav />
+    <Fixednav @addShow="addOn" />
     <!-- Add Modal -->
-    <Addmodal />
+    <Addmodal v-if="isHide === true" @addOff="addHide" />
     <!-- Checkout Modal -->
-    <Checkoutmodal @reset="reset" />
+    <Checkoutmodal
+      v-if="checkoutHide === true"
+      @reset="reset"
+      @checkoutModalOff="checkoutModalOff"
+    />
   </b-container>
 </template>
 
@@ -41,19 +55,22 @@ import Fixednav from '../components/_base/fixedNavbar'
 import Addmodal from '../components/_base/addModal'
 import Checkoutmodal from '../components/_base/checkoutModal'
 import Main from '../components/_module/mainMenu'
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   name: 'Home',
   data() {
     return {
+      isHide: false,
+      checkoutHide: false,
       num: 0,
       isSrc: false,
       srcVal: '',
       srcResData: [],
       srcResPage: [],
-      page: 1,
-      limit: 9
+      nextPage: 1,
+      cartItem: [],
+      cartItemMap: []
     }
   },
   components: {
@@ -66,18 +83,56 @@ export default {
     Checkoutmodal
   },
   computed: {},
-  created() {
-    this.searchBy()
-  },
   methods: {
-    cartCount(inc, index) {
-      // this.num = this.num === 1 ? 1 : this.num + inc
-      this.num += inc
-      // console.log(inc)
-      // console.log(index)
+    addOn(dat) {
+      this.isHide = dat
     },
-    reset(value) {
-      this.num = value
+    addHide(dat) {
+      this.isHide = dat
+    },
+    checkoutModalOff(val) {
+      this.checkoutHide = val
+    },
+    checkoutModalOn(val) {
+      this.checkoutHide = val
+    },
+    cartCount(inc, index, item) {},
+    selectedItem(itemDetail) {
+      const setCart = {
+        itemDetail,
+        qty: 1
+      }
+      this.cartItem = [...this.cartItem, setCart]
+      // this.cartItemMap = this.cartItem.map(function (e) {
+      //   return e.itemDetail
+      // })
+      const data = this.cartItem.find(
+        (item) => item.itemDetail.product_id === itemDetail.product_id
+      )
+      if (this.cartItemMap.length < 1) {
+        this.cartItemMap = [...this.cartItemMap, data]
+        this.num += 1
+      } else if (
+        this.cartItemMap.find(
+          (item) => item.itemDetail.product_id === data.itemDetail.product_id
+        )
+      ) {
+        return null
+      } else {
+        this.cartItemMap = [...this.cartItemMap, data]
+        this.num += 1
+      }
+    },
+    inc(val) {
+      this.num += val
+    },
+    dec(val) {
+      this.num -= val
+    },
+    reset(zeroCount, zeroCart) {
+      this.num = zeroCount
+      this.cartItem = zeroCart
+      this.cartItemMap = zeroCart
     },
     isSrcClicked(bool) {
       this.isSrc = bool
@@ -85,25 +140,12 @@ export default {
     srcValue(value) {
       this.srcVal = value
     },
-    searchBy(a) {
-      axios
-        .get(
-          `http://127.0.0.1:3001/product/search?name=${a}&page=${this.page}&limit=${this.limit}`
-        )
-        .then((response) => {
-          this.srcResData = response.data.data
-          this.srcResPage = response.data.pagination
-        })
-        .catch((error) => {
-          console.log(
-            `"error in search function (home component)!!!": ${error}`
-          )
-        })
+    srcResponse(valA, valB) {
+      this.srcResData = valA
+      this.srcResPage = valB
     },
-    srcCrnPage(nextPage) {
-      this.page = nextPage
-      // this.searchBy(this.page)
-      // console.log(nextPage)
+    srcCrnPage(nxtPage) {
+      this.nextPage = nxtPage
     }
   }
 }

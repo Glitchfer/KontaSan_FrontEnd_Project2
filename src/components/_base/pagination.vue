@@ -2,6 +2,7 @@
   <div class="overflow-auto">
     <b-pagination
       v-model="currentPage"
+      @change="handlePageChange"
       :total-rows="rows"
       :per-page="perPage"
       aria-controls="my-table"
@@ -14,13 +15,11 @@
 export default {
   data() {
     return {
-      // perPage = 1
       perPage: 1,
       currentPage: 1
-      // limitMenu: 2
     }
   },
-  props: ['productInfo', 'paginationInfo', 'limit', 'page'],
+  props: ['productInfo', 'paginationInfo'],
   // turnOn the comment to active pagination
   updated() {
     this.$emit('crntPage', this.currentPage)
@@ -28,6 +27,12 @@ export default {
   computed: {
     rows() {
       return this.paginationInfo.totalPage
+    }
+  },
+  methods: {
+    handlePageChange() {
+      this.$emit('nextPage', this.currentPage)
+      // this.$emit('crntPage', this.currentPage)
     }
   }
 }

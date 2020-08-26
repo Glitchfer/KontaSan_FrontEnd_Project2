@@ -18,7 +18,7 @@ export default {
   name: 'Fixednav',
   methods: {
     addOn() {
-      document.querySelector('#addModal').style.display = 'block'
+      this.$emit('addShow', true)
     }
   }
 }
@@ -83,13 +83,13 @@ export default {
   }
 
   .plus-img {
-    width: 30px;
-    height: 30px;
-    background-image: url(../../assets/gambar/add2.png);
+    width: 40px;
+    height: 40px;
+    background-image: url(../../assets/gambar/setting.png);
     background-size: cover;
     position: absolute;
     right: 46px;
-    top: 15%;
+    top: 10%;
     opacity: 0.8;
     cursor: pointer;
   }
@@ -107,9 +107,9 @@ export default {
   }
 
   .plus-img:hover {
-    top: 10px;
-    width: 25px;
-    height: 25px;
+    top: 6px;
+    width: 35px;
+    height: 35px;
   }
 }
 </style>

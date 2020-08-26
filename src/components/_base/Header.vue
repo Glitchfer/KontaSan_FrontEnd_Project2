@@ -31,7 +31,7 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'Header',
   data() {
@@ -39,17 +39,34 @@ export default {
       srcInput: '',
       isSrcClicked: true,
       page: 1,
-      limit: 2
+      limit: 15
     }
   },
-  props: ['count', 'nextPage'],
+  props: ['count', 'srcNextPage'],
   computed: {},
-
   methods: {
     search() {
-      this.$emit('srcValue', this.srcInput)
-      this.$emit('searchBy', this.srcInput)
-      this.$emit('isSrcClicked', this.isSrcClicked)
+      axios
+        .get(
+          `http://127.0.0.1:3001/product/search?name=${this.srcInput}&page=${this.page}&limit=${this.limit}`
+        )
+        .then((response) => {
+          this.$emit('srcValue', this.srcInput)
+          this.$emit('searchBy', this.srcInput)
+          this.$emit('isSrcClicked', this.isSrcClicked)
+          this.$emit(
+            'srcResponse',
+            response.data.data,
+            response.data.pagination
+          )
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    nextPage() {
+      this.page = this.srcNextPage
+      this.search(this.page)
     }
   }
 }

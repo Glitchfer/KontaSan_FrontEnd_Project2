@@ -3,9 +3,15 @@
     <!-- mascot if empty-->
     <Mascot v-bind:num="count" />
     <!-- wishlist  if filled-->
-    <Wishlist v-bind:num="count" />
+    <Wishlist
+      v-bind:num="count"
+      v-bind:cartItemMap="cartItemMap"
+      v-bind:cartItem="cartItem"
+      @increase="inc"
+      @decrease="dec"
+    />
     <!-- checkout if filled-->
-    <Checkoutbtn v-bind:num="count" @reset="reset" />
+    <Checkoutbtn v-bind:num="count" @reset="reset" @checkoutModalOn="modalOn" />
   </b-col>
 </template>
 <script>
@@ -16,9 +22,11 @@ import Checkoutbtn from '../_base/checkoutBtn'
 export default {
   name: 'Right',
   data() {
-    return {}
+    return {
+      countReset: 1
+    }
   },
-  props: ['count'],
+  props: ['count', 'cartItem', 'cartItemMap'],
   components: {
     Mascot,
     Wishlist,
@@ -26,8 +34,17 @@ export default {
   },
   computed: {},
   methods: {
-    reset(data) {
-      this.$emit('resetCount', data)
+    reset(zeroCount, zeroCart) {
+      this.$emit('resetCount', zeroCount, zeroCart)
+    },
+    modalOn(val) {
+      this.$emit('checkoutModalOn', val)
+    },
+    inc(val) {
+      this.$emit('increase', val)
+    },
+    dec(val) {
+      this.$emit('decrease', val)
     }
   }
 }
