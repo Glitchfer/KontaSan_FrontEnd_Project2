@@ -7,8 +7,11 @@
       v-bind:num="count"
       v-bind:cartItemMap="cartItemMap"
       v-bind:cartItem="cartItem"
+      v-bind:invoice="invoiceId"
+      v-bind:orders="ordersId"
       @increase="inc"
       @decrease="dec"
+      @ordersData="ordersData"
     />
     <!-- checkout if filled-->
     <Checkoutbtn v-bind:num="count" @reset="reset" @checkoutModalOn="modalOn" />
@@ -22,11 +25,9 @@ import Checkoutbtn from '../_base/checkoutBtn'
 export default {
   name: 'Right',
   data() {
-    return {
-      countReset: 1
-    }
+    return {}
   },
-  props: ['count', 'cartItem', 'cartItemMap'],
+  props: ['count', 'cartItem', 'cartItemMap', 'invoiceId', 'ordersId'],
   components: {
     Mascot,
     Wishlist,
@@ -34,8 +35,9 @@ export default {
   },
   computed: {},
   methods: {
-    reset(zeroCount, zeroCart) {
-      this.$emit('resetCount', zeroCount, zeroCart)
+    reset(zeroCount, zeroCart, string, nully) {
+      this.$emit('resetCount', zeroCount, zeroCart, string, nully)
+      this.countReset = zeroCount
     },
     modalOn(val) {
       this.$emit('checkoutModalOn', val)
@@ -45,6 +47,9 @@ export default {
     },
     dec(val) {
       this.$emit('decrease', val)
+    },
+    ordersData(data) {
+      this.$emit('dataOrders', data)
     }
   }
 }
@@ -53,7 +58,7 @@ export default {
 <style scoped>
 .side-right {
   padding: 0;
-  display: flex;
+  display: inline-block;
   justify-content: center;
   position: relative;
   box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.1);

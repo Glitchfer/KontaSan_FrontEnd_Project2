@@ -13,20 +13,23 @@
         <!-- :disabled="product_qty === 1" -->
         <div
           class="img1 a1"
-          v-bind:style="{backgroundImage: `url('${item.img}')`}"
+          v-bind:style="{ backgroundImage: `url('${item.img}')` }"
           v-on:click="selectMenu(index, item)"
-          @click="selectedDisplay(index)"
         >
           <div v-if="count < 1" class="selected">
             <!-- :class="{dark: index === isActive}" -->
             <!-- v-bind:style="isActive === index ? isTrue : isFalse" -->
             <div class="ceklis"></div>
           </div>
-          <div v-else class="selected" v-bind:style="isActive === index ? displayOnn : displayOff">
+          <div
+            v-else
+            class="selected"
+            v-bind:style="isActive === index ? displayOnn : displayOff"
+          >
             <div class="ceklis"></div>
           </div>
-          <p class="nama">{{item.product_name}}</p>
-          <p class="harga">{{'Rp. ' + item.product_price}}</p>
+          <p class="nama">{{ item.product_name }}</p>
+          <p class="harga">{{ 'Rp. ' + item.product_price }}</p>
         </div>
       </b-col>
     </b-row>
@@ -38,7 +41,14 @@
         @nextPage="nxtPage"
       />
     </div>
-    <form cols="12" sm="12" md="12" lg="12" class="sortMenu">
+    <form
+      cols="12"
+      sm="12"
+      md="12"
+      lg="12"
+      class="sortMenu"
+      v-on:submit.prevent="dummy"
+    >
       <label for="input-ctgr">Sort By</label>
       <select v-model="sortBy" @change="sorting">
         <option value="Home"></option>
@@ -50,7 +60,17 @@
         <option value="expensive">Special Menu</option>
         <option value="recent">Newcomer</option>
       </select>
-      <h4>{{sortBy}}</h4>
+      <h4>{{ sortBy }}</h4>
+      <input
+        type="text"
+        placeholder="Cashier.."
+        v-on:keyup.enter="cashierName"
+        v-model="cashier"
+      />
+      <button type="button" class="getInvoice" @click="getData">
+        Get
+      </button>
+      <h6>{{ invoice_id }}</h6>
     </form>
   </b-col>
 </template>
@@ -62,6 +82,10 @@ export default {
   name: 'Main',
   data() {
     return {
+      cashier: '',
+      invoice_id: '',
+      invoiceData: [],
+      invoiceMsg: [],
       sortBy: 'Home',
       page: 1,
       limit: 6,
@@ -107,23 +131,35 @@ export default {
     }
   },
   methods: {
+    dummy() {},
+    cashierName() {
+      this.$emit('cashierName', this.cashier)
+    },
     selectMenu(index, item) {
       this.$emit('increment', 1, index, item)
       this.isActive = index
       this.$emit('selectedItem', item)
     },
     checkMenu(data) {
-      this.products.some((item) => item.product_id === data.product_id)
+      this.products.some(item => item.product_id === data.product_id)
     },
-    selectedDisplay(c) {
-      //   const pick = document.getElementsByClassName('a1')
-      //   const select = document.querySelectorAll('.selected')
-      //   const totalMenu = select.length
-      //   for (let x = 0; x <= totalMenu - 1; x++) {
-      //     pick[x].onclick = function () {
-      //       select[x].classList.toggle('dark')
-      //     }
-      //   }
+    getData() {
+      // this.invoice_id = (2)
+      axios
+        .post('http://127.0.0.1:3001/trigger/invoice')
+        .then(response => {
+          this.invoiceData = response.data
+          this.invoiceMsg = response.msg
+          this.invoice_id = response.data.data.invoice_id
+          this.$emit(
+            'invoiceData',
+            response.data,
+            response.data.data.invoice_id
+          )
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
     get_product() {
       if (this.sortBy === 'Home') {
@@ -131,21 +167,21 @@ export default {
           .get(
             `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
           )
-          .then((response) => {
+          .then(response => {
             this.products = response.data.data
             this.paginationInfo = response.data.pagination
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
           })
       } else {
         axios
           .get(`http://127.0.0.1:3001/product/sort?sort_by=${this.sortBy}`)
-          .then((response) => {
+          .then(response => {
             this.products = response.data.data
             // this.paginationInfo = response.data.pagination
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error)
           })
       }
@@ -159,6 +195,7 @@ export default {
     },
     sorting() {
       this.get_product(this.sortBy)
+      this.$router.push(`?sort_by=${this.sortBy}`)
     },
     nxtPage(value) {
       this.$emit('srcCrnPage', value)
@@ -172,12 +209,16 @@ export default {
   padding: 0;
   background-color: rgba(190, 195, 202, 0.3);
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: inline-block;
 }
 
 .menu {
+  overflow: auto;
   margin: 0;
+  max-height: 630px;
   padding: 15px;
-  display: flex;
+  /* display: flex; */
   position: relative;
   row-gap: 18px;
 }
@@ -269,6 +310,7 @@ p.harga {
   padding: 0px 25px;
   text-align: center;
   position: relative;
+  bottom: 0;
   margin-top: 10px;
 }
 /* ===== Sorting MEnu ====== */
@@ -278,6 +320,7 @@ p.harga {
   padding: 0;
   margin: 0 auto;
   position: relative;
+  bottom: 0;
 }
 .sortMenu label {
   padding: 0;
@@ -312,6 +355,37 @@ p.harga {
   border: 1px solid rgba(0, 0, 0, 0.555);
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
+/* .sortMenu input button h6 {
+} */
+
+.sortMenu input {
+  position: absolute;
+  width: 80px;
+  left: 130px;
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
+  border-radius: 5px;
+  border: 1px solid rgb(134, 134, 134);
+}
+.sortMenu button {
+  position: absolute;
+  width: 40px;
+  left: 215px;
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
+  border: 1px solid rgb(134, 134, 134);
+  border-radius: 5px;
+}
+.sortMenu h6 {
+  font-size: 14px;
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  left: 260px;
+  top: 5px;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
+  border: 1px solid rgb(134, 134, 134);
+}
 
 @media (max-width: 768px) {
   .sortMenu {
@@ -321,6 +395,17 @@ p.harga {
 @media (max-width: 576px) {
   .sortMenu {
     width: 90%;
+  }
+  .sortMenu label {
+    font-size: 12px;
+    width: 50px;
+    top: 5px;
+    right: 80px;
+  }
+  .sortMenu select {
+    width: 60px;
+    right: 15px;
+    top: 3px;
   }
 }
 </style>

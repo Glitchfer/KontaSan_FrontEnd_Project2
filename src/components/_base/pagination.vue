@@ -33,6 +33,7 @@ export default {
     handlePageChange() {
       this.$emit('nextPage', this.currentPage)
       // this.$emit('crntPage', this.currentPage)
+      // this.$router.push(`?page=${this.page}`)
     }
   }
 }

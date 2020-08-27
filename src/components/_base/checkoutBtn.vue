@@ -1,14 +1,11 @@
 <template>
   <!-- Checkout Button -->
   <div class="checkout" v-bind:style="num > 0 ? isTrue : isFalse">
-    <div class="text-total">
-      <h5 class="total">Total :</h5>
-      <h5 class="harga">Rp. 105.000*</h5>
-      <p>*Belum termasuk ppn</p>
-    </div>
     <div class="btn-gate">
       <div class="check-button">
-        <button id="checkout" class="button" v-on:click="checkoutModalOn()">Checkout</button>
+        <button id="checkout" class="button" v-on:click="checkoutModalOn()">
+          Checkout
+        </button>
       </div>
       <div class="cancel-button cancelBtn">
         <button v-on:click="cancel()" class="button">Cancel</button>
@@ -37,7 +34,7 @@ export default {
       this.$emit('checkoutModalOn', true)
     },
     cancel() {
-      this.$emit('reset', 0, [])
+      this.$emit('reset', 0, [], '', null)
     }
   }
 }
@@ -60,13 +57,12 @@ export default {
 /* ===== Checkout ====== */
 .checkout {
   width: 100%;
-  height: 200px;
   padding: 0;
   font-size: 20px;
   font-family: 'Airbnb Cereal App Medium', Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   position: relative;
-  top: 410px;
+  bottom: 0;
   overflow: auto;
 }
 
@@ -74,8 +70,8 @@ export default {
   position: relative;
   margin: 0 auto;
   width: 90%;
-  height: 133px;
-  bottom: 5px;
+  height: 130px;
+  bottom: 0px;
 }
 
 .cancel-button {
@@ -84,7 +80,7 @@ export default {
   height: 60px;
   margin: 0 auto;
   width: 100%;
-  bottom: 3px;
+  bottom: 0px;
 }
 
 .cancel-button .button {
@@ -106,36 +102,5 @@ export default {
   width: 100%;
   height: 55px;
   background-color: #57cad5;
-}
-
-.text-total {
-  height: 60px;
-  width: 90%;
-  margin: 0 auto 0;
-  position: relative;
-}
-
-.checkout p {
-  width: 100%;
-  font-size: 12px;
-  text-align: left;
-  position: absolute;
-  bottom: -10px;
-}
-
-h5.total {
-  font-size: 18px;
-  text-align: left;
-  width: 100%;
-  position: absolute;
-  bottom: 20px;
-}
-
-h5.harga {
-  text-align: right;
-  font-size: 18px;
-  width: 100%;
-  position: absolute;
-  bottom: 20px;
 }
 </style>

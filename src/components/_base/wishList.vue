@@ -3,32 +3,45 @@
   <div class="wishlist" v-bind:style="num > 0 ? isTrue : isFalse">
     <div class="list">
       <!-- selected item -->
-      <!-- <Cartitem/> -->
       <div class="no_1" v-for="(item, index) in cartItemMap" :key="index">
         <img :src="item.itemDetail.img" alt="#" />
-        <p>{{item.itemDetail.product_name}}</p>
-        <p>{{'Rp. ' + (item.itemDetail.product_price * item.qty)}}</p>
+        <p>{{ item.itemDetail.product_name }}</p>
+        <p>{{ 'Rp. ' + item.itemDetail.product_price * item.qty }}</p>
         <div class="count">
-          <button @click="decrease(item) " class="button minus">
+          <button
+            :disabled="item.qty === 1"
+            @click="decrease(item, item.itemDetail.product_price * item.qty)"
+            class="button minus"
+          >
             <div class="minus">
               <p>-</p>
             </div>
           </button>
           <div class="count-numb">
-            <p>{{item.qty}}</p>
+            <p>{{ item.qty }}</p>
           </div>
-          <button @click="increase(item)" class="button plus">
+          <button
+            @click="increase(item, item.itemDetail.product_price * item.qty)"
+            class="button plus"
+          >
             <div class="plus">
               <p>+</p>
             </div>
           </button>
         </div>
       </div>
+      <div class="text-total">
+        <h5 class="total">Total :</h5>
+        <h5 class="harga">
+          {{ 'Rp. ' + this.invoiceData.total_price + ' *' }}
+        </h5>
+        <p>*Belum termasuk ppn</p>
+      </div>
     </div>
   </div>
 </template>
 <script>
-// import Cartitem from '../_base/cartItem'
+import axios from 'axios'
 export default {
   name: 'Wishlist',
   data() {
@@ -41,30 +54,95 @@ export default {
       isFalse: {
         display: 'none'
       },
-      total: []
+      total: 0,
+      form: {
+        product_id: null,
+        item_quantity: null,
+        invoice_id: null
+      },
+      orders_id: null,
+      invoiceData: {
+        invoice_num: null,
+        total_price: null,
+        tax: null,
+        sub_total: null,
+        updated_at: null
+      }
     }
   },
-  props: ['num', 'cartItem', 'cartItemMap'],
-  components: {
-    // Cartitem
-  },
+  props: ['num', 'cartItem', 'cartItemMap', 'invoice', 'orders'],
+  components: {},
   computed: {},
   methods: {
-    increase(val) {
+    increase(val, sum) {
       const inc = this.cartItemMap.find(
-        (item) => item.itemDetail.product_id === val.itemDetail.product_id
+        item => item.itemDetail.product_id === val.itemDetail.product_id
       )
       inc.qty += 1
       this.$emit('increase', 1)
       // ===== Data untuk total harga (blm kelar) ===================
       const total = val.itemDetail.product_price * inc.qty
-      this.total = [...this.total, total]
-      console.log(this.total)
+      // this.total = [...this.total, total]
+      this.total += total
+      console.log(inc.qty)
+
+      // ===== Update Orders ====
+      this.form.item_quantity = inc.qty
+      this.form.invoice_id = this.invoice
+      this.form.product_id = val.itemDetail.product_id
+      this.orders_id = this.orders
+      console.log(val.itemDetail)
+
+      setTimeout(() => {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/trigger/orders/${this.orders_id}`,
+            this.form
+          )
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error.response.data.msg)
+          })
+      }, 500)
+
+      // ===== Get Orders By Invoice Id====
+      setTimeout(() => {
+        axios
+          .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          .then(response => {
+            this.$emit('ordersData', response.data.data)
+            console.log('get order by invoice id berhasil')
+          })
+          .catch(error => {
+            console.log('get order by invoice id gagal')
+            console.log(error.response.data.msg)
+          })
+      }, 1200)
+
+      // ===== Update Invoice ====
+      setTimeout(() => {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+          )
+          .then(response => {
+            this.invoiceData.invoice_num = response.data.data.invoice_number
+            this.invoiceData.total_price = response.data.data.total_price
+            this.invoiceData.tax = response.data.data.tax
+            this.invoiceData.sub_total = response.data.data.sub_total
+            this.invoiceData.update_at = response.data.data.updated_at
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }, 1000)
     },
-    decrease(val) {
-      // ====== cart count masih ada bug saat decrementnya ==========
+    decrease(val, sum) {
       const dec = this.cartItemMap.find(
-        (item) => item.itemDetail.product_id === val.itemDetail.product_id
+        item => item.itemDetail.product_id === val.itemDetail.product_id
       )
       dec.qty = dec.qty === 1 ? 1 : (dec.qty -= 1)
       if (this.num === this.cartItemMap.length) {
@@ -73,11 +151,64 @@ export default {
         this.$emit('decrease', 1)
       }
       // const total = val.itemDetail.product_price * dec.qty
-      // this.total = [...this.total, total]
-      // console.log(this.total)
+      this.total = this.total === 0 ? 0 : (this.total = this.total - sum)
+      console.log(dec.qty)
+      this.form.item_quantity = dec.qty
+      this.form.invoice_id = this.invoice
+      this.form.product_id = val.itemDetail.product_id
+      this.orders_id = this.orders
+
+      setTimeout(() => {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/trigger/orders/${this.orders}`,
+            this.form
+          )
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }, 500)
+
+      setTimeout(() => {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+          )
+          .then(response => {
+            this.invoiceData.invoice_num = response.data.data.invoice_number
+            this.invoiceData.total_price = response.data.data.total_price
+            this.invoiceData.tax = response.data.data.tax
+            this.invoiceData.sub_total = response.data.data.sub_total
+            this.invoiceData.update_at = response.data.data.updated_at
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error.response.data.msg)
+          })
+      }, 1000)
+
+      // ===== Get Orders By Invoice Id====
+      setTimeout(() => {
+        axios
+          .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          .then(response => {
+            this.$emit('ordersData', response.data.data)
+            console.log('get order by invoice id')
+          })
+          .catch(error => {
+            console.log(error.response.data.msg)
+          })
+      }, 1200)
     }
   }
 }
+// syntax SQL untuk menampilkan revenue berdasarkan hari/minggu/bulan/tahun
+// SELECT COUNT(*) as Orders WHERE YEARWEEK()
+// SELECT COUNT(*) as Orders from history WHERE YEARWEEK(history_created_at) = YEARWEEK(NOW()) <- untuk minggu ini
+// SELECT COUNT(*) as Orders from history WHERE WEEK(history_created_at) = WEEK(NOW()) GROUP BY WEEK(NOW())
 </script>
 
 <style scoped>
@@ -85,8 +216,8 @@ export default {
 .wishlist {
   padding: 0;
   width: 100%;
-  height: 410px;
-  position: absolute;
+  max-height: 580px;
+  position: relative;
   box-sizing: border-box;
   overflow: auto;
 }
@@ -105,7 +236,6 @@ export default {
 /* default buttun for all start*/
 .button {
   padding: 0;
-  /* background-color: rgba(130, 222, 58, 0.2); */
   border: none;
   color: white;
   text-align: center;
@@ -207,5 +337,38 @@ export default {
   position: absolute;
   right: 3px;
   bottom: -10px;
+}
+/* ========== */
+.text-total {
+  font-family: 'Airbnb Cereal App Medium';
+  height: 60px;
+  width: 90%;
+  margin: 0 auto 0;
+  margin-top: 20px;
+  position: relative;
+}
+
+.text-total p {
+  width: 100%;
+  font-size: 12px;
+  text-align: left;
+  position: absolute;
+  bottom: -10px;
+}
+
+h5.total {
+  font-size: 18px;
+  text-align: left;
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+}
+
+h5.harga {
+  text-align: right;
+  font-size: 18px;
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
 }
 </style>

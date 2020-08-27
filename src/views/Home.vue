@@ -22,6 +22,8 @@
         @increment="cartCount"
         @selectedItem="selectedItem"
         @srcCrnPage="srcCrnPage"
+        @cashierName="cashierName"
+        @invoiceData="invoiceData"
       />
       <!-- aside-right -->
       <Right
@@ -30,8 +32,11 @@
         @checkoutModalOn="checkoutModalOn"
         @increase="inc"
         @decrease="dec"
+        @dataOrders="dataOrders"
         v-bind:cartItemMap="cartItemMap"
         v-bind:cartItem="cartItem"
+        v-bind:invoiceId="form.invoice_id"
+        v-bind:ordersId="orders_id"
       />
     </b-row>
     <!-- Responsive Navbar-->
@@ -43,6 +48,7 @@
       v-if="checkoutHide === true"
       @reset="reset"
       @checkoutModalOff="checkoutModalOff"
+      v-bind:dataOrder="ordersData"
     />
   </b-container>
 </template>
@@ -55,14 +61,14 @@ import Fixednav from '../components/_base/fixedNavbar'
 import Addmodal from '../components/_base/addModal'
 import Checkoutmodal from '../components/_base/checkoutModal'
 import Main from '../components/_module/mainMenu'
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'Home',
   data() {
     return {
       isHide: false,
-      checkoutHide: false,
+      checkoutHide: true,
       num: 0,
       isSrc: false,
       srcVal: '',
@@ -70,7 +76,15 @@ export default {
       srcResPage: [],
       nextPage: 1,
       cartItem: [],
-      cartItemMap: []
+      cartItemMap: [],
+      form: {
+        cashier_name: '',
+        product_id: null,
+        item_quantity: null,
+        invoice_id: null
+      },
+      orders_id: null,
+      ordersData: []
     }
   },
   components: {
@@ -84,6 +98,17 @@ export default {
   },
   computed: {},
   methods: {
+    dataOrders(data) {
+      this.ordersData = data
+      console.log(this.ordersData)
+    },
+    cashierName(name) {
+      this.form.cashier_name = name
+      console.log(this.form.cashier_name)
+    },
+    invoiceData(fullData, id) {
+      this.form.invoice_id = id
+    },
     addOn(dat) {
       this.isHide = dat
     },
@@ -103,18 +128,19 @@ export default {
         qty: 1
       }
       this.cartItem = [...this.cartItem, setCart]
-      // this.cartItemMap = this.cartItem.map(function (e) {
-      //   return e.itemDetail
-      // })
       const data = this.cartItem.find(
-        (item) => item.itemDetail.product_id === itemDetail.product_id
+        item => item.itemDetail.product_id === itemDetail.product_id
       )
+
+      this.form.product_id = data.itemDetail.product_id
+      this.form.item_quantity = data.qty
+
       if (this.cartItemMap.length < 1) {
         this.cartItemMap = [...this.cartItemMap, data]
         this.num += 1
       } else if (
         this.cartItemMap.find(
-          (item) => item.itemDetail.product_id === data.itemDetail.product_id
+          item => item.itemDetail.product_id === data.itemDetail.product_id
         )
       ) {
         return null
@@ -122,6 +148,21 @@ export default {
         this.cartItemMap = [...this.cartItemMap, data]
         this.num += 1
       }
+
+      // ====== POST INVOICE ======
+      axios
+        .post('http://127.0.0.1:3001/trigger/orders', this.form)
+        .then(response => {
+          console.log(response.data)
+          this.orders_id = response.data.data.orders_id
+          console.log(response.data.msg)
+        })
+        .catch(error => {
+          this.num = 0
+          this.cartItem = []
+          this.cartItemMap = []
+          console.log(error.response.data.msg)
+        })
     },
     inc(val) {
       this.num += val
@@ -129,10 +170,12 @@ export default {
     dec(val) {
       this.num -= val
     },
-    reset(zeroCount, zeroCart) {
+    reset(zeroCount, zeroCart, string, nully) {
       this.num = zeroCount
       this.cartItem = zeroCart
       this.cartItemMap = zeroCart
+      this.form.cashier_name = string
+      this.form.invoice_id = nully
     },
     isSrcClicked(bool) {
       this.isSrc = bool

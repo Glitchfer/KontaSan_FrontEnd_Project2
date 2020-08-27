@@ -11,7 +11,9 @@
               <td style="font-size: 15px;">Receipt no: #010410919</td>
             </tr>
             <tr>
-              <td colspan="2" style="font-size: 12px;">Cashier : Pevita Pearce</td>
+              <td colspan="2" style="font-size: 12px;">
+                Cashier : Pevita Pearce
+              </td>
             </tr>
             <tr>
               <td colspan="2"></td>
@@ -62,6 +64,22 @@
 <script>
 export default {
   name: 'Checkoutmodal',
+  data() {
+    return {
+      checkoutData: {
+        invoice_number: null,
+        cashier_name: '',
+        product_name: '',
+        product_price: null,
+        item_quantity: null,
+        total_price: null,
+        tax: null,
+        sub_total: null,
+        date: null
+      }
+    }
+  },
+  props: ['dataOrder'],
   components: {},
   methods: {
     checkoutModalOff() {
