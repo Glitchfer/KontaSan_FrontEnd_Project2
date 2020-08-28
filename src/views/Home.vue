@@ -3,10 +3,12 @@
     <Header
       v-bind:count="num"
       v-bind:srcNextPage="nextPage"
+      @addShow="addOn"
       @isSrcClicked="isSrcClicked"
       @srcValue="srcValue"
       @srcResponse="srcResponse"
     />
+    <Fixednav @addShow="addOn" />
     <!-- @searchBy="searchBy" -->
     <b-row class="slot-two">
       <!-- aside-left -->
@@ -33,6 +35,7 @@
         @increase="inc"
         @decrease="dec"
         @dataOrders="dataOrders"
+        @invoiceData="checkoutData"
         v-bind:cartItemMap="cartItemMap"
         v-bind:cartItem="cartItem"
         v-bind:invoiceId="form.invoice_id"
@@ -40,7 +43,7 @@
       />
     </b-row>
     <!-- Responsive Navbar-->
-    <Fixednav @addShow="addOn" />
+    <!-- <Fixednav @addShow="addOn" /> -->
     <!-- Add Modal -->
     <Addmodal v-if="isHide === true" @addOff="addHide" />
     <!-- Checkout Modal -->
@@ -49,6 +52,12 @@
       @reset="reset"
       @checkoutModalOff="checkoutModalOff"
       v-bind:dataOrder="ordersData"
+      v-bind:allData="invoicePatchData.allData"
+      v-bind:invoiceNo="invoicePatchData.invoice_number"
+      v-bind:totalPrice="invoicePatchData.total_price"
+      v-bind:totalTax="invoicePatchData.tax"
+      v-bind:subTotal="invoicePatchData.sub_total"
+      v-bind:updatedDate="invoicePatchData.date"
     />
   </b-container>
 </template>
@@ -68,8 +77,7 @@ export default {
   data() {
     return {
       isHide: false,
-      checkoutHide: true,
-      num: 0,
+      checkoutHide: false,
       isSrc: false,
       srcVal: '',
       srcResData: [],
@@ -84,7 +92,15 @@ export default {
         invoice_id: null
       },
       orders_id: null,
-      ordersData: []
+      ordersData: [],
+      invoicePatchData: {
+        allData: [],
+        invoice_number: null,
+        total_price: null,
+        tax: null,
+        sub_total: null,
+        date: null
+      }
     }
   },
   components: {
@@ -98,16 +114,25 @@ export default {
   },
   computed: {},
   methods: {
+    showCart(val) {},
+    checkoutData(data, totalPrice, tax, subTotal, date) {
+      this.invoicePatchData.allData = data
+      this.invoicePatchData.total_price = totalPrice
+      this.invoicePatchData.tax = tax
+      this.invoicePatchData.sub_total = subTotal
+      this.invoicePatchData.date = date
+    },
     dataOrders(data) {
       this.ordersData = data
-      console.log(this.ordersData)
+      // console.log(this.ordersData)
     },
     cashierName(name) {
       this.form.cashier_name = name
       console.log(this.form.cashier_name)
     },
-    invoiceData(fullData, id) {
+    invoiceData(fullData, id, number) {
       this.form.invoice_id = id
+      this.invoicePatchData.invoice_number = number
     },
     addOn(dat) {
       this.isHide = dat
@@ -129,7 +154,7 @@ export default {
       }
       this.cartItem = [...this.cartItem, setCart]
       const data = this.cartItem.find(
-        item => item.itemDetail.product_id === itemDetail.product_id
+        (item) => item.itemDetail.product_id === itemDetail.product_id
       )
 
       this.form.product_id = data.itemDetail.product_id
@@ -140,7 +165,7 @@ export default {
         this.num += 1
       } else if (
         this.cartItemMap.find(
-          item => item.itemDetail.product_id === data.itemDetail.product_id
+          (item) => item.itemDetail.product_id === data.itemDetail.product_id
         )
       ) {
         return null
@@ -152,12 +177,12 @@ export default {
       // ====== POST INVOICE ======
       axios
         .post('http://127.0.0.1:3001/trigger/orders', this.form)
-        .then(response => {
+        .then((response) => {
           console.log(response.data)
           this.orders_id = response.data.data.orders_id
           console.log(response.data.msg)
         })
-        .catch(error => {
+        .catch((error) => {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []

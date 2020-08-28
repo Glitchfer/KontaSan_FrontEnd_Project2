@@ -3,7 +3,7 @@
   <div class="kontainer-kosong">
     <div class="dummy1">
       <div class="garpu-img">
-        <a href="checkout.html" class="menuhome" target="_self"></a>
+        <router-link to="/home" class="beranda"></router-link>
       </div>
       <div class="histori-img">
         <router-link to="/history" class="histo"></router-link>
@@ -25,20 +25,31 @@ export default {
 </script>
 
 <style scoped>
+.beranda {
+  width: 30px;
+  height: 30px;
+  background-color: #f24f8b00;
+  display: inline-block;
+  text-indent: -9999px;
+  position: relative;
+  z-index: 5;
+  top: -3px;
+  left: -2.5px;
+}
 /* Responsive 768px */
 @media (max-width: 768px) {
   /* Navigation bottom */
   .kontainer-kosong {
-    position: fixed;
-    width: 99%;
+    position: sticky;
+    width: 100%;
     height: 50px;
     border-radius: 5px;
     border: 1px solid rgba(77, 76, 76, 0.3);
     background-color: rgba(255, 255, 255, 0.644);
     box-shadow: -1px -2px 15px rgba(0, 0, 0, 0.2);
-    z-index: 3;
+    z-index: 4;
     left: 2.5px;
-    bottom: 0px;
+    top: 0px;
   }
 
   .garpu-img {

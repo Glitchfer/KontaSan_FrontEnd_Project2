@@ -32,9 +32,7 @@
       </div>
       <div class="text-total">
         <h5 class="total">Total :</h5>
-        <h5 class="harga">
-          {{ 'Rp. ' + this.invoiceData.total_price + ' *' }}
-        </h5>
+        <h5 class="harga">{{ 'Rp. ' + this.invoiceData.total_price + ' *' }}</h5>
         <p>*Belum termasuk ppn</p>
       </div>
     </div>
@@ -76,7 +74,7 @@ export default {
   methods: {
     increase(val, sum) {
       const inc = this.cartItemMap.find(
-        item => item.itemDetail.product_id === val.itemDetail.product_id
+        (item) => item.itemDetail.product_id === val.itemDetail.product_id
       )
       inc.qty += 1
       this.$emit('increase', 1)
@@ -91,7 +89,6 @@ export default {
       this.form.invoice_id = this.invoice
       this.form.product_id = val.itemDetail.product_id
       this.orders_id = this.orders
-      console.log(val.itemDetail)
 
       setTimeout(() => {
         axios
@@ -99,10 +96,10 @@ export default {
             `http://127.0.0.1:3001/trigger/orders/${this.orders_id}`,
             this.form
           )
-          .then(response => {
-            console.log(response)
+          .then((response) => {
+            // console.log('update orders')
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error.response.data.msg)
           })
       }, 500)
@@ -111,11 +108,11 @@ export default {
       setTimeout(() => {
         axios
           .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
-          .then(response => {
+          .then((response) => {
             this.$emit('ordersData', response.data.data)
-            console.log('get order by invoice id berhasil')
+            // console.log('get order by invoice id berhasil')
           })
-          .catch(error => {
+          .catch((error) => {
             console.log('get order by invoice id gagal')
             console.log(error.response.data.msg)
           })
@@ -127,22 +124,32 @@ export default {
           .patch(
             `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
           )
-          .then(response => {
-            this.invoiceData.invoice_num = response.data.data.invoice_number
+          .then((response) => {
+            // this.invoiceData.invoice_num = response.data.data.invoice_number
             this.invoiceData.total_price = response.data.data.total_price
             this.invoiceData.tax = response.data.data.tax
             this.invoiceData.sub_total = response.data.data.sub_total
             this.invoiceData.update_at = response.data.data.updated_at
-            console.log(response)
+            // console.log('Update Invoice')
+            // console.log('invoice data in wishlist')
+            // console.log(response.data.data)
+            this.$emit(
+              'invoiceData',
+              response.data.data,
+              response.data.data.total_price,
+              response.data.data.tax,
+              response.data.data.sub_total,
+              response.data.data.updated_at
+            )
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error)
           })
       }, 1000)
     },
     decrease(val, sum) {
       const dec = this.cartItemMap.find(
-        item => item.itemDetail.product_id === val.itemDetail.product_id
+        (item) => item.itemDetail.product_id === val.itemDetail.product_id
       )
       dec.qty = dec.qty === 1 ? 1 : (dec.qty -= 1)
       if (this.num === this.cartItemMap.length) {
@@ -164,10 +171,10 @@ export default {
             `http://127.0.0.1:3001/trigger/orders/${this.orders}`,
             this.form
           )
-          .then(response => {
-            console.log(response)
+          .then((response) => {
+            // console.log('update order')
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error)
           })
       }, 500)
@@ -177,15 +184,25 @@ export default {
           .patch(
             `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
           )
-          .then(response => {
-            this.invoiceData.invoice_num = response.data.data.invoice_number
+          .then((response) => {
+            console.log('patch invoice')
+            // this.invoiceData.invoice_num = response.data.data.invoice_number
             this.invoiceData.total_price = response.data.data.total_price
             this.invoiceData.tax = response.data.data.tax
             this.invoiceData.sub_total = response.data.data.sub_total
             this.invoiceData.update_at = response.data.data.updated_at
-            console.log(response)
+            // console.log('invoice data in wishlist')
+            // console.log(response.data.data)
+            this.$emit(
+              'invoiceData',
+              response.data.data,
+              response.data.data.total_price,
+              response.data.data.tax,
+              response.data.data.sub_total,
+              response.data.data.updated_at
+            )
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error.response.data.msg)
           })
       }, 1000)
@@ -194,11 +211,11 @@ export default {
       setTimeout(() => {
         axios
           .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
-          .then(response => {
+          .then((response) => {
             this.$emit('ordersData', response.data.data)
-            console.log('get order by invoice id')
+            // console.log('get order by invoice id')
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error.response.data.msg)
           })
       }, 1200)
@@ -370,5 +387,16 @@ h5.harga {
   width: 100%;
   position: absolute;
   bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .wishlist {
+    padding: 0;
+    width: 100%;
+    max-height: 280px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: auto;
+  }
 }
 </style>

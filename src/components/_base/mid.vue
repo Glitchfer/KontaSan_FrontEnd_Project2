@@ -33,14 +33,14 @@ export default {
   },
   methods: {
     // selectMenu() {
-    //   const pick = document.getElementsByClassName('a1')
-    //   const select = document.querySelectorAll('.selected')
-    //   const totalMenu = select.length
-    //   this.$emit('inc', 1)
-    //   for (let x = 0; x <= totalMenu - 1; x++) {
-    //     pick[x].onclick = function () {
-    //       select[x].classList.toggle('dark')
-    //     }
+    // const pick = document.getElementsByClassName('a1')
+    // const select = document.querySelectorAll('.selected')
+    // const totalMenu = select.length
+    // this.$emit('inc', 1)
+    // for (let x = 0; x <= totalMenu - 1; x++) {
+    //   pick[x].onclick = function () {
+    //     select[x].classList.toggle('dark')
+    //   }
     //   }
     // },
     get_product() {

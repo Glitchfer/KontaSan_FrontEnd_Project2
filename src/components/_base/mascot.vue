@@ -28,10 +28,11 @@ export default {
 /*===== Empty Cart Mascot  ======*/
 .mascot {
   margin: 40px auto;
-  width: 95%;
+  width: 100%;
   height: 250px;
   position: absolute;
   overflow: auto;
+  background-color: #fff;
 }
 
 .mascot-img {
@@ -59,5 +60,21 @@ h6 {
   letter-spacing: 2px;
   position: relative;
   top: 30px;
+}
+</style>
+
+<style scoped>
+@media (max-width: 768px) {
+  .mascot {
+    margin: 0px auto;
+    width: 100%;
+    height: 300px;
+    position: absolute;
+    top: -49px;
+    left: -2px;
+    background-color: #fff;
+    border-radius: 0 10px 10px 0;
+    box-shadow: inset 0 0 4px 4px rgba(51, 51, 51, 0.473);
+  }
 }
 </style>

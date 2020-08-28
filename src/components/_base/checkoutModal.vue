@@ -8,54 +8,44 @@
           <table>
             <tr>
               <td style="font-size: 20px;">Checkout</td>
-              <td style="font-size: 15px;">Receipt no: #010410919</td>
+              <td style="font-size: 15px;">Invoice no: #{{invoiceNo}}</td>
             </tr>
             <tr>
-              <td colspan="2" style="font-size: 12px;">
-                Cashier : Pevita Pearce
-              </td>
+              <td colspan="2" style="font-size: 12px;">Cashier : Pevita Pearce</td>
             </tr>
             <tr>
               <td colspan="2"></td>
             </tr>
-            <tr style="font-size: 15px;">
-              <td>Coffee Latte 1x</td>
-              <td>Rp. 15.000</td>
-            </tr>
-            <tr style="font-size: 15px;">
-              <td>Black Forest 1x</td>
-              <td>Rp. 30.000</td>
-            </tr>
-            <tr style=" font-size: 15px;">
-              <td>Salmon Truffle Teriyaki 1x</td>
-              <td>Rp. 60.000</td>
+            <tr style="font-size: 15px;" v-for="(item, index) in dataOrder" :key="index">
+              <td>{{item.product_name + ' '+'('+item.item_quantity+'x)'}}</td>
+              <td>{{'Rp. ' + item.total_price}}</td>
             </tr>
             <tr style="font-size: 15px;">
               <td>Ppn 10%</td>
-              <td>Rp. 10.500</td>
+              <td>{{'Rp. ' + totalTax}}</td>
             </tr>
             <tr>
               <td colspan="2"></td>
             </tr>
             <tr style=" font-size: 15px;">
-              <td>Total :</td>
-              <td>Rp. 115.500</td>
+              <td style=" text-align: right;">Total :</td>
+              <td>{{'Rp. ' + subTotal}}</td>
             </tr>
             <tr style=" font-size: 15px;">
               <td>Payment: Cash</td>
               <td></td>
             </tr>
           </table>
+          <div class="btn-gate2">
+            <div class="print-button">
+              <button class="button" @click="reset()">Print</button>
+            </div>
+            <p>Or</p>
+            <div class="send-button">
+              <button class="button" @click="reset()">Send Email</button>
+            </div>
+          </div>
         </form>
-      </div>
-      <div class="btn-gate2">
-        <div class="print-button">
-          <button class="button" @click="reset()">Print</button>
-        </div>
-        <p>Or</p>
-        <div class="send-button">
-          <button class="button" @click="reset()">Send Email</button>
-        </div>
       </div>
     </div>
   </div>
@@ -66,20 +56,18 @@ export default {
   name: 'Checkoutmodal',
   data() {
     return {
-      checkoutData: {
-        invoice_number: null,
-        cashier_name: '',
-        product_name: '',
-        product_price: null,
-        item_quantity: null,
-        total_price: null,
-        tax: null,
-        sub_total: null,
-        date: null
-      }
+      checkoutData: {}
     }
   },
-  props: ['dataOrder'],
+  props: [
+    'dataOrder',
+    'allData',
+    'invoiceNo',
+    'totalPrice',
+    'totalTax',
+    'subTotal',
+    'updatedDate'
+  ],
   components: {},
   methods: {
     checkoutModalOff() {
@@ -132,7 +120,7 @@ export default {
   position: absolute;
   margin-top: 20px;
   width: 92%;
-  height: 320px;
+  height: 96%;
   left: 5%;
 }
 
@@ -145,10 +133,11 @@ export default {
   height: 100%;
 }
 
-table,
-tr,
-td {
+.form table {
   position: relative;
+  display: inline-block;
+  max-height: 320px;
+  overflow: auto;
 }
 
 .checkout-menu tr:nth-of-type(1) {
@@ -161,11 +150,6 @@ td {
 
 .checkout-menu tr:nth-of-type(10) {
   top: -5px;
-}
-
-.checkout-menu tr:nth-of-type(9) td:nth-last-of-type(2) {
-  text-align: right;
-  left: 90px;
 }
 
 .checkout-menu td:nth-of-type(1) {
@@ -261,14 +245,16 @@ td {
     height: 330px;
     left: 2.3%;
   }
-
+  .form table {
+    max-height: 330px;
+  }
   /* ====== button ====== */
   .btn-gate2 {
     height: 95px;
     width: 75%;
     left: 12.5%;
     position: absolute;
-    top: 370px;
+    top: 340px;
   }
 
   .send-button {

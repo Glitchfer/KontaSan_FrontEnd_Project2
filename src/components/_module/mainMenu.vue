@@ -21,11 +21,7 @@
             <!-- v-bind:style="isActive === index ? isTrue : isFalse" -->
             <div class="ceklis"></div>
           </div>
-          <div
-            v-else
-            class="selected"
-            v-bind:style="isActive === index ? displayOnn : displayOff"
-          >
+          <div v-else class="selected" v-bind:style="isActive === index ? displayOnn : displayOff">
             <div class="ceklis"></div>
           </div>
           <p class="nama">{{ item.product_name }}</p>
@@ -41,14 +37,7 @@
         @nextPage="nxtPage"
       />
     </div>
-    <form
-      cols="12"
-      sm="12"
-      md="12"
-      lg="12"
-      class="sortMenu"
-      v-on:submit.prevent="dummy"
-    >
+    <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
       <label for="input-ctgr">Sort By</label>
       <select v-model="sortBy" @change="sorting">
         <option value="Home"></option>
@@ -61,15 +50,8 @@
         <option value="recent">Newcomer</option>
       </select>
       <h4>{{ sortBy }}</h4>
-      <input
-        type="text"
-        placeholder="Cashier.."
-        v-on:keyup.enter="cashierName"
-        v-model="cashier"
-      />
-      <button type="button" class="getInvoice" @click="getData">
-        Get
-      </button>
+      <input type="text" placeholder="Cashier.." v-on:keyup.enter="cashierName" v-model="cashier" />
+      <button type="button" class="getInvoice" @click="getData">Get</button>
       <h6>{{ invoice_id }}</h6>
     </form>
   </b-col>
@@ -141,23 +123,24 @@ export default {
       this.$emit('selectedItem', item)
     },
     checkMenu(data) {
-      this.products.some(item => item.product_id === data.product_id)
+      this.products.some((item) => item.product_id === data.product_id)
     },
     getData() {
       // this.invoice_id = (2)
       axios
         .post('http://127.0.0.1:3001/trigger/invoice')
-        .then(response => {
+        .then((response) => {
           this.invoiceData = response.data
           this.invoiceMsg = response.msg
           this.invoice_id = response.data.data.invoice_id
           this.$emit(
             'invoiceData',
             response.data,
-            response.data.data.invoice_id
+            response.data.data.invoice_id,
+            response.data.data.invoice_number
           )
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
@@ -167,21 +150,21 @@ export default {
           .get(
             `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
           )
-          .then(response => {
+          .then((response) => {
             this.products = response.data.data
             this.paginationInfo = response.data.pagination
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error)
           })
       } else {
         axios
           .get(`http://127.0.0.1:3001/product/sort?sort_by=${this.sortBy}`)
-          .then(response => {
+          .then((response) => {
             this.products = response.data.data
             // this.paginationInfo = response.data.pagination
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error)
           })
       }

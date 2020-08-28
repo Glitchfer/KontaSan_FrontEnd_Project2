@@ -20,7 +20,7 @@
     <b-col cols="0" sm="0" md="3" lg="4" class="header-cart">
       <b-col cols="12" sm="12" md="12" lg="12" class="pocket1">
         <b-col cols="12" sm="12" md="12" lg="12" class="cart">
-          <h3 class="cart">
+          <h3 class="cart" @click="showCart()">
             Cart
             <b-badge pill variant="info">{{count}}</b-badge>
           </h3>
@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'Header',
   data() {
@@ -43,6 +44,7 @@ export default {
     }
   },
   props: ['count', 'srcNextPage'],
+  components: {},
   computed: {},
   methods: {
     search() {
@@ -73,6 +75,9 @@ export default {
 </script>
 
 <style scoped>
+.fixnav {
+  display: none;
+}
 .beranda {
   width: 30px;
   height: 30px;
@@ -182,7 +187,6 @@ form {
 }
 @media (max-width: 768px) {
   /* ===== Header ===== */
-
   .header-one {
     height: 45px;
   }
@@ -243,8 +247,22 @@ form {
     text-align: left;
     font-size: 18px;
     position: relative;
+    padding-top: 3.5px;
     left: 3%;
     top: 2px;
+    text-align: center;
+    width: 70px;
+    height: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.233);
+    border-radius: 5px 5px 20px 20px;
+    box-shadow: -1px 2px 1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+  .pocket1 h3:hover {
+    width: 69px;
+    height: 29px;
+    background-color: rgba(0, 255, 213, 0.582);
+    border: 1px solid rgba(0, 0, 0, 0.384);
   }
   .bar-img {
     width: 20px;

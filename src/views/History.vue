@@ -12,19 +12,10 @@
         </b-col>
       </b-col>
     </b-row>
+
     <!-- ---//////////////////////////////////////-----left sidebar------------/////////////////////////////////////////////////////////////////////////////---------------------------------------------------------------- -->
     <div class="slot-two row">
-      <aside class="side-left col-1 col-sm-1 col-md-1 col-lg-1">
-        <div class="navi-img col-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="fork-img">
-            <router-link to="/home" class="menuHome">Home</router-link>
-          </div>
-          <div class="history-img">
-            <router-link to="/history" class="histo">history</router-link>
-          </div>
-          <div id="addclk" class="add-img" @click="addClick()"></div>
-        </div>
-      </aside>
+      <Left @addShow="addOn" />
       <!-- ----//////////////////////////////------Graph menu-------////////////////////////////////////////////////////////////---------------- -->
       <main class="mid col-12 col-sm-11 col-md-11 col-lg-11">
         <div class="card-label">
@@ -225,92 +216,41 @@
     <div class="kontainer-kosong">
       <div class="dummy1">
         <div class="garpu-img">
-          <a href="checkout.html" class="menuhome" target="_self"></a>
+          <router-link to="/home" class="beranda"></router-link>
         </div>
         <div class="histori-img">
           <router-link to="/history" class="histo"></router-link>
         </div>
-        <div class="plus-img"></div>
+        <div id="addClick" class="plus-img" v-on:click="addOn(true)"></div>
       </div>
-    </div>
-    <div class="trigger">
-      <button id="addClick"></button>
     </div>
     <!-- -----///////////////////////////////------Add Data menu-----//////////////////////////////////////////////////////////////////----------- -->
-    <div v-if="isTrue === true" id="addModal" class="add-menu modal">
-      <div class="blocking">
-        <div class="form">
-          <form action>
-            <table border="0">
-              <tr>
-                <td colspan="2">Add Item</td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="name-list">Name</label>
-                </td>
-                <td>
-                  <div class="input-name">
-                    <input type="text" name id="name-list" />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for>Image</label>
-                </td>
-                <td>
-                  <div class="input-img">
-                    <input type="text" name id />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="input-price">Price</label>
-                </td>
-                <td>
-                  <div class="input-price">
-                    <input type="text" name id="input-price" />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label for="input-ctgr">Category</label>
-                </td>
-                <td>
-                  <div class="input-category">
-                    <select name id>
-                      <option value>Category</option>
-                    </select>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </form>
-        </div>
-        <div class="btn-gate3">
-          <div class="add-button">
-            <button class="button" @click="sendClick()">Add</button>
-          </div>
-          <div class="cancel2-button">
-            <button class="button canc" @click="cancelClick()">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Addmodal v-if="isHide === true" @addOff="addHide" />
   </b-container>
 </template>
 
 <script>
+import Left from '../components/_base/sideLeft'
+import Addmodal from '../components/_base/addModal'
+
 export default {
   data() {
     return {
+      isHide: false,
       isTrue: null
     }
   },
+  components: {
+    Addmodal,
+    Left
+  },
   methods: {
+    addOn(dat) {
+      this.isHide = dat
+    },
+    addHide(dat) {
+      this.isHide = dat
+    },
     addClick() {
       this.isTrue = true
     },
