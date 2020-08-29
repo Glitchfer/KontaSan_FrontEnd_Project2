@@ -115,6 +115,7 @@ export default {
   methods: {
     dummy() {},
     cashierName() {
+      alert('Request Id by:' + this.cashier)
       this.$emit('cashierName', this.cashier)
     },
     selectMenu(index, item) {
@@ -130,6 +131,7 @@ export default {
       axios
         .post('http://127.0.0.1:3001/trigger/invoice')
         .then((response) => {
+          alert('Get id success')
           this.invoiceData = response.data
           this.invoiceMsg = response.msg
           this.invoice_id = response.data.data.invoice_id
@@ -292,8 +294,8 @@ p.harga {
   height: 40px;
   padding: 0px 25px;
   text-align: center;
-  position: relative;
-  bottom: 0;
+  position: sticky;
+  bottom: 30px;
   margin-top: 10px;
 }
 /* ===== Sorting MEnu ====== */
@@ -302,7 +304,7 @@ p.harga {
   height: 30px;
   padding: 0;
   margin: 0 auto;
-  position: relative;
+  position: sticky;
   bottom: 0;
 }
 .sortMenu label {

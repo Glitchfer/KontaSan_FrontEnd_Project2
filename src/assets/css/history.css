@@ -15,16 +15,6 @@
 }
 
 /* ///////////////////--Link Setup--//////////////////////// */
-.beranda {
-  width: 30px;
-  height: 30px;
-  background-color: #f24f8b00;
-  display: inline-block;
-  position: absolute;
-  z-index: 5;
-  top: 10px;
-  left: 37.5px;
-}
 
 .histo {
   width: 30px;
@@ -235,9 +225,10 @@ div.navi-img {
   );
   filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
   border-radius: 10px;
+  overflow: auto;
 }
 
-.revenue-graph {
+/* .revenue-graph {
   width: 96.78%;
   height: 94%;
   position: absolute;
@@ -245,9 +236,11 @@ div.navi-img {
   left: 1.65%;
   border-radius: 7px;
   box-shadow: 7px 7px 20px rgba(43, 43, 43, 0.199);
-}
+  border: 1px solid black;
+  overflow: auto;
+} */
 
-.order-table {
+/* .order-table {
   width: 96.78%;
   height: 94%;
   position: absolute;
@@ -255,7 +248,8 @@ div.navi-img {
   left: 1.65%;
   border-radius: 7px;
   box-shadow: 7px 7px 20px rgba(43, 43, 43, 0.199);
-}
+  border: 1px solid saddlebrown;
+} */
 
 .card-text {
   position: relative;
@@ -312,13 +306,13 @@ div.navi-img {
 
 /* //////////////////////////////////////////////////--line Chart--////////////////////////////////////////////////// */
 
-.line-chart canvas {
+/* .line-chart canvas{
   position: relative;
   width: 95% !important;
   height: 250px !important;
   top: 65px;
   left: 15px;
-}
+} */
 
 .revenue-graph h3 {
   margin: 0;
@@ -399,125 +393,12 @@ div.navi-img {
   right: 5%;
 }
 
-/* //////////////////////////////////////////////////--Recent-order-table--////////////////////////////////////////////////// */
-.tbl-up {
-  position: relative;
-  width: 100%;
-  height: 50px;
-}
-
-.tbl-up h3 {
-  position: relative;
-  font-size: 20px;
-  font-family: 'Airbnb Cereal App Medium', sans-serif;
-  top: 10px;
-  padding-left: 10px;
-}
-
-.tbl-up .drp {
-  position: relative;
-  width: 100%;
-  top: 0;
-  left: 0;
-  padding-right: 50px;
-}
-
-.tbl-up .dropdown button {
-  position: absolute;
-  padding: 0;
-  font-size: 10px;
-  width: 60px;
-  height: 20px;
-  background-color: rgb(216, 212, 212);
-  color: black;
-  border-radius: 6px;
-  top: -20px;
-  right: 0;
-}
-
-.tbl-down {
-  position: relative;
-  width: 100%;
-  height: 128px;
-  font-size: 15px;
-  font-family: 'Airbnb Cereal App Medium', sans-serif;
-  top: 10px;
-}
-
-.tbl-down tr {
-  height: 15px;
-}
-
-.tbl-down td:nth-of-type(1),
-.tbl-down td:nth-of-type(2),
-.tbl-down td:nth-of-type(3),
-.tbl-down td:nth-of-type(4),
-.tbl-down td:nth-of-type(5) {
-  width: 215px;
-}
-
-.hd h6 {
-  position: relative;
-  text-align: center;
-  font-size: 10px;
-  margin: auto 0;
-  font-weight: bold;
-  color: rgba(0, 0, 0, 0.445);
-}
-
-.btm div p {
-  position: relative;
-  height: 30px;
-  text-align: center;
-  font-size: 12px;
-  color: #cecece;
-  top: 15px;
-}
-
-.tbl-down table,
-.tbl-down td {
-  border-color: #cecece;
-  border-right: none;
-  border-left: none;
-  border-top: none;
-}
-
-.trigger button {
-  display: none;
-}
-
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 /* //////////////////////////////////////////////////--Responsive--////////////////////////////////////////////////// */
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
 
 /*///////////////////////////////---Responsive---////////////////////*/
 @media (max-width: 768px) {
-  .trigger button {
-    display: block;
-    position: fixed;
-    width: 20px;
-    height: 5px;
-    background-color: #83ff2500;
-    border: #38810000;
-    z-index: 80;
-    bottom: 24.6px;
-    right: 54px;
-  }
-
-  .beranda {
-    width: 30px;
-    height: 30px;
-    background-color: #f24f8b00;
-    display: inline-block;
-    text-indent: -9999px;
-    position: absolute;
-    z-index: 5;
-    top: -1px;
-    left: 2px;
-  }
-}
-
-@media (max-width: 576px) {
   /*////////////////////////-----Header-----////////////////  */
   .header-one {
     height: 50px;
@@ -626,16 +507,13 @@ div.navi-img {
   /*///////////////////--Main Content Orders--///////////////////////////////// */
   /*///////////////////--background--///////////////////////////////// */
   .mid {
-    height: 600px;
     padding: 20px 20px;
     grid-template-areas:
       'label label label'
       'revenue-graph revenue-graph revenue-graph'
       'recent-order recent-order recent-order';
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1.5fr 5fr 1fr;
-    /* justify-content: center;
-    align-items: center; */
+    grid-template-rows: 1.5fr 5fr 3fr;
   }
 
   .card-satu,
@@ -662,14 +540,14 @@ div.navi-img {
   /*///////////////////--Content1--///////////////////////////////// */
 
   .revenue-graph {
-    height: 100%;
-    top: 7%;
+    height: 70%;
+    top: 5%;
     left: 1.65%;
   }
 
   .order-table {
-    height: 55%;
-    top: 25%;
+    height: 80%;
+    top: 0%;
   }
 
   /*///////////////////--sub-Content--///////////////////////////////// */
@@ -897,56 +775,4 @@ div.navi-img {
   }
 
   /* ///////////////////////////////////////--Table order--////////////////////////////////////////////////////////////////// */
-
-  .tbl-up {
-    width: 100%;
-    height: 35px;
-  }
-
-  .tbl-up h3 {
-    font-size: 14px;
-    top: 8px;
-  }
-
-  .tbl-up .drp {
-    width: 100%;
-    top: 2px;
-    left: 30px;
-    padding-right: 50px;
-  }
-
-  .tbl-up .dropdown button {
-    font-size: 9px;
-    width: 50px;
-    height: 20px;
-  }
-
-  .tbl-down {
-    top: 1px;
-  }
-
-  .tbl-down tr {
-    height: 8px;
-  }
-
-  .tbl-down td:nth-of-type(1),
-  .tbl-down td:nth-of-type(2),
-  .tbl-down td:nth-of-type(3),
-  .tbl-down td:nth-of-type(4),
-  .tbl-down td:nth-of-type(5) {
-    width: 80px;
-  }
-
-  .hd h6 {
-    font-size: 8px;
-    margin: auto;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.445);
-  }
-
-  .btm div p {
-    height: 25px;
-    font-size: 9px;
-    top: 5px;
-  }
 }

@@ -76,6 +76,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      num: 0,
       isHide: false,
       checkoutHide: false,
       isSrc: false,
@@ -186,7 +187,11 @@ export default {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []
+          console.log('error in home.vue (line 180)')
           console.log(error.response.data.msg)
+          alert(
+            'Cashier name & invoice id must be filled before process the orders'
+          )
         })
     },
     inc(val) {

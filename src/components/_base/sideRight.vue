@@ -34,7 +34,7 @@ export default {
   name: 'Right',
   data() {
     return {
-      displayON: true
+      displayON: false
     }
   },
   props: [
@@ -91,7 +91,7 @@ export default {
   position: absolute;
   display: inline-block;
   text-align: center;
-  top: -60px;
+  top: -95px;
   left: 40%;
   width: 20%;
   height: 35px;
@@ -132,6 +132,11 @@ export default {
     cursor: pointer;
     border: none;
     box-shadow: none;
+  }
+  .cartBtn:hover {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    border-radius: none;
   }
   .side-right {
     display: block;
