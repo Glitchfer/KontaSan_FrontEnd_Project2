@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Tutorial from '../views/Tutorial.vue'
+import Dashboard from '../views/Dashboard.vue'
 import Axios from '../views/Axios.vue'
 import Lifecycle from '../views/Lifecycle.vue'
 import Home from '../views/Home.vue'
@@ -11,8 +11,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Tutorial',
-    component: Tutorial
+    name: 'Dashboard',
+    component: Dashboard
   },
   {
     path: '/axios',

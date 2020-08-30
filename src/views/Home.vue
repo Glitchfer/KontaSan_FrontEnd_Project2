@@ -76,6 +76,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      respon: false,
       num: 0,
       isHide: false,
       checkoutHide: false,

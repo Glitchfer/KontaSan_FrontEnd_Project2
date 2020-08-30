@@ -26,3 +26,12 @@ pnpm-debug.log*
 ~dummyHome.vue
 ~dummyMainMenu.vue
 ~dummyHeader.vue
+tutor.vue
+About.vue
+Axios.vue
+Lifecycle.vue
+card.vue
+adddata.css
+checkout.css
+home.css
+homeselect.css

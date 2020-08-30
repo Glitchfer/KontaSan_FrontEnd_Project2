@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       srcInput: '',
-      isSrcClicked: true,
+      isSrcClicked: false,
       page: 1,
       limit: 15
     }
@@ -48,11 +48,14 @@ export default {
   computed: {},
   methods: {
     search() {
+      this.isSrcClicked = true
+      alert('search by: ' + this.srcInput + ' is ' + this.isSrcClicked)
       axios
         .get(
           `http://127.0.0.1:3001/product/search?name=${this.srcInput}&page=${this.page}&limit=${this.limit}`
         )
         .then((response) => {
+          this.$router.push(`?name=${this.srcInput}`)
           this.$emit('srcValue', this.srcInput)
           this.$emit('searchBy', this.srcInput)
           this.$emit('isSrcClicked', this.isSrcClicked)

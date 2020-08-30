@@ -176,11 +176,17 @@ export default {
       if (this.srcIsClick === false) {
         this.page = value
         this.get_product(this.page)
+        if (this.sortBy === 'Home') {
+          this.$router.push(`?page=${this.page}`)
+        }
+        // this.$router.push(`?page=${this.currentPage}`)
       }
     },
     sorting() {
       this.get_product(this.sortBy)
-      this.$router.push(`?sort_by=${this.sortBy}`)
+      if (this.srcIsClick === false) {
+        this.$router.push(`?sort_by=${this.sortBy}`)
+      }
     },
     nxtPage(value) {
       this.$emit('srcCrnPage', value)

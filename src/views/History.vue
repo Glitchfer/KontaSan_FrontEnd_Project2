@@ -128,7 +128,7 @@
           <div class="revenue-graph">
             <div class="line-chart">
               <!-- <line-chart :data="{'2017-01-01': 11, '2017-01-02': 6}"></line-chart> -->
-              <line-chart :data="cashFlowIn" class="line"></line-chart>
+              <line-chart :colors="['#00f1ff']" :data="cashFlowIn" class="line"></line-chart>
             </div>
             <h3>Revenue</h3>
             <div class="legend">
@@ -530,6 +530,14 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .line-chart {
+    height: 100% !important;
+  }
+  .line-chart .line {
+    position: absolute;
+    left: 0 !important;
+    text-align: left !important;
+  }
   .order-table {
     height: 90% !important;
     position: absolute;
