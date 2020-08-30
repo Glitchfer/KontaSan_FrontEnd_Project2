@@ -193,10 +193,15 @@ div.navi-img {
     #fbb2b4 30.05%,
     rgba(255, 143, 178, 0) 133.19%
   );
-  filter: drop-shadow(10px 15px 10px rgba(255, 143, 178, 0.25));
+  filter: drop-shadow(10px 15px 10px rgba(255, 143, 179, 0.7));
   border-radius: 10px;
+  cursor: pointer;
 }
-
+.todays-income:hover {
+  width: 91%;
+  height: 92%;
+  border: 1px solid rgba(202, 121, 147, 0.9);
+}
 .orders {
   width: 90%;
   height: 90%;
@@ -208,10 +213,15 @@ div.navi-img {
     #29dfff 30.05%,
     rgba(41, 223, 255, 0) 133.19%
   );
-  filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.25));
+  filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.7));
   border-radius: 10px;
+  cursor: pointer;
 }
-
+.orders:hover {
+  width: 91%;
+  height: 92%;
+  border: 1px solid rgba(5, 141, 165, 0.9);
+}
 .years-income {
   width: 90%;
   height: 90%;
@@ -223,11 +233,15 @@ div.navi-img {
     #ab84c8 30.05%,
     rgba(241, 201, 236, 0) 133.19%
   );
-  filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
+  filter: drop-shadow(10px 15px 10px #b186cf);
   border-radius: 10px;
   overflow: auto;
 }
-
+.years-income:hover {
+  width: 91%;
+  height: 92%;
+  border: 1px solid rgba(134, 78, 127, 0.74);
+}
 /* .revenue-graph {
   width: 96.78%;
   height: 94%;
@@ -605,9 +619,14 @@ div.navi-img {
       #fbb2b4 30.05%,
       rgba(255, 143, 178, 0) 133.19%
     );
-    filter: drop-shadow(10px 15px 10px rgba(255, 143, 178, 0.25));
+    filter: drop-shadow(5px 5px 5px rgba(255, 143, 178, 0.9));
     border-radius: 10px;
     cursor: pointer;
+  }
+  .todays-income2:hover {
+    width: 91%;
+    height: 82%;
+    border: 1px solid rgba(202, 121, 147, 0.9);
   }
 
   .orders2 {
@@ -621,9 +640,14 @@ div.navi-img {
       #29dfff 30.05%,
       rgba(41, 223, 255, 0) 133.19%
     );
-    filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.25));
+    filter: drop-shadow(5px 5px 5px rgba(41, 223, 255, 0.9));
     border-radius: 10px;
     cursor: pointer;
+  }
+  .orders2:hover {
+    width: 91%;
+    height: 82%;
+    border: 1px solid rgba(5, 141, 165, 0.9);
   }
 
   .years-income2 {
@@ -637,11 +661,15 @@ div.navi-img {
       #ab84c8 30.05%,
       rgba(241, 201, 236, 0) 133.19%
     );
-    filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
+    filter: drop-shadow(5px 5px 5px #b186cf);
     border-radius: 10px;
     cursor: pointer;
   }
-
+  .years-income2:hover {
+    width: 91%;
+    height: 82%;
+    border: 1px solid rgba(134, 78, 127, 0.74);
+  }
   .extra {
     width: 95%;
     height: 95%;
@@ -653,10 +681,14 @@ div.navi-img {
       #ab84c8 30.05%,
       rgba(241, 201, 236, 0) 133.19%
     );
-    filter: drop-shadow(10px 15px 10px rgba(241, 201, 236, 0.25));
+    filter: drop-shadow(5px 5px 5px #b186cf);
     border-radius: 10px;
   }
-
+  .extra:hover {
+    width: 96%;
+    height: 98%;
+    border: 1px solid rgba(134, 78, 127, 0.74);
+  }
   .card-text {
     margin: 8px 0;
   }

@@ -4,7 +4,7 @@
       <b-col cols="12" sm="12" md="12" lg="12" class="header-one">
         <b-col cols="1" sm="1" md="1" lg="1" class="bar">
           <div class="bar-img">
-            <router-link to="/home" class="beranda"></router-link>
+            <router-link to="/" class="beranda"></router-link>
           </div>
         </b-col>
         <b-col cols="11" sm="11" md="11" lg="11" class="title">
@@ -20,45 +20,69 @@
       <main class="mid col-12 col-sm-12 col-md-11 col-lg-11">
         <div class="card-label">
           <div class="extra-card">
-            <div class="m">
+            <div class="m" @click="cardFunc(1)">
               <div class="todays-income2">
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>Today's Income</p>
-                  <h3>Rp. 1.000.000</h3>
+                  <h3>{{'Rp. '+ this.todayIncome}}</h3>
                   <p>+2% Yesterday</p>
                 </div>
               </div>
             </div>
-            <div class="n">
+            <div class="n" @click="cardFunc(2)">
               <div class="orders2">
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>Orders</p>
-                  <h3>3.270</h3>
+                  <h3>{{this.totalOrder}}</h3>
                   <p>+5% Last Week</p>
                 </div>
               </div>
             </div>
-            <div class="k">
+            <div class="k" @click="cardFunc(3)">
               <div class="years-income2">
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>This Year’s Income</p>
-                  <h3>Rp. 100.000.000.000</h3>
+                  <h3>{{'Rp. '+ this.yearIncome}}</h3>
                   <p>+10% Last Year</p>
                 </div>
               </div>
             </div>
-            <div class="l">
+            <div v-if="yearsBtn === true" class="l">
               <div class="extra">
                 <div class="fractale1"></div>
                 <div class="fractale2"></div>
                 <div class="fractale3"></div>
                 <div class="card-text">
                   <p>This Year’s Income</p>
-                  <h3>Rp. 100.000.000.000</h3>
+                  <h3>{{'Rp. '+ this.yearIncome}}</h3>
                   <p>+10% Last Year</p>
+                </div>
+              </div>
+            </div>
+            <div v-if="ordersBtn === true" class="l">
+              <div class="extra3">
+                <div class="fractale1"></div>
+                <div class="fractale2"></div>
+                <div class="fractale3"></div>
+                <div class="card-text">
+                  <p>Orders</p>
+                  <h3>{{this.totalOrder}}</h3>
+                  <p>+5% Last Week</p>
+                </div>
+              </div>
+            </div>
+            <div v-if="todaysBtn === true" class="l">
+              <div class="extra2">
+                <div class="fractale1"></div>
+                <div class="fractale2"></div>
+                <div class="fractale3"></div>
+                <div class="card-text">
+                  <p>Today's Income</p>
+                  <h3>{{'Rp. '+ this.todayIncome}}</h3>
+                  <p>+2% Yesterday</p>
                 </div>
               </div>
             </div>
@@ -114,9 +138,10 @@
               <p>Last Year</p>
             </div>
             <div class="drp">
-              <select v-model="chartRevenue">
-                <option value="thisYear">This year</option>
-                <option value="lastYear">Last year</option>
+              <select v-model="chartRevenue" @change="cashFlow">
+                <option value="hours">Hours</option>
+                <option value="year">This Year</option>
+                <option value="lastYears">Last Year</option>
               </select>
             </div>
           </div>
@@ -221,54 +246,18 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      // chartData: [
-      //   ['Jan', 4],
-      //   ['Feb', 2],
-      //   ['Mar', 10],
-      //   ['Apr', 5],
-      //   ['May', 3]
-      // ],
+      yearsBtn: false,
+      ordersBtn: false,
+      todaysBtn: true,
       todayIncome: 0,
       totalOrder: 0,
       yearIncome: 0,
-      cashFlowIn: {
-        type: 'bar',
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: 'Transaction per day',
-              data: [],
-              backgroundColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(255, 99, 132, 1)'
-              ],
-              borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(255, 99, 132, 1)'
-              ],
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'TRANSACTION GRAPH',
-            fontFamily: 'sans-serif',
-            fontSize: 18
-          }
-        }
-      },
+      cashFlowIn: null,
       isHide: false,
       isTrue: null,
       calendar: 'day',
       history: [],
-      chartRevenue: ''
+      chartRevenue: 'hours'
     }
   },
   components: {
@@ -283,9 +272,26 @@ export default {
     this.cashFlow()
   },
   methods: {
+    cardFunc(val) {
+      if (val === 3) {
+        this.yearsBtn = true
+        this.ordersBtn = false
+        this.todaysBtn = false
+      } else if (val === 2) {
+        this.yearsBtn = false
+        this.ordersBtn = true
+        this.todaysBtn = false
+      } else {
+        this.yearsBtn = false
+        this.ordersBtn = false
+        this.todaysBtn = true
+      }
+    },
     cashFlow() {
       axios
-        .post('http://127.0.0.1:3001/history/revenue')
+        .post(
+          `http://127.0.0.1:3001/history/revenue?select=${this.chartRevenue}`
+        )
         .then((response) => {
           // this.cashFlowIn = response.data.data
           const dateData = response.data.data.map(function (e) {
@@ -297,9 +303,9 @@ export default {
           console.log('DATA UNTUK CHART')
           console.log(dateData)
           console.log(totalData)
-          this.cashFlowIn.data.labels = dateData
-          this.cashFlowIn.data.datasets.data = totalData
-          console.log(this.cashFlowIn.data)
+          // this.cashFlowIn.data.labels = dateData
+          // this.cashFlowIn.data.datasets.data = totalData
+          // console.log(this.cashFlowIn.data)
 
           var arr2 = []
           for (var i = 0; i < dateData.length; i++) {
@@ -422,7 +428,7 @@ export default {
   left: 1.65%;
   border-radius: 7px 7px 0 0;
   box-shadow: 7px 7px 20px rgba(43, 43, 43, 0.199);
-  border: 1px solid rgb(37, 37, 37);
+  border: 1px solid rgba(136, 136, 136, 0.829);
   overflow: auto;
 }
 .tbl-up {
@@ -579,6 +585,44 @@ export default {
     margin: auto;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.658);
+  }
+  .extra2 {
+    width: 95%;
+    height: 95%;
+    position: absolute;
+    top: 3.5px;
+    left: 6px;
+    background: linear-gradient(
+      278.29deg,
+      #fbb2b4 30.05%,
+      rgba(255, 143, 178, 0) 133.19%
+    );
+    filter: drop-shadow(10px 15px 10px rgba(255, 143, 179, 0.7));
+    border-radius: 10px;
+  }
+  .extra2:hover {
+    width: 96%;
+    height: 98%;
+    border: 1px solid rgba(202, 121, 147, 0.9);
+  }
+  .extra3 {
+    width: 95%;
+    height: 95%;
+    position: absolute;
+    top: 3.5px;
+    left: 6px;
+    background: linear-gradient(
+      278.29deg,
+      #29dfff 30.05%,
+      rgba(41, 223, 255, 0) 133.19%
+    );
+    filter: drop-shadow(10px 15px 10px rgba(41, 223, 255, 0.7));
+    border-radius: 10px;
+  }
+  .extra3:hover {
+    width: 96%;
+    height: 98%;
+    border: 1px solid rgba(5, 141, 165, 0.9);
   }
 }
 </style>

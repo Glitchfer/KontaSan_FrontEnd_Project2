@@ -5,7 +5,7 @@
       <b-col cols="12" sm="12" md="12" lg="12" class="pocket1">
         <b-col cols="1" sm="1" md="1" lg="1" class="bar">
           <div class="bar-img">
-            <router-link to="/home" class="beranda">Home</router-link>
+            <router-link to="/" class="beranda"></router-link>
           </div>
         </b-col>
         <b-col cols="10" sm="10" md="10" lg="10" class="title">
