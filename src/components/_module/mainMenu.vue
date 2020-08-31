@@ -1,6 +1,23 @@
 <template>
   <b-col cols="12" sm="12" md="8" lg="7" class="mid">
     <b-row cols="12" sm="12" md="12" lg="12" class="menu">
+      <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
+        <label for="input-ctgr">Sort By</label>
+        <select v-model="sortBy" @change="sorting">
+          <option value="Home"></option>
+          <option value="name">A - Z</option>
+          <option value="food">Meal</option>
+          <option value="drink">Drink</option>
+          <option value="cake">Sweet</option>
+          <option value="cheap">Friendly</option>
+          <option value="expensive">Special</option>
+          <option value="recent">Newcomer</option>
+        </select>
+        <h4>{{ sortBy }}</h4>
+        <input type="text" placeholder="Cashier.." v-on:keyup.enter="cashierName" v-model="cashier" />
+        <button type="button" class="getInvoice" @click="getData">Get id</button>
+        <h6>{{ invoice_id }}</h6>
+      </form>
       <b-col
         cols="6"
         sm="6"
@@ -37,7 +54,7 @@
         @nextPage="nxtPage"
       />
     </div>
-    <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
+    <!-- <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
       <label for="input-ctgr">Sort By</label>
       <select v-model="sortBy" @change="sorting">
         <option value="Home"></option>
@@ -53,7 +70,7 @@
       <input type="text" placeholder="Cashier.." v-on:keyup.enter="cashierName" v-model="cashier" />
       <button type="button" class="getInvoice" @click="getData">Get</button>
       <h6>{{ invoice_id }}</h6>
-    </form>
+    </form>-->
   </b-col>
 </template>
 
@@ -173,13 +190,13 @@ export default {
     },
     // turnOff the comment to active pagination
     currenPage(value) {
+      this.page = value
       if (this.srcIsClick === false) {
-        this.page = value
         this.get_product(this.page)
         if (this.sortBy === 'Home') {
-          this.$router.push(`?page=${this.page}`)
+          this.$router.push(`?page=${value}`)
         }
-        // this.$router.push(`?page=${this.currentPage}`)
+        // this.$router.push(`?page=${this.page}`)
       }
     },
     sorting() {
@@ -207,7 +224,7 @@ export default {
 .menu {
   overflow: auto;
   margin: 0;
-  max-height: 630px;
+  max-height: 470px;
   padding: 15px;
   /* display: flex; */
   position: relative;
@@ -306,22 +323,25 @@ p.harga {
 }
 /* ===== Sorting MEnu ====== */
 .sortMenu {
-  width: 93%;
+  width: 97%;
   height: 30px;
   padding: 0;
   margin: 0 auto;
-  position: sticky;
-  bottom: 0;
+  position: relative;
+  /* bottom: 0; */
 }
 .sortMenu label {
   padding: 0;
   margin: 0;
-  width: 70px;
+  width: 51px;
+  height: 22px;
+  font-size: 12px;
   border: 1px solid rgba(0, 0, 0, 0.534);
   border-radius: 5px;
   background-color: rgb(250, 250, 250);
   position: absolute;
-  right: 160px;
+  right: 80px;
+  top: 2px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
 .sortMenu select {
@@ -329,49 +349,55 @@ p.harga {
   margin: 0;
   border: 1px solid rgba(0, 0, 0, 0.61);
   position: absolute;
-  right: 15px;
+  right: 0px;
+  font-size: 14px;
+  width: 75px;
+  height: 25px;
   border-radius: 5px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
 .sortMenu h4 {
   position: absolute;
   left: 0;
-  font-size: 17px;
+  font-size: 15px;
   color: rgb(70, 70, 70);
-  width: 100px;
-  height: 25px;
-  left: 15px;
+  width: 85px;
+  height: 23px;
+  left: 0px;
+  top: 2px;
   border-radius: 20px;
   background-color: antiquewhite;
   border: 1px solid rgba(0, 0, 0, 0.555);
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
 }
-/* .sortMenu input button h6 {
-} */
-
 .sortMenu input {
   position: absolute;
-  width: 80px;
-  left: 130px;
+  width: 70px;
+  left: 95px;
+  top: 1.5px;
+  height: 25px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
   border-radius: 5px;
   border: 1px solid rgb(134, 134, 134);
 }
 .sortMenu button {
   position: absolute;
-  width: 40px;
-  left: 215px;
+  width: 50px;
+  height: 25px;
+  font-size: 13px;
+  top: 1.5px;
+  left: 170px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
   border: 1px solid rgb(134, 134, 134);
   border-radius: 5px;
 }
 .sortMenu h6 {
-  font-size: 14px;
+  font-size: 18px;
   position: absolute;
   width: 40px;
-  height: 20px;
-  left: 260px;
-  top: 5px;
+  height: 25px;
+  left: 225px;
+  top: 1.5px;
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
@@ -380,23 +406,62 @@ p.harga {
 
 @media (max-width: 768px) {
   .sortMenu {
-    width: 93%;
+    width: 95%;
+    border: 1px solid black;
+  }
+  .menu {
+    max-height: 412px;
+  }
+  .sortMenu label {
+    right: 80px;
+    font-size: 12px;
+    width: 60px;
+    top: 3px;
+  }
+  .sortMenu select {
+    top: 1.5px;
+    width: 70px;
+    height: 26px;
+    font-size: 12px;
+  }
+  .sortMenu h4 {
+    width: 80px;
+    top: 3px;
+    height: 22px;
+    font-size: 14px;
+  }
+  .sortMenu input {
+    left: 85px;
+    height: 25px;
+    top: 2px;
+  }
+  .sortMenu button {
+    left: 160px;
+    width: 50px;
+    height: 25px;
+    font-size: 13px;
+    top: 2px;
+  }
+  .sortMenu h6 {
+    left: 215px;
+    height: 25px;
+    font-size: 18px;
+    top: 2px;
   }
 }
 @media (max-width: 576px) {
   .sortMenu {
-    width: 90%;
+    width: 95%;
   }
   .sortMenu label {
-    font-size: 12px;
-    width: 50px;
-    top: 5px;
-    right: 80px;
+    font-size: 10px;
+    width: 40px;
+    right: 65px;
+    top: 3px;
   }
   .sortMenu select {
+    font-size: 10px;
     width: 60px;
-    right: 15px;
-    top: 3px;
   }
 }
 </style>

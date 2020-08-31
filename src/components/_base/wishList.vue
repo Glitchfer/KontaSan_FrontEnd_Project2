@@ -233,7 +233,7 @@ export default {
 .wishlist {
   padding: 0;
   width: 100%;
-  max-height: 580px;
+  max-height: 390px;
   position: relative;
   box-sizing: border-box;
   overflow: auto;

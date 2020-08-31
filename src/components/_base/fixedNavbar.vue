@@ -25,6 +25,9 @@ export default {
 </script>
 
 <style scoped>
+.kontainer-kosong {
+  display: none;
+}
 .beranda {
   width: 30px;
   height: 30px;
@@ -50,6 +53,7 @@ export default {
     z-index: 4;
     left: 2.5px;
     top: 0px;
+    display: inline-block;
   }
 
   .garpu-img {

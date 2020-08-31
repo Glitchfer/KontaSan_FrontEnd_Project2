@@ -91,7 +91,7 @@ export default {
   position: absolute;
   display: inline-block;
   text-align: center;
-  top: -95px;
+  top: -59px;
   left: 40%;
   width: 20%;
   height: 35px;
@@ -147,7 +147,7 @@ export default {
     top: 140px;
     width: 330px;
     border-radius: 0 0 10px 10px;
-    border: 2px solid rgba(104, 103, 103, 0.562);
+    border: 2px solid rgba(104, 103, 103, 0.644);
     box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.1);
   }
 }

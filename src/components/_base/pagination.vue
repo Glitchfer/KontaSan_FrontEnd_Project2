@@ -31,9 +31,10 @@ export default {
   },
   methods: {
     handlePageChange() {
+      // console.log(this.currentPage)
       this.$emit('nextPage', this.currentPage)
       this.$emit('crntPage', this.currentPage)
-      // this.$router.push(`?page=${this.page}`)
+      // this.$router.push(`?page=${this.currentPage}`)
     }
   }
 }
@@ -41,18 +42,22 @@ export default {
 
 <style scoped>
 .overflow-auto {
+  height: 45px;
+  width: 100%;
   border-radius: 5px;
-  position: relative;
+  position: absolute;
   display: flex;
   height: 100%;
+  left: 0;
+  bottom: -10px;
 }
 .pagination {
   position: absolute;
-  font-size: 13px;
+  font-size: 12px;
   top: 0px;
-  right: 0;
+  right: 25px;
   border: 1px solid black;
-  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
+  box-shadow: 2px 3px 10px rgba(43, 43, 43, 0.363);
 }
 
 .mt-3 {
@@ -63,7 +68,32 @@ export default {
   border: 1px solid black;
   background-color: antiquewhite;
   top: -25%;
-  left: 0;
+  left: 25px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
+}
+
+@media (max-width: 768px) {
+  .overflow-auto {
+    height: 45px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+  }
+  .pagination {
+    font-size: 13px;
+    height: 32px;
+    position: absolute;
+    top: 7px;
+    right: 0;
+    font-size: 10px;
+  }
+
+  .mt-3 {
+    width: 150px;
+    height: 25px;
+    top: -3px;
+    left: 0;
+  }
 }
 </style>
