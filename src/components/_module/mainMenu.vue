@@ -327,7 +327,10 @@ p.harga {
   height: 30px;
   padding: 0;
   margin: 0 auto;
-  position: relative;
+  position: sticky;
+  top: 0;
+  border-radius: 5px;
+  z-index: 3;
   /* bottom: 0; */
 }
 .sortMenu label {
@@ -407,7 +410,6 @@ p.harga {
 @media (max-width: 768px) {
   .sortMenu {
     width: 95%;
-    border: 1px solid black;
   }
   .menu {
     max-height: 412px;

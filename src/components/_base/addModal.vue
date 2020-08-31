@@ -13,8 +13,31 @@
                 <label for="name-list">{{inputName}}</label>
               </td>
               <td>
-                <div class="input-name">
-                  <input type="text" name id="name-list" v-model="form.product_name" />
+                <div v-if="btnName1 === 'Add'" class="input-name">
+                  <input
+                    type="text"
+                    placeholder="type name.."
+                    name
+                    id="name-list"
+                    v-model="form.product_name"
+                  />
+                </div>
+                <div v-else class="input-name">
+                  <select v-model="selectedItem">
+                    <option
+                      v-for="(item, index) in productData"
+                      :key="index"
+                      :value="item"
+                    >{{item.product_name}}</option>
+                  </select>
+                  <input
+                    :disabled="btnName1 === 'Delete'"
+                    class="exinput"
+                    type="text"
+                    name
+                    :placeholder="this.selectedItem.product_name"
+                    v-model="form.product_name"
+                  />
                 </div>
               </td>
             </tr>
@@ -24,7 +47,19 @@
               </td>
               <td>
                 <div class="input-img">
-                  <input type="text" v-model="form.img" :disabled="btnName1 === 'Delete'" />
+                  <input
+                    v-if="btnName1 === 'Add'"
+                    type="text"
+                    v-model="form.img"
+                    :disabled="btnName1 === 'Delete'"
+                  />
+                  <input
+                    v-else
+                    :placeholder="this.selectedItem.img"
+                    type="text"
+                    v-model="form.img"
+                    :disabled="btnName1 === 'Delete'"
+                  />
                 </div>
               </td>
             </tr>
@@ -33,11 +68,22 @@
                 <label for="input-price">Price</label>
               </td>
               <td>
-                <div class="input-price">
+                <div v-if="btnName1 === 'Add'" class="input-price">
                   <input
                     type="text"
                     name
                     id="input-price"
+                    placeholder
+                    v-model="form.product_price"
+                    :disabled="btnName1 === 'Delete'"
+                  />
+                </div>
+                <div v-else class="input-price">
+                  <input
+                    type="text"
+                    name
+                    id="input-price"
+                    :placeholder="'Rp. ' + this.selectedItem.product_price"
                     v-model="form.product_price"
                     :disabled="btnName1 === 'Delete'"
                   />
@@ -83,6 +129,10 @@
           <div class="ex-button2">
             <button type="button" class="button" @click="btnFunc(btnName3)">{{btnName3}}</button>
           </div>
+          <div v-if="btnName1 !== 'Add'" class="input-id">
+            <h5>Product id</h5>
+            <input type="text" name v-model="this.selectedItem.product_id" />
+          </div>
         </form>
       </div>
     </div>
@@ -95,6 +145,9 @@ export default {
   name: 'Addmodal',
   data() {
     return {
+      productId: null,
+      productData: [],
+      selectedItem: [],
       form: {
         product_name: '',
         product_price: null,
@@ -114,9 +167,9 @@ export default {
   },
   updated() {
     if (this.btnName1 === 'Update') {
-      return (this.inputName = 'Product id')
+      return (this.inputName = 'Change')
     } else if (this.btnName1 === 'Delete') {
-      return (this.inputName = 'Product id')
+      return (this.inputName = 'Name')
     } else {
       return (this.inputName = 'Name')
     }
@@ -129,10 +182,28 @@ export default {
         this.btnName1 = 'Delete'
         this.btnName2 = 'Update'
         this.btnName3 = 'Add'
+        axios
+          .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          .then((response) => {
+            this.productData = response.data.data
+            console.log(this.productData)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       } else if (btn === 'Update') {
         this.btnName1 = 'Update'
         this.btnName2 = 'Add'
         this.btnName3 = 'Delete'
+        axios
+          .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          .then((response) => {
+            this.productData = response.data.data
+            console.log(this.productData)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       } else {
         this.btnName1 = 'Add'
         this.btnName2 = 'Update'
@@ -147,7 +218,7 @@ export default {
       if (this.btnName1 === 'Update') {
         axios
           .patch(
-            `http://127.0.0.1:3001/product/${this.form.product_name}`,
+            `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`,
             this.form
           )
           .then((response) => {
@@ -161,7 +232,9 @@ export default {
           })
       } else if (this.btnName1 === 'Delete') {
         axios
-          .delete(`http://127.0.0.1:3001/product/${this.form.product_name}`)
+          .delete(
+            `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`
+          )
           .then((response) => {
             console.log(response)
             this.isSuccess = true
@@ -203,6 +276,37 @@ export default {
 }
 /*default button end*/
 /* ===== Add Modal ===== */
+.input-id {
+  position: absolute;
+  width: 140px;
+  height: 25px;
+  right: 8px;
+  top: 40px;
+  text-align: center;
+}
+.input-id h5 {
+  font-family: 'Airbnb Cereal App Medium', Arial, sans-serif;
+  position: absolute;
+  font-size: 14px;
+  font-weight: bolder;
+  top: 3px;
+  width: 80px;
+  left: 0;
+  border-radius: 5px;
+}
+.input-id input {
+  font-family: 'Airbnb Cereal App Medium', Arial, sans-serif;
+  text-align: center;
+  position: absolute;
+  font-size: 14px;
+  right: 0;
+  top: 0;
+  height: 24px;
+  width: 50px;
+  border-radius: 10px;
+  border: 1px solid rgb(0, 0, 0);
+  box-shadow: inset 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
+}
 .add-menu {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -266,12 +370,31 @@ export default {
 .input-name input {
   width: 100%;
   height: 40px;
+  font-size: 15px;
   border-radius: 5px;
   border: 1px solid rgba(77, 76, 76, 0.3);
   box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.3);
 }
+.input-name select {
+  position: absolute;
+  font-size: 14px;
+  color: #535353a4;
+  width: 165px;
+  height: 40px;
+  right: 5px;
+  top: 70px;
+  border-radius: 5px;
+  border: 1px solid rgba(77, 76, 76, 0.3);
+  box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.3);
+}
+.input-name .exinput {
+  font-size: 15px;
+  width: 205px;
+  height: 40px;
+}
 
 .input-img input {
+  font-size: 14px;
   width: 100%;
   height: 40px;
   border-radius: 5px;
@@ -280,7 +403,6 @@ export default {
 }
 
 .input-price input {
-  color: rgb(107, 103, 103);
   font-size: 15px;
   width: 65%;
   height: 40px;
@@ -290,13 +412,14 @@ export default {
 }
 
 .input-category select {
+  font-size: 16px;
   position: relative;
   width: 35%;
   height: 40px;
   border-radius: 5px;
   border: 1px solid rgba(155, 117, 117, 0.3);
   box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.3);
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.596);
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -432,8 +555,56 @@ export default {
 }
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .input-name select {
+    font-size: 14px;
+    width: 168px;
+    top: 70px;
+  }
+  .input-name .exinput {
+    width: 200px;
+  }
 }
 @media (max-width: 576px) {
+  .input-id {
+    position: absolute;
+    width: 120px;
+    height: 25px;
+    right: 8px;
+    top: 30px;
+    text-align: center;
+  }
+  .input-id h5 {
+    font-family: 'Airbnb Cereal App Medium', Arial, sans-serif;
+    position: absolute;
+    font-size: 12px;
+    font-weight: bolder;
+    top: 3px;
+    width: 80px;
+    left: 0;
+    border-radius: 5px;
+  }
+  .input-id input {
+    font-family: 'Airbnb Cereal App Medium', Arial, sans-serif;
+    text-align: center;
+    position: absolute;
+    font-size: 12px;
+    right: 0;
+    top: 0;
+    height: 20px;
+    width: 45px;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0);
+    box-shadow: inset 0px 2px 5px 1px rgba(0, 0, 0, 0.3);
+  }
+  .input-name .exinput {
+    font-size: 12px;
+    width: 52%;
+  }
+  .input-name select {
+    font-size: 12px;
+    width: 120px;
+    top: 60px;
+  }
   .add-menu .blocking {
     width: 85%;
     height: 350px;
@@ -518,7 +689,11 @@ export default {
   }
 
   .input-price input {
+    font-size: 12px;
     width: 70%;
+  }
+  .input-img input {
+    font-size: 12px;
   }
 
   .input-category select {

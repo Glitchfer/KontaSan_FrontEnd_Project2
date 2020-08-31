@@ -12,7 +12,6 @@
         </b-col>
       </b-col>
     </b-row>
-
     <!-- ---//////////////////////////////////////-----left sidebar------------/////////////////////////////////////////////////////////////////////////////---------------------------------------------------------------- -->
     <div class="slot-two row">
       <Left @addShow="addOn" />
@@ -26,7 +25,7 @@
                 <div class="card-text">
                   <p>Today's Income</p>
                   <h3>{{'Rp. '+ this.todayIncome}}</h3>
-                  <p>+2% Yesterday</p>
+                  <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
                 </div>
               </div>
             </div>
@@ -36,7 +35,7 @@
                 <div class="card-text">
                   <p>Orders</p>
                   <h3>{{this.totalOrder}}</h3>
-                  <p>+5% Last Week</p>
+                  <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
                 </div>
               </div>
             </div>
@@ -46,7 +45,7 @@
                 <div class="card-text">
                   <p>This Year’s Income</p>
                   <h3>{{'Rp. '+ this.yearIncome}}</h3>
-                  <p>+10% Last Year</p>
+                  <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
                 </div>
               </div>
             </div>
@@ -58,7 +57,7 @@
                 <div class="card-text">
                   <p>This Year’s Income</p>
                   <h3>{{'Rp. '+ this.yearIncome}}</h3>
-                  <p>+10% Last Year</p>
+                  <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
                 </div>
               </div>
             </div>
@@ -70,7 +69,7 @@
                 <div class="card-text">
                   <p>Orders</p>
                   <h3>{{this.totalOrder}}</h3>
-                  <p>+5% Last Week</p>
+                  <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
                 </div>
               </div>
             </div>
@@ -82,7 +81,7 @@
                 <div class="card-text">
                   <p>Today's Income</p>
                   <h3>{{'Rp. '+ this.todayIncome}}</h3>
-                  <p>+2% Yesterday</p>
+                  <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
                 </div>
               </div>
             </div>
@@ -96,7 +95,7 @@
             <div class="card-text">
               <p>Today's Income</p>
               <h3>{{'Rp. '+ this.todayIncome}}</h3>
-              <p>+2% Yesterday</p>
+              <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
             </div>
           </div>
         </div>
@@ -108,7 +107,7 @@
             <div class="card-text">
               <p>Orders</p>
               <h3>{{this.totalOrder}}</h3>
-              <p>+5% Last Week</p>
+              <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
             </div>
           </div>
         </div>
@@ -120,7 +119,7 @@
             <div class="card-text">
               <p>This Year’s Income</p>
               <h3>{{'Rp. '+ this.yearIncome}}</h3>
-              <p>+10% Last Year</p>
+              <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
             </div>
           </div>
         </div>
@@ -257,7 +256,10 @@ export default {
       isTrue: null,
       calendar: 'day',
       history: [],
-      chartRevenue: 'hours'
+      chartRevenue: 'hours',
+      yesterdayIncome: 0,
+      lastweekOrder: 0,
+      lastyearIncome: 0
     }
   },
   components: {
@@ -270,8 +272,62 @@ export default {
     this.totalOrders()
     this.yearsIncome()
     this.cashFlow()
+    this.lastYearIncome()
+    this.lastDayIncome()
+    this.lastWeekOrders()
   },
   methods: {
+    lastWeekOrders() {
+      axios
+        .get('http://127.0.0.1:3001/income/orders')
+        .then((response) => {
+          const val = response.data.data.map(function (e) {
+            return e.total_order
+          })
+          this.lastweekOrder = val[0]
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    lastDayIncome() {
+      axios
+        .get('http://127.0.0.1:3001/income')
+        .then((response) => {
+          const val = response.data.data.map(function (e) {
+            return e.sub_total
+          })
+          if (val[0] === null) {
+            this.yesterdayIncome = 0
+            console.log(this.yesterdayIncome)
+          } else {
+            this.yesterdayIncome = val[0]
+            console.log(this.yesterdayIncome)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    lastYearIncome() {
+      axios
+        .post('http://127.0.0.1:3001/income/income')
+        .then((response) => {
+          const val = response.data.data.map(function (e) {
+            return e.sub_total
+          })
+          if (val[0] === null) {
+            this.lastyearIncome = 0
+            console.log(this.lastyearIncome)
+          } else {
+            this.lastyearIncome = val[0]
+            console.log(this.lastyearIncome)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
     cardFunc(val) {
       if (val === 3) {
         this.yearsBtn = true
@@ -300,9 +356,8 @@ export default {
           const totalData = response.data.data.map(function (e) {
             return e.Total
           })
-          console.log('DATA UNTUK CHART')
-          console.log(dateData)
-          console.log(totalData)
+          // console.log(dateData)
+          // console.log(totalData)
           // this.cashFlowIn.data.labels = dateData
           // this.cashFlowIn.data.datasets.data = totalData
           // console.log(this.cashFlowIn.data)
@@ -315,7 +370,6 @@ export default {
             arr2[x].push(totalData[x])
           }
           this.cashFlowIn = arr2
-          console.log(this.cashFlowIn)
         })
         .catch((error) => {
           console.log(error)
@@ -345,14 +399,18 @@ export default {
       axios
         .get('http://127.0.0.1:3001/history')
         .then((response) => {
-          this.todayIncome = response.data.data[0].todays_income
+          if (response.data.data.length === undefined) {
+            this.todayIncome = 0
+          } else {
+            this.todayIncome = response.data.data[0].todays_income
+          }
         })
         .catch((error) => {
+          console.log('ini error')
           console.log(error)
         })
     },
     ordersGrouping() {
-      console.log(this.calendar)
       axios
         .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${this.calendar}`)
         .then((response) => {
