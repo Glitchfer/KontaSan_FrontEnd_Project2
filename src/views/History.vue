@@ -24,8 +24,8 @@
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>Today's Income</p>
-                  <h3>{{'Rp. '+ this.todayIncome}}</h3>
-                  <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
+                  <h3>{{ 'Rp. ' + this.todayIncome }}</h3>
+                  <p>{{ this.yesterdayIncome }}% Yesterday</p>
                 </div>
               </div>
             </div>
@@ -34,8 +34,8 @@
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>Orders</p>
-                  <h3>{{this.totalOrder}}</h3>
-                  <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
+                  <h3>{{ this.totalOrder }}</h3>
+                  <p>{{ this.lastweekOrder }}% Last Week</p>
                 </div>
               </div>
             </div>
@@ -44,8 +44,8 @@
                 <div class="fractale1"></div>
                 <div class="card-text">
                   <p>This Year’s Income</p>
-                  <h3>{{'Rp. '+ this.yearIncome}}</h3>
-                  <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
+                  <h3>{{ 'Rp. ' + this.yearIncome }}</h3>
+                  <p>{{ this.lastyearIncome }}% Last Year</p>
                 </div>
               </div>
             </div>
@@ -56,8 +56,8 @@
                 <div class="fractale3"></div>
                 <div class="card-text">
                   <p>This Year’s Income</p>
-                  <h3>{{'Rp. '+ this.yearIncome}}</h3>
-                  <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
+                  <h3>{{ 'Rp. ' + this.yearIncome }}</h3>
+                  <p>{{ this.lastyearIncome }}% Last Year</p>
                 </div>
               </div>
             </div>
@@ -68,8 +68,8 @@
                 <div class="fractale3"></div>
                 <div class="card-text">
                   <p>Orders</p>
-                  <h3>{{this.totalOrder}}</h3>
-                  <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
+                  <h3>{{ this.totalOrder }}</h3>
+                  <p>{{ this.lastweekOrder }}% Last Week</p>
                 </div>
               </div>
             </div>
@@ -80,8 +80,8 @@
                 <div class="fractale3"></div>
                 <div class="card-text">
                   <p>Today's Income</p>
-                  <h3>{{'Rp. '+ this.todayIncome}}</h3>
-                  <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
+                  <h3>{{ 'Rp. ' + this.todayIncome }}</h3>
+                  <p>{{ this.yesterdayIncome }}% Yesterday</p>
                 </div>
               </div>
             </div>
@@ -94,8 +94,8 @@
             <div class="fractale3"></div>
             <div class="card-text">
               <p>Today's Income</p>
-              <h3>{{'Rp. '+ this.todayIncome}}</h3>
-              <p>{{(((this.todayIncome-this.yesterdayIncome)/this.yesterdayIncome)*100)}}% Yesterday</p>
+              <h3>{{ 'Rp. ' + this.todayIncome }}</h3>
+              <p>{{ this.yesterdayIncome }}% Yesterday</p>
             </div>
           </div>
         </div>
@@ -106,8 +106,8 @@
             <div class="fractale3"></div>
             <div class="card-text">
               <p>Orders</p>
-              <h3>{{this.totalOrder}}</h3>
-              <p>{{((this.totalOrder-this.lastweekOrder)/this.lastweekOrder)*100}}% Last Week</p>
+              <h3>{{ this.totalOrder }}</h3>
+              <p>{{ this.lastweekOrder }}% Last Week</p>
             </div>
           </div>
         </div>
@@ -118,8 +118,8 @@
             <div class="fractale3"></div>
             <div class="card-text">
               <p>This Year’s Income</p>
-              <h3>{{'Rp. '+ this.yearIncome}}</h3>
-              <p>{{((this.yearIncome-this.lastyearIncome)/this.lastyearIncome)*100}}% Last Year</p>
+              <h3>{{ 'Rp. ' + this.yearIncome }}</h3>
+              <p>{{ this.lastyearIncome }}% Last Year</p>
             </div>
           </div>
         </div>
@@ -127,7 +127,11 @@
           <div class="revenue-graph">
             <div class="line-chart">
               <!-- <line-chart :data="{'2017-01-01': 11, '2017-01-02': 6}"></line-chart> -->
-              <line-chart :colors="['#00f1ff']" :data="cashFlowIn" class="line"></line-chart>
+              <line-chart
+                :colors="['#00f1ff']"
+                :data="cashFlowIn"
+                class="line"
+              ></line-chart>
             </div>
             <h3>Revenue</h3>
             <div class="legend">
@@ -190,27 +194,27 @@
                   <tr v-for="(item, index) in history" :key="index" class="btm">
                     <td>
                       <div>
-                        <p>{{'#'+item.invoice_number}}</p>
+                        <p>{{ '#' + item.invoice_number }}</p>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <p>{{item.cashier_name}}</p>
+                        <p>{{ item.cashier_name }}</p>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <p>{{item.updated_at}}</p>
+                        <p>{{ item.updated_at }}</p>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <p>{{item.orders}}</p>
+                        <p>{{ item.orders }}</p>
                       </div>
                     </td>
                     <td>
                       <div>
-                        <p>{{item.total_price}}</p>
+                        <p>{{ item.total_price }}</p>
                       </div>
                     </td>
                   </tr>
@@ -280,51 +284,55 @@ export default {
     lastWeekOrders() {
       axios
         .get('http://127.0.0.1:3001/income/orders')
-        .then((response) => {
-          const val = response.data.data.map(function (e) {
-            return e.total_order
-          })
-          this.lastweekOrder = val[0]
+        .then(response => {
+          console.log(response.data.data[0])
+          if (response.data.data[0].total_order === 0) {
+            const nilai = response.data.data[0].total_order
+            const hasil = (this.totalOrder - nilai) * 100
+            this.lastweekOrder = hasil
+          } else {
+            const nilai2 = response.data.data[0].total_order
+            const hasil2 = ((this.totalOrder - nilai2) / nilai2) * 100
+            this.lastweekOrder = hasil2.toFixed(2)
+          }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     lastDayIncome() {
       axios
         .get('http://127.0.0.1:3001/income')
-        .then((response) => {
-          const val = response.data.data.map(function (e) {
-            return e.sub_total
-          })
-          if (val[0] === null) {
-            this.yesterdayIncome = 0
-            console.log(this.yesterdayIncome)
+        .then(response => {
+          if (response.data.data[0].sub_total === null) {
+            const nilai = 0
+            const hasil = (this.todayIncome - nilai) * 100
+            this.yesterdayIncome = hasil
           } else {
-            this.yesterdayIncome = val[0]
-            console.log(this.yesterdayIncome)
+            const nilai2 = response.data.data[0].sub_total
+            const hasil2 = ((this.todayIncome - nilai2) / nilai2) * 100
+            this.yesterdayIncome = hasil2.toFixed(2)
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     lastYearIncome() {
       axios
         .post('http://127.0.0.1:3001/income/income')
-        .then((response) => {
-          const val = response.data.data.map(function (e) {
-            return e.sub_total
-          })
-          if (val[0] === null) {
-            this.lastyearIncome = 0
-            console.log(this.lastyearIncome)
+        .then(response => {
+          if (response.data.data[0].sub_total === null) {
+            const nilai = 0
+            const hasil = (this.yearIncome - nilai) * 100
+            this.lastyearIncome = hasil
           } else {
-            this.lastyearIncome = val[0]
-            console.log(this.lastyearIncome)
+            const nilai2 = response.data.data[0].sub_total
+            const hasil2 = ((this.yearIncome - nilai2) / nilai2) * 100
+            this.lastyearIncome = hasil2.toFixed(2)
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
@@ -348,12 +356,12 @@ export default {
         .post(
           `http://127.0.0.1:3001/history/revenue?select=${this.chartRevenue}`
         )
-        .then((response) => {
+        .then(response => {
           // this.cashFlowIn = response.data.data
-          const dateData = response.data.data.map(function (e) {
+          const dateData = response.data.data.map(function(e) {
             return e.Date
           })
-          const totalData = response.data.data.map(function (e) {
+          const totalData = response.data.data.map(function(e) {
             return e.Total
           })
           // console.log(dateData)
@@ -371,41 +379,41 @@ export default {
           }
           this.cashFlowIn = arr2
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     yearsIncome() {
       axios
         .post('http://127.0.0.1:3001/history')
-        .then((response) => {
+        .then(response => {
           this.yearIncome = response.data.data[0].ThisYears_Income
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     totalOrders() {
       axios
         .get('http://127.0.0.1:3001/history/orders')
-        .then((response) => {
+        .then(response => {
           this.totalOrder = response.data.data[0].Total_Orders
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
     todaysIncome() {
       axios
         .get('http://127.0.0.1:3001/history')
-        .then((response) => {
+        .then(response => {
           if (response.data.data.length === undefined) {
             this.todayIncome = 0
           } else {
             this.todayIncome = response.data.data[0].todays_income
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log('ini error')
           console.log(error)
         })
@@ -413,10 +421,10 @@ export default {
     ordersGrouping() {
       axios
         .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${this.calendar}`)
-        .then((response) => {
+        .then(response => {
           this.history = response.data.data
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },
@@ -692,5 +700,4 @@ export default {
   }
 }
 </style>
-<style scoped src="../assets/css/history.css">
-</style>
+<style scoped src="../assets/css/history.css"></style>
