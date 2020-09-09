@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <b-container>
+      <a class="logout" @click="onLogout">Logout</a>
       <b-card>
         <h1>WELCOME</h1>
       </b-card>
@@ -13,9 +14,13 @@
       </h3>
       <br />
       <router-link to="/home">Get Started</router-link>
+      <br />
     </b-container>
     <br />
-    <p>property in this project such as an image and the other things used for practice purpose</p>
+    <p>
+      property in this project such as an image and the other things used for
+      practice purpose
+    </p>
     <br />
     <footer>
       <p>created by: Arif Rahman</p>
@@ -25,6 +30,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Dashboar',
   data() {
@@ -32,11 +38,27 @@ export default {
   },
   components: {},
   computed: {},
-  methods: {}
+  methods: {
+    ...mapActions({ onLogout: 'logout' })
+    // onLogout() {
+    //   console.log('logout success')
+    // }
+  }
 }
 </script>
 
 <style scoped>
+.logout {
+  width: 80px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  top: 30px;
+  position: absolute;
+  right: 90px;
+  z-index: 2;
+  cursor: pointer;
+}
 footer {
   background-color: rgba(32, 32, 32, 0.952);
   width: 100%;
