@@ -27,7 +27,6 @@
         v-for="(item, index) in mainOrSrc"
         :key="index"
       >
-        <!-- :disabled="product_qty === 1" -->
         <div
           class="img1 a1"
           v-bind:style="{ backgroundImage: `url('${item.img}')` }"
@@ -54,29 +53,13 @@
         @nextPage="nxtPage"
       />
     </div>
-    <!-- <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
-      <label for="input-ctgr">Sort By</label>
-      <select v-model="sortBy" @change="sorting">
-        <option value="Home"></option>
-        <option value="name">Menu Name</option>
-        <option value="food">Konta Meal</option>
-        <option value="drink">Konta Drink</option>
-        <option value="cake">Konta Sweet</option>
-        <option value="cheap">Friendly Pocket</option>
-        <option value="expensive">Special Menu</option>
-        <option value="recent">Newcomer</option>
-      </select>
-      <h4>{{ sortBy }}</h4>
-      <input type="text" placeholder="Cashier.." v-on:keyup.enter="cashierName" v-model="cashier" />
-      <button type="button" class="getInvoice" @click="getData">Get</button>
-      <h6>{{ invoice_id }}</h6>
-    </form>-->
   </b-col>
 </template>
 
 <script>
 import axios from 'axios'
 import Pagination from '../_base/pagination'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Main',
   data() {
@@ -86,17 +69,18 @@ export default {
       invoiceData: [],
       invoiceMsg: [],
       sortBy: 'Home',
-      page: 1,
-      limit: 6,
-      products: [],
+      // page: 1,
+      // limit: 6,
+      // products: [],
       isActive: null,
       displayOnn: {
         display: 'block'
       },
       displayOff: {
         display: 'none'
-      },
-      paginationInfo: {}
+      }
+      // ,
+      // paginationInfo: {}
     }
   },
   props: ['count', 'srcData', 'srcPage', 'srcIsClick', 'valSrc'],
@@ -105,8 +89,15 @@ export default {
   },
   created() {
     this.get_product()
+    // this.getProduct()
   },
   computed: {
+    ...mapGetters({
+      limit: 'getLimit',
+      page: 'getPage',
+      paginationInfo: 'getPaginationInfo',
+      products: 'getProduct'
+    }),
     mainOrSrc() {
       if (this.srcIsClick === true) {
         return this.srcData
@@ -130,6 +121,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions({ get_product: 'getProducts' }),
+    ...mapMutations(['setPage']),
     dummy() {},
     cashierName() {
       alert('Request Id by:' + this.cashier)
@@ -163,36 +156,37 @@ export default {
           console.log(error)
         })
     },
-    get_product() {
-      if (this.sortBy === 'Home') {
-        axios
-          .get(
-            `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
-          )
-          .then((response) => {
-            this.products = response.data.data
-            this.paginationInfo = response.data.pagination
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      } else {
-        axios
-          .get(`http://127.0.0.1:3001/product/sort?sort_by=${this.sortBy}`)
-          .then((response) => {
-            this.products = response.data.data
-            // this.paginationInfo = response.data.pagination
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-      }
-    },
+    // get_product() {
+    //   if (this.sortBy === 'Home') {
+    //     axios
+    //       .get(
+    //         `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
+    //       )
+    //       .then((response) => {
+    //         this.products = response.data.data
+    //         this.paginationInfo = response.data.pagination
+    //       })
+    //       .catch((error) => {
+    //         console.log(error)
+    //       })
+    //   } else {
+    //     axios
+    //       .get(`http://127.0.0.1:3001/product/sort?sort_by=${this.sortBy}`)
+    //       .then((response) => {
+    //         this.products = response.data.data
+    //         // this.paginationInfo = response.data.pagination
+    //       })
+    //       .catch((error) => {
+    //         console.log(error)
+    //       })
+    //   }
+    // },
     // turnOff the comment to active pagination
     currenPage(value) {
-      this.page = value
+      // this.page = value
+      this.setPage(value)
       if (this.srcIsClick === false) {
-        this.get_product(this.page)
+        this.get_product()
         if (this.sortBy === 'Home') {
           this.$router.push(`?page=${value}`)
         }

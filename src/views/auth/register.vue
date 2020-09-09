@@ -5,10 +5,14 @@
       <p>* (important)</p>
       <h6 @click="close">X</h6>
       <form @submit.prevent="onSubmit">
-        <input type="email" placeholder="Email *" /><br />
-        <input type="password" placeholder="Password *" /><br />
-        <input type="text" placeholder="Role" /><br />
-        <input type="text" placeholder="Name *" /><br />
+        <input type="email" v-model="form.user_email" placeholder="Email *" />
+        <br />
+        <input type="password" v-model="form.user_password" placeholder="Password *" />
+        <br />
+        <input type="text" v-model="form.user_role" placeholder="Role" />
+        <br />
+        <input type="text" v-model="form.user_name" placeholder="Name *" />
+        <br />
         <button type="submit">Register</button>
       </form>
     </div>
@@ -16,11 +20,29 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Register',
+  data() {
+    return {
+      form: {
+        user_email: '',
+        user_password: '',
+        user_role: '',
+        user_name: ''
+      }
+    }
+  },
   methods: {
+    ...mapActions(['regist']),
     onSubmit() {
-      console.log('register')
+      this.regist(this.form)
+        .then((response) => {
+          console.log(response.data)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     close() {
       this.$emit('onClose', false)

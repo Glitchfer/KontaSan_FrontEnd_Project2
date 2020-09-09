@@ -7,7 +7,7 @@ import Home from '../views/Home.vue'
 import History from '../views/History.vue'
 import Login from '../views/auth/login.vue'
 import store from '../store/index'
-
+import Product from '../views/main/product.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -43,6 +43,12 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: { requiresVisitor: true }
+  },
+  {
+    path: '/product',
+    name: 'Product',
+    component: Product,
+    meta: { requiresAuth: true }
   }
 ]
 

@@ -23,7 +23,7 @@
                   />
                 </div>
                 <div v-else class="input-name">
-                  <select v-model="selectedItem">
+                  <select v-model="selectedItem" @change="itemSelc(this.selectedItem)">
                     <option
                       v-for="(item, index) in productData"
                       :key="index"
@@ -49,9 +49,9 @@
                 <div class="input-img">
                   <input
                     v-if="btnName1 === 'Add'"
-                    type="text"
-                    v-model="form.img"
+                    type="file"
                     :disabled="btnName1 === 'Delete'"
+                    @change="fileUpload"
                   />
                   <input
                     v-else
@@ -141,13 +141,14 @@
 
 <script>
 import axios from 'axios'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'Addmodal',
   data() {
     return {
       productId: null,
       productData: [],
-      selectedItem: [],
+      // selectedItem: [],
       form: {
         product_name: '',
         product_price: null,
@@ -175,8 +176,15 @@ export default {
     }
   },
   components: {},
-  computed: {},
+  computed: {
+    ...mapGetters({
+      selectedItem: 'getItem'
+    })
+  },
   methods: {
+    ...mapActions(['addProduct', 'updateProduct']),
+    ...mapMutations(['setItem']),
+    // ...mapMutations(['setItem']),
     btnFunc(btn) {
       if (btn === 'Delete') {
         this.btnName1 = 'Delete'
@@ -216,19 +224,32 @@ export default {
     addBtn() {
       console.log(this.form)
       if (this.btnName1 === 'Update') {
-        axios
-          .patch(
-            `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`,
-            this.form
-          )
+        // axios
+        //   .patch(
+        //     `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`,
+        //     this.form
+        //   )
+        //   .then((response) => {
+        //     console.log(response)
+        //     this.isSuccess = true
+        //     this.msg = response.data.msg
+        //   })
+        //   .catch((error) => {
+        //     this.msg = error.response.data.msg
+        //     this.isError = true
+        //   })
+        const data = new FormData()
+        data.append('product_name', this.form.product_name)
+        data.append('product_price', this.form.product_price)
+        data.append('product_status', this.form.product_status)
+        data.append('category_id', this.form.category_id)
+        data.append('img', this.form.img)
+        this.updateProduct(data)
           .then((response) => {
-            console.log(response)
-            this.isSuccess = true
-            this.msg = response.data.msg
+            console.log(response.data.msg)
           })
           .catch((error) => {
-            this.msg = error.response.data.msg
-            this.isError = true
+            console.log(error.response.data.msg)
           })
       } else if (this.btnName1 === 'Delete') {
         axios
@@ -245,18 +266,40 @@ export default {
             this.isError = true
           })
       } else {
-        axios
-          .post('http://127.0.0.1:3001/product', this.form)
+        // before
+        // axios
+        //   .post('http://127.0.0.1:3001/product', this.form)
+        //   .then((response) => {
+        //     console.log(response)
+        //     this.isSuccess = true
+        //     this.msg = response.data.msg
+        //   })
+        //   .catch((error) => {
+        //     this.msg = error.response.data.msg
+        //     this.isError = true
+        //   })
+        // after
+        const data = new FormData()
+        data.append('product_name', this.form.product_name)
+        data.append('product_price', this.form.product_price)
+        data.append('product_status', this.form.product_status)
+        data.append('category_id', this.form.category_id)
+        data.append('img', this.form.img)
+        this.addProduct(data)
           .then((response) => {
-            console.log(response)
-            this.isSuccess = true
-            this.msg = response.data.msg
+            console.log(response.data)
           })
           .catch((error) => {
-            this.msg = error.response.data.msg
-            this.isError = true
+            console.log(error)
           })
       }
+    },
+    fileUpload(event) {
+      this.form.img = event.target.files[0]
+      console.log(event.target.files)
+    },
+    itemSelc(val) {
+      this.setItem = val
     }
   }
 }

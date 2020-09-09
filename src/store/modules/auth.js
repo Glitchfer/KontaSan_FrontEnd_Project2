@@ -57,8 +57,23 @@ export default {
           return response
         },
         function(error) {
-          // Any status codes that falls outside the range of 2xx cause this function to trigger
-          // Do something with response error
+          console.log(error.response)
+          if (error.response.status === 400) {
+            if (
+              error.response.data.msg === 'invalid token' ||
+              error.response.data.msg === 'invalid signature'
+            ) {
+              localStorage.removeItem('token')
+              context.commit('delUser')
+              router.push('/login')
+              alert('Invalid Token, Relogin required')
+            } else if (error.response.data.msg === 'jwt expired') {
+              localStorage.removeItem('token')
+              context.commit('delUser')
+              router.push('/login')
+              alert('Token Expired, Relogin required')
+            }
+          }
           return Promise.reject(error)
         }
       )
