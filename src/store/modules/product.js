@@ -18,6 +18,9 @@ export default {
     },
     setItem(state, payload) {
       state.selectedItem = payload
+    },
+    setSorting(state, payload) {
+      state.sortBy = payload
     }
   },
   actions: {
@@ -53,50 +56,49 @@ export default {
         axios
           .post('http://127.0.0.1:3001/product', payload)
           .then(response => {
-            console.log(response)
             resolve(response)
           })
           .catch(error => {
-            console.log(error.response)
+            reject(error.response)
           })
       })
+    },
+    throwSelectedItem(context, payload) {
+      context.commit('setItem', payload)
+    },
+    throwSorting(context, payload) {
+      context.commit('setSorting', payload)
     },
     updateProduct(context, payload) {
       console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .post(
+          .patch(
             `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`,
             payload
           )
           .then(response => {
-            console.log(response)
             resolve(response)
           })
           .catch(error => {
-            console.log(error.response)
+            reject(error.response)
+          })
+      })
+    },
+    deleteProduct(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(
+            `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`
+          )
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error.response)
           })
       })
     }
-    // ,
-    // patchProduct(context, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axios
-    //       .patch(
-    //         `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`,
-    //         payload
-    //       )
-    //       .then(response => {
-    //         // context.commit('setProduct', response.data)
-    //         // context.state.products = response.data.data
-    //         // context.state.paginationInfo = response.data.pagination
-    //         resolve(response)
-    //       })
-    //       .catch(error => {
-    //         console.log(error.response)
-    //       })
-    //   })
-    // }
   },
   getters: {
     getLimit(state) {
@@ -110,9 +112,6 @@ export default {
     },
     getProduct(state) {
       return state.products
-    },
-    getItem(state) {
-      return state.selectedItem
     }
   }
 }

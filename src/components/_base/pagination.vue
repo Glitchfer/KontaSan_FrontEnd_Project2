@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -30,10 +31,13 @@ export default {
     }
   },
   methods: {
-    handlePageChange() {
-      // console.log(this.currentPage)
-      this.$emit('nextPage', this.currentPage)
-      this.$emit('crntPage', this.currentPage)
+    ...mapActions(['getProducts']),
+    ...mapMutations(['setPage']),
+    handlePageChange(val) {
+      this.setPage(val)
+      this.getProducts()
+      // this.$emit('nextPage', this.currentPage)
+      // this.$emit('crntPage', val)
       // this.$router.push(`?page=${this.currentPage}`)
     }
   }

@@ -121,7 +121,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ get_product: 'getProducts' }),
+    ...mapActions({ get_product: 'getProducts', throwSorting: 'throwSorting' }),
     ...mapMutations(['setPage']),
     dummy() {},
     cashierName() {
@@ -194,7 +194,8 @@ export default {
       }
     },
     sorting() {
-      this.get_product(this.sortBy)
+      this.throwSorting(this.sortBy)
+      this.get_product()
       if (this.srcIsClick === false) {
         this.$router.push(`?sort_by=${this.sortBy}`)
       }

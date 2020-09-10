@@ -23,7 +23,7 @@
                   />
                 </div>
                 <div v-else class="input-name">
-                  <select v-model="selectedItem" @change="itemSelc(this.selectedItem)">
+                  <select v-model="selectedItem">
                     <option
                       v-for="(item, index) in productData"
                       :key="index"
@@ -56,9 +56,9 @@
                   <input
                     v-else
                     :placeholder="this.selectedItem.img"
-                    type="text"
-                    v-model="form.img"
+                    type="file"
                     :disabled="btnName1 === 'Delete'"
+                    @change="fileUpload"
                   />
                 </div>
               </td>
@@ -141,14 +141,14 @@
 
 <script>
 import axios from 'axios'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'Addmodal',
   data() {
     return {
       productId: null,
       productData: [],
-      // selectedItem: [],
+      selectedItem: [],
       form: {
         product_name: '',
         product_price: null,
@@ -176,15 +176,14 @@ export default {
     }
   },
   components: {},
-  computed: {
-    ...mapGetters({
-      selectedItem: 'getItem'
-    })
-  },
+  computed: {},
   methods: {
-    ...mapActions(['addProduct', 'updateProduct']),
-    ...mapMutations(['setItem']),
-    // ...mapMutations(['setItem']),
+    ...mapActions([
+      'addProduct',
+      'updateProduct',
+      'deleteProduct',
+      'throwSelectedItem'
+    ]),
     btnFunc(btn) {
       if (btn === 'Delete') {
         this.btnName1 = 'Delete'
@@ -194,7 +193,6 @@ export default {
           .get('http://127.0.0.1:3001/product?page=1&limit=100')
           .then((response) => {
             this.productData = response.data.data
-            console.log(this.productData)
           })
           .catch((error) => {
             console.log(error)
@@ -207,7 +205,6 @@ export default {
           .get('http://127.0.0.1:3001/product?page=1&limit=100')
           .then((response) => {
             this.productData = response.data.data
-            console.log(this.productData)
           })
           .catch((error) => {
             console.log(error)
@@ -222,22 +219,8 @@ export default {
       this.$emit('addOff', false)
     },
     addBtn() {
-      console.log(this.form)
+      this.throwSelectedItem(this.selectedItem)
       if (this.btnName1 === 'Update') {
-        // axios
-        //   .patch(
-        //     `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`,
-        //     this.form
-        //   )
-        //   .then((response) => {
-        //     console.log(response)
-        //     this.isSuccess = true
-        //     this.msg = response.data.msg
-        //   })
-        //   .catch((error) => {
-        //     this.msg = error.response.data.msg
-        //     this.isError = true
-        //   })
         const data = new FormData()
         data.append('product_name', this.form.product_name)
         data.append('product_price', this.form.product_price)
@@ -246,39 +229,24 @@ export default {
         data.append('img', this.form.img)
         this.updateProduct(data)
           .then((response) => {
-            console.log(response.data.msg)
-          })
-          .catch((error) => {
-            console.log(error.response.data.msg)
-          })
-      } else if (this.btnName1 === 'Delete') {
-        axios
-          .delete(
-            `http://127.0.0.1:3001/product/${this.selectedItem.product_id}`
-          )
-          .then((response) => {
-            console.log(response)
             this.isSuccess = true
             this.msg = response.data.msg
           })
           .catch((error) => {
-            this.msg = error.response.data.msg
+            this.msg = error.data.msg
+            this.isError = true
+          })
+      } else if (this.btnName1 === 'Delete') {
+        this.deleteProduct()
+          .then((response) => {
+            this.isSuccess = true
+            this.msg = response.data.msg
+          })
+          .catch((error) => {
+            this.msg = error.data.msg
             this.isError = true
           })
       } else {
-        // before
-        // axios
-        //   .post('http://127.0.0.1:3001/product', this.form)
-        //   .then((response) => {
-        //     console.log(response)
-        //     this.isSuccess = true
-        //     this.msg = response.data.msg
-        //   })
-        //   .catch((error) => {
-        //     this.msg = error.response.data.msg
-        //     this.isError = true
-        //   })
-        // after
         const data = new FormData()
         data.append('product_name', this.form.product_name)
         data.append('product_price', this.form.product_price)
@@ -287,19 +255,18 @@ export default {
         data.append('img', this.form.img)
         this.addProduct(data)
           .then((response) => {
-            console.log(response.data)
+            this.isSuccess = true
+            this.msg = response.data.msg
           })
           .catch((error) => {
-            console.log(error)
+            this.msg = error.data.msg
+            this.isError = true
           })
       }
     },
     fileUpload(event) {
       this.form.img = event.target.files[0]
       console.log(event.target.files)
-    },
-    itemSelc(val) {
-      this.setItem = val
     }
   }
 }
