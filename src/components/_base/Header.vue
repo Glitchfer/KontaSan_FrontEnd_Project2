@@ -13,7 +13,12 @@
         </b-col>
         <b-col cols="1" sm="1" md="1" lg="1" class="search">
           <div type="submit" class="search-img" @click.prevent="search"></div>
-          <input class="srcInput" type="search" placeholder="Search.." v-model="srcInput" />
+          <input
+            class="srcInput"
+            type="search"
+            placeholder="Search.."
+            v-model="srcInput"
+          />
         </b-col>
       </b-col>
     </b-col>
@@ -22,7 +27,7 @@
         <b-col cols="12" sm="12" md="12" lg="12" class="cart">
           <h3 class="cart" @click="showCart()">
             Cart
-            <b-badge pill variant="info">{{count}}</b-badge>
+            <b-badge pill variant="info">{{ count }}</b-badge>
           </h3>
         </b-col>
       </b-col>
@@ -45,16 +50,9 @@ export default {
   },
   props: ['count'],
   components: {},
-  computed: {
-    searching() {
-      return console.log(this.srcInput)
-    }
-  },
+  computed: {},
   methods: {
-    srcV(val) {
-      console.log(val)
-    },
-    ...mapActions(['throwSearch', 'getProducts']),
+    ...mapActions(['throwSearch', 'getProducts', 'srcTrigger']),
     search() {
       if (this.srcInput.length > 0) {
         this.throwSearch([this.srcInput, true])
@@ -84,10 +82,10 @@ export default {
       //     console.log(error)
       //   })
     }
-    // nextPage() {
-    //   this.page = this.srcNextPage
-    //   this.search(this.page)
-    // }
+  },
+  updated() {
+    this.srcTrigger(this.srcInput)
+    this.getProducts()
   }
 }
 </script>

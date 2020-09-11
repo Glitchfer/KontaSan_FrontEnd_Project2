@@ -14,7 +14,7 @@
           <option value="recent">Newcomer</option>
         </select>
         <h4>{{ sortBy }}</h4>
-        <input type="text" :placeholder="userName" v-on:keyup.enter="cashierName" v-model="cashier" />
+        <input type="text" :placeholder="userName" />
         <button type="button" class="getInvoice" @click="getData">Get id</button>
         <h6>{{ invoice_id }}</h6>
       </form>
@@ -59,7 +59,7 @@ export default {
   name: 'Main',
   data() {
     return {
-      cashier: '',
+      // cashier: '',
       invoice_id: '',
       invoiceData: [],
       invoiceMsg: [],
@@ -114,10 +114,6 @@ export default {
     ...mapActions({ get_product: 'getProducts', throwSorting: 'throwSorting' }),
     ...mapMutations(['setPage']),
     dummy() {},
-    // cashierName() {
-    //   alert('Request Id by:' + this.cashier)
-    //   this.$emit('cashierName', this.cashier)
-    // },
     selectMenu(index, item) {
       this.$emit('increment', 1, index, item)
       this.isActive = index

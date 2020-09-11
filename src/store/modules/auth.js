@@ -82,41 +82,35 @@ export default {
               error.response.data.msg === 'invalid token' ||
               error.response.data.msg === 'invalid signature'
             ) {
-              axios
-                .patch(
-                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
-                )
-                .then(response => {
-                  console.log(response.data)
-                  localStorage.removeItem('token')
-                  context.commit('delUser')
-                  router.push('/login')
-                })
-                .catch(error => {
-                  console.log(error)
-                })
-              // localStorage.removeItem('token')
-              // context.commit('delUser')
-              // router.push('/login')
+              localStorage.removeItem('token')
+              context.commit('delUser')
+              router.push('/login')
               alert('Invalid Token, Relogin required')
-            } else if (error.response.data.msg === 'jwt expired') {
               axios
                 .patch(
                   `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
                 )
                 .then(response => {
                   console.log(response.data)
-                  localStorage.removeItem('token')
-                  context.commit('delUser')
-                  router.push('/login')
                 })
                 .catch(error => {
                   console.log(error)
                 })
-              // localStorage.removeItem('token')
-              // context.commit('delUser')
-              // router.push('/login')
+            } else if (error.response.data.msg === 'jwt expired') {
+              localStorage.removeItem('token')
+              context.commit('delUser')
+              router.push('/login')
               alert('Token Expired, Relogin required')
+              axios
+                .patch(
+                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                )
+                .then(response => {
+                  console.log(response.data)
+                })
+                .catch(error => {
+                  console.log(error)
+                })
             }
           }
           return Promise.reject(error)

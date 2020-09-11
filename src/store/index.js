@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Auth from './modules/auth'
 import Product from './modules/product'
 import Register from './modules/register'
+import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -10,5 +11,11 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  getters: {}
+  getters: {},
+  plugins: [
+    createPersistedState({
+      paths: ['Auth.user', 'Auth.userName', 'Auth.userId', 'Auth.activityId'],
+      storage: window.sessionStorage
+    })
+  ]
 })

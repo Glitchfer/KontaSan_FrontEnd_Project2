@@ -8,34 +8,43 @@
           <table>
             <tr>
               <td style="font-size: 20px;">Checkout</td>
-              <td style="font-size: 15px;">Invoice no: #{{invoiceNo}}</td>
+              <td style="font-size: 15px;">Invoice no: #{{ invoiceNo }}</td>
             </tr>
             <tr>
-              <td colspan="2" style="font-size: 12px;">Cashier : Pevita Pearce</td>
+              <td colspan="2" style="font-size: 12px;">
+                Cashier : {{ userName }}
+              </td>
             </tr>
             <tr>
               <td colspan="2"></td>
             </tr>
-            <tr style="font-size: 15px;" v-for="(item, index) in dataOrder" :key="index">
-              <td>{{item.product_name + ' '+'('+item.item_quantity+'x)'}}</td>
-              <td>{{'Rp. ' + item.total_price}}</td>
+            <tr
+              style="font-size: 15px;"
+              v-for="(item, index) in dataOrder"
+              :key="index"
+            >
+              <td>
+                {{ item.product_name + ' ' + '(' + item.item_quantity + 'x)' }}
+              </td>
+              <td>{{ 'Rp. ' + item.total_price }}</td>
             </tr>
             <tr style="font-size: 15px;">
               <td>Ppn 10%</td>
-              <td>{{'Rp. ' + totalTax}}</td>
+              <td>{{ 'Rp. ' + totalTax }}</td>
             </tr>
             <tr>
               <td colspan="2"></td>
             </tr>
             <tr style=" font-size: 15px;">
               <td style=" text-align: right;">Total :</td>
-              <td>{{'Rp. ' + subTotal}}</td>
+              <td>{{ 'Rp. ' + subTotal }}</td>
             </tr>
             <tr style=" font-size: 15px;">
               <td>Payment: Cash</td>
               <td></td>
             </tr>
           </table>
+
           <div class="btn-gate2">
             <div class="print-button">
               <button class="button" @click="reset()">Print</button>
@@ -52,6 +61,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Checkoutmodal',
   data() {
@@ -69,6 +79,11 @@ export default {
     'updatedDate'
   ],
   components: {},
+  computed: {
+    ...mapGetters({
+      userName: 'getUserName'
+    })
+  },
   methods: {
     checkoutModalOff() {
       this.$emit('checkoutModalOff', false)

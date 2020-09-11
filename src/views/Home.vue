@@ -18,7 +18,6 @@
         v-bind:valSrc="srcVal"
         @increment="cartCount"
         @selectedItem="selectedItem"
-        @cashierName="cashierName"
         @invoiceData="invoiceData"
       />
       <Right
@@ -60,7 +59,7 @@ import Addmodal from '../components/_base/addModal'
 import Checkoutmodal from '../components/_base/checkoutModal'
 import Main from '../components/_module/mainMenu'
 import axios from 'axios'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'Home',
   data() {
@@ -102,7 +101,11 @@ export default {
     Addmodal,
     Checkoutmodal
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      userName: 'getUserName'
+    })
+  },
   methods: {
     showCart(val) {},
     checkoutData(data, totalPrice, tax, subTotal, date) {
@@ -115,10 +118,6 @@ export default {
     dataOrders(data) {
       this.ordersData = data
       // console.log(this.ordersData)
-    },
-    cashierName(name) {
-      this.form.cashier_name = name
-      console.log(this.form.cashier_name)
     },
     invoiceData(fullData, id, number) {
       this.form.invoice_id = id
@@ -138,13 +137,15 @@ export default {
     },
     cartCount(inc, index, item) {},
     selectedItem(itemDetail) {
+      console.log(this.userName)
+      console.log(this.form.cashier_name)
       const setCart = {
         itemDetail,
         qty: 1
       }
       this.cartItem = [...this.cartItem, setCart]
       const data = this.cartItem.find(
-        (item) => item.itemDetail.product_id === itemDetail.product_id
+        item => item.itemDetail.product_id === itemDetail.product_id
       )
 
       this.form.product_id = data.itemDetail.product_id
@@ -155,7 +156,7 @@ export default {
         this.num += 1
       } else if (
         this.cartItemMap.find(
-          (item) => item.itemDetail.product_id === data.itemDetail.product_id
+          item => item.itemDetail.product_id === data.itemDetail.product_id
         )
       ) {
         return null
@@ -165,14 +166,16 @@ export default {
       }
 
       // ====== POST INVOICE ======
+      this.form.cashier_name = this.userName
+      console.log(this.form)
       axios
         .post('http://127.0.0.1:3001/trigger/orders', this.form)
-        .then((response) => {
+        .then(response => {
           console.log(response.data)
           this.orders_id = response.data.data.orders_id
           console.log(response.data.msg)
         })
-        .catch((error) => {
+        .catch(error => {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []

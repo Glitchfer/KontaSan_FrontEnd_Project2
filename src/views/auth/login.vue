@@ -5,7 +5,11 @@
         <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
           <input type="email" v-model="form.user_email" placeholder="Email" />
           <br />
-          <input type="password" v-model="form.user_password" placeholder="Password" />
+          <input
+            type="password"
+            v-model="form.user_password"
+            placeholder="Password"
+          />
           <br />
           <button type="submit">Login</button>
           <button type="reset">Reset</button>
@@ -63,10 +67,10 @@ export default {
     onSubmit() {
       //   console.log(this.form)
       this.login(this.form)
-        .then((result) => {
+        .then(result => {
           this.$router.push('/')
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },

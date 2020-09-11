@@ -4,6 +4,7 @@ export default {
     sortBy: 'Home',
     srcClicked: false,
     srcInput: '',
+    inputLength: null,
     page: 1,
     limit: 6,
     paginationInfo: {},
@@ -28,11 +29,14 @@ export default {
       console.log(payload)
       state.srcClicked = payload[1]
       state.srcInput = payload[0]
+    },
+    setSrcInput(state, payload) {
+      state.inputLength = payload.length
     }
   },
   actions: {
     getProducts(context, payload) {
-      if (context.state.srcClicked === false) {
+      if (context.state.srcClicked === false || context.state.inputLength < 1) {
         if (context.state.sortBy === 'Home') {
           axios
             .get(
@@ -59,20 +63,23 @@ export default {
             })
         }
       } else {
-        console.log('search function')
-        axios
-          .get(
-            `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
-          )
-          .then(response => {
-            console.log(response)
-            context.commit('setProduct', response.data)
-            context.state.products = response.data.data
-            context.state.paginationInfo = response.data.pagination
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        if (context.state.inputLength > 0) {
+          axios
+            .get(
+              `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
+            )
+            .then(response => {
+              console.log(response)
+              context.commit('setProduct', response.data)
+              context.state.products = response.data.data
+              context.state.paginationInfo = response.data.pagination
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          context.state.srcClicked = false
+        }
       }
     },
     addProduct(context, payload) {
@@ -95,6 +102,9 @@ export default {
     },
     throwSearch(context, payload) {
       context.commit('setSearch', payload)
+    },
+    srcTrigger(context, payload) {
+      context.commit('setSrcInput', payload)
     },
     updateProduct(context, payload) {
       console.log(payload)
