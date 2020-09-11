@@ -46,7 +46,7 @@
       </b-col>
     </b-row>
     <div cols="12" sm="12" md="12" lg="12" class="paginationBorder">
-      <Pagination v-bind:productInfo="menuData" v-bind:paginationInfo="btnPage" />
+      <Pagination v-bind:paginationInfo="btnPage" />
     </div>
   </b-col>
 </template>
@@ -59,7 +59,6 @@ export default {
   name: 'Main',
   data() {
     return {
-      // cashier: '',
       invoice_id: '',
       invoiceData: [],
       invoiceMsg: [],
@@ -73,7 +72,7 @@ export default {
       }
     }
   },
-  props: ['count', 'srcData', 'srcPage', 'srcIsClick', 'valSrc'],
+  props: ['count'],
   components: {
     Pagination
   },
@@ -89,25 +88,10 @@ export default {
       userName: 'getUserName'
     }),
     mainOrSrc() {
-      if (this.srcIsClick === true) {
-        return this.srcData
-      } else {
-        return this.products
-      }
-    },
-    menuData() {
-      if (this.srcIsClick === true) {
-        return this.srcData
-      } else {
-        return this.products
-      }
+      return this.products
     },
     btnPage() {
-      if (this.srcIsClick === true) {
-        return this.srcPage
-      } else {
-        return this.paginationInfo
-      }
+      return this.paginationInfo
     }
   },
   methods: {
@@ -143,19 +127,15 @@ export default {
     },
     currenPage(value) {
       this.setPage(value)
-      if (this.srcIsClick === false) {
-        this.get_product()
-        if (this.sortBy === 'Home') {
-          this.$router.push(`?page=${value}`)
-        }
+      this.get_product()
+      if (this.sortBy === 'Home') {
+        this.$router.push(`?page=${value}`)
       }
     },
     sorting() {
       this.throwSorting(this.sortBy)
       this.get_product()
-      if (this.srcIsClick === false) {
-        this.$router.push(`?sort_by=${this.sortBy}`)
-      }
+      this.$router.push(`?sort_by=${this.sortBy}`)
     }
   }
 }

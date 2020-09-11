@@ -13,19 +13,14 @@
         </b-col>
         <b-col cols="1" sm="1" md="1" lg="1" class="search">
           <div type="submit" class="search-img" @click.prevent="search"></div>
-          <input
-            class="srcInput"
-            type="search"
-            placeholder="Search.."
-            v-model="srcInput"
-          />
+          <input class="srcInput" type="search" placeholder="Search.." v-model="srcInput" />
         </b-col>
       </b-col>
     </b-col>
     <b-col cols="0" sm="0" md="3" lg="4" class="header-cart">
       <b-col cols="12" sm="12" md="12" lg="12" class="pocket1">
         <b-col cols="12" sm="12" md="12" lg="12" class="cart">
-          <h3 class="cart" @click="showCart()">
+          <h3 class="cart">
             Cart
             <b-badge pill variant="info">{{ count }}</b-badge>
           </h3>
@@ -36,14 +31,12 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import { mapActions } from 'vuex'
 export default {
   name: 'Header',
   data() {
     return {
       srcInput: '',
-      isSrcClicked: false,
       page: 1,
       limit: 15
     }
@@ -60,27 +53,6 @@ export default {
         this.throwSearch(['', false])
       }
       this.getProducts()
-      // console.log(true)
-      // this.isSrcClicked = true
-      // alert('search by: ' + this.srcInput + ' is ' + this.isSrcClicked)
-      // axios
-      //   .get(
-      //     `http://127.0.0.1:3001/product/search?name=${this.srcInput}&page=${this.page}&limit=${this.limit}`
-      //   )
-      //   .then((response) => {
-      //     this.$router.push(`?name=${this.srcInput}`)
-      //     this.$emit('srcValue', this.srcInput)
-      //     this.$emit('searchBy', this.srcInput)
-      //     this.$emit('isSrcClicked', this.isSrcClicked)
-      //     this.$emit(
-      //       'srcResponse',
-      //       response.data.data,
-      //       response.data.pagination
-      //     )
-      //   })
-      //   .catch((error) => {
-      //     console.log(error)
-      //   })
     }
   },
   updated() {

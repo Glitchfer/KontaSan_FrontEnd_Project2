@@ -1,21 +1,11 @@
 <template>
   <b-container fluid class="bag">
-    <Header
-      v-bind:count="num"
-      @addShow="addOn"
-      @isSrcClicked="isSrcClicked"
-      @srcValue="srcValue"
-      @srcResponse="srcResponse"
-    />
+    <Header v-bind:count="num" @addShow="addOn" />
     <Fixednav @addShow="addOn" />
     <b-row class="slot-two">
       <Left @addShow="addOn" />
       <Main
         v-bind:count="num"
-        v-bind:srcData="srcResData"
-        v-bind:srcPage="srcResPage"
-        v-bind:srcIsClick="isSrc"
-        v-bind:valSrc="srcVal"
         @increment="cartCount"
         @selectedItem="selectedItem"
         @invoiceData="invoiceData"
@@ -68,10 +58,6 @@ export default {
       num: 0,
       isHide: false,
       checkoutHide: false,
-      isSrc: false,
-      srcVal: '',
-      srcResData: [],
-      srcResPage: [],
       cartItem: [],
       cartItemMap: [],
       form: {
@@ -107,7 +93,6 @@ export default {
     })
   },
   methods: {
-    showCart(val) {},
     checkoutData(data, totalPrice, tax, subTotal, date) {
       this.invoicePatchData.allData = data
       this.invoicePatchData.total_price = totalPrice
@@ -117,7 +102,6 @@ export default {
     },
     dataOrders(data) {
       this.ordersData = data
-      // console.log(this.ordersData)
     },
     invoiceData(fullData, id, number) {
       this.form.invoice_id = id
@@ -137,15 +121,13 @@ export default {
     },
     cartCount(inc, index, item) {},
     selectedItem(itemDetail) {
-      console.log(this.userName)
-      console.log(this.form.cashier_name)
       const setCart = {
         itemDetail,
         qty: 1
       }
       this.cartItem = [...this.cartItem, setCart]
       const data = this.cartItem.find(
-        item => item.itemDetail.product_id === itemDetail.product_id
+        (item) => item.itemDetail.product_id === itemDetail.product_id
       )
 
       this.form.product_id = data.itemDetail.product_id
@@ -156,7 +138,7 @@ export default {
         this.num += 1
       } else if (
         this.cartItemMap.find(
-          item => item.itemDetail.product_id === data.itemDetail.product_id
+          (item) => item.itemDetail.product_id === data.itemDetail.product_id
         )
       ) {
         return null
@@ -164,18 +146,17 @@ export default {
         this.cartItemMap = [...this.cartItemMap, data]
         this.num += 1
       }
-
       // ====== POST INVOICE ======
       this.form.cashier_name = this.userName
       console.log(this.form)
       axios
         .post('http://127.0.0.1:3001/trigger/orders', this.form)
-        .then(response => {
+        .then((response) => {
           console.log(response.data)
           this.orders_id = response.data.data.orders_id
           console.log(response.data.msg)
         })
-        .catch(error => {
+        .catch((error) => {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []
@@ -198,20 +179,7 @@ export default {
       this.cartItemMap = zeroCart
       this.form.cashier_name = string
       this.form.invoice_id = nully
-    },
-    isSrcClicked(bool) {
-      this.isSrc = bool
-    },
-    srcValue(value) {
-      this.srcVal = value
-    },
-    srcResponse(valA, valB) {
-      this.srcResData = valA
-      this.srcResPage = valB
     }
-    // srcCrnPage(nxtPage) {
-    //   this.nextPage = nxtPage
-    // }
   }
 }
 </script>

@@ -127,11 +127,7 @@
           <div class="revenue-graph">
             <div class="line-chart">
               <!-- <line-chart :data="{'2017-01-01': 11, '2017-01-02': 6}"></line-chart> -->
-              <line-chart
-                :colors="['#00f1ff']"
-                :data="cashFlowIn"
-                class="line"
-              ></line-chart>
+              <line-chart :colors="['#00f1ff']" :data="cashFlowIn" class="line"></line-chart>
             </div>
             <h3>Revenue</h3>
             <div class="legend">
@@ -284,7 +280,7 @@ export default {
     lastWeekOrders() {
       axios
         .get('http://127.0.0.1:3001/income/orders')
-        .then(response => {
+        .then((response) => {
           console.log(response.data.data[0])
           if (response.data.data[0].total_order === 0) {
             const nilai = response.data.data[0].total_order
@@ -296,14 +292,14 @@ export default {
             this.lastweekOrder = hasil2.toFixed(2)
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
     lastDayIncome() {
       axios
         .get('http://127.0.0.1:3001/income')
-        .then(response => {
+        .then((response) => {
           if (response.data.data[0].sub_total === null) {
             const nilai = 0
             const hasil = (this.todayIncome - nilai) * 100
@@ -314,14 +310,14 @@ export default {
             this.yesterdayIncome = hasil2.toFixed(2)
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
     lastYearIncome() {
       axios
         .post('http://127.0.0.1:3001/income/income')
-        .then(response => {
+        .then((response) => {
           if (response.data.data[0].sub_total === null) {
             const nilai = 0
             const hasil = (this.yearIncome - nilai) * 100
@@ -332,7 +328,7 @@ export default {
             this.lastyearIncome = hasil2.toFixed(2)
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
@@ -356,20 +352,13 @@ export default {
         .post(
           `http://127.0.0.1:3001/history/revenue?select=${this.chartRevenue}`
         )
-        .then(response => {
-          // this.cashFlowIn = response.data.data
-          const dateData = response.data.data.map(function(e) {
+        .then((response) => {
+          const dateData = response.data.data.map(function (e) {
             return e.Date
           })
-          const totalData = response.data.data.map(function(e) {
+          const totalData = response.data.data.map(function (e) {
             return e.Total
           })
-          // console.log(dateData)
-          // console.log(totalData)
-          // this.cashFlowIn.data.labels = dateData
-          // this.cashFlowIn.data.datasets.data = totalData
-          // console.log(this.cashFlowIn.data)
-
           var arr2 = []
           for (var i = 0; i < dateData.length; i++) {
             arr2.push([`${dateData[i]}`])
@@ -379,41 +368,41 @@ export default {
           }
           this.cashFlowIn = arr2
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
     yearsIncome() {
       axios
         .post('http://127.0.0.1:3001/history')
-        .then(response => {
+        .then((response) => {
           this.yearIncome = response.data.data[0].ThisYears_Income
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
     totalOrders() {
       axios
         .get('http://127.0.0.1:3001/history/orders')
-        .then(response => {
+        .then((response) => {
           this.totalOrder = response.data.data[0].Total_Orders
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },
     todaysIncome() {
       axios
         .get('http://127.0.0.1:3001/history')
-        .then(response => {
+        .then((response) => {
           if (response.data.data.length === undefined) {
             this.todayIncome = 0
           } else {
             this.todayIncome = response.data.data[0].todays_income
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log('ini error')
           console.log(error)
         })
@@ -421,10 +410,10 @@ export default {
     ordersGrouping() {
       axios
         .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${this.calendar}`)
-        .then(response => {
+        .then((response) => {
           this.history = response.data.data
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error)
         })
     },

@@ -20,7 +20,7 @@ export default {
       currentPage: 1
     }
   },
-  props: ['productInfo', 'paginationInfo'],
+  props: ['paginationInfo'],
   computed: {
     rows() {
       return this.paginationInfo.totalPage
@@ -32,7 +32,6 @@ export default {
     handlePageChange(val) {
       this.setPage(val)
       this.getProducts()
-      // this.$emit('nextPage', this.currentPage)
     }
   }
 }
