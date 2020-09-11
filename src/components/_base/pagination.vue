@@ -21,10 +21,6 @@ export default {
     }
   },
   props: ['productInfo', 'paginationInfo'],
-  // turnOn the comment to active pagination
-  // updated() {
-  //   this.$emit('crntPage', this.currentPage)
-  // },
   computed: {
     rows() {
       return this.paginationInfo.totalPage
@@ -37,8 +33,6 @@ export default {
       this.setPage(val)
       this.getProducts()
       // this.$emit('nextPage', this.currentPage)
-      // this.$emit('crntPage', val)
-      // this.$router.push(`?page=${this.currentPage}`)
     }
   }
 }

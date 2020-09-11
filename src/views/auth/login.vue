@@ -64,7 +64,6 @@ export default {
       //   console.log(this.form)
       this.login(this.form)
         .then((result) => {
-          console.log(result)
           this.$router.push('/')
         })
         .catch((error) => {

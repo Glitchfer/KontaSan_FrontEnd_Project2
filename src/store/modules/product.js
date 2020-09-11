@@ -2,6 +2,8 @@ import axios from 'axios'
 export default {
   state: {
     sortBy: 'Home',
+    srcClicked: false,
+    srcInput: '',
     page: 1,
     limit: 6,
     paginationInfo: {},
@@ -21,30 +23,52 @@ export default {
     },
     setSorting(state, payload) {
       state.sortBy = payload
+    },
+    setSearch(state, payload) {
+      console.log(payload)
+      state.srcClicked = payload[1]
+      state.srcInput = payload[0]
     }
   },
   actions: {
     getProducts(context, payload) {
-      if (context.state.sortBy === 'Home') {
+      if (context.state.srcClicked === false) {
+        if (context.state.sortBy === 'Home') {
+          axios
+            .get(
+              `http://127.0.0.1:3001/product?page=${context.state.page}&limit=${context.state.limit}`
+            )
+            .then(response => {
+              context.commit('setProduct', response.data)
+              context.state.products = response.data.data
+              context.state.paginationInfo = response.data.pagination
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          axios
+            .get(
+              `http://127.0.0.1:3001/product/sort?sort_by=${context.state.sortBy}`
+            )
+            .then(response => {
+              context.state.products = response.data.data
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
+      } else {
+        console.log('search function')
         axios
           .get(
-            `http://127.0.0.1:3001/product?page=${context.state.page}&limit=${context.state.limit}`
+            `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
           )
           .then(response => {
+            console.log(response)
             context.commit('setProduct', response.data)
             context.state.products = response.data.data
             context.state.paginationInfo = response.data.pagination
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      } else {
-        axios
-          .get(
-            `http://127.0.0.1:3001/product/sort?sort_by=${context.state.sortBy}`
-          )
-          .then(response => {
-            context.state.products = response.data.data
           })
           .catch(error => {
             console.log(error)
@@ -68,6 +92,9 @@ export default {
     },
     throwSorting(context, payload) {
       context.commit('setSorting', payload)
+    },
+    throwSearch(context, payload) {
+      context.commit('setSearch', payload)
     },
     updateProduct(context, payload) {
       console.log(payload)

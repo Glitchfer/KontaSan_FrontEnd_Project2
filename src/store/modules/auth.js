@@ -2,10 +2,18 @@ import axios from 'axios'
 import router from '../../router/index'
 export default {
   state: {
+    userName: '',
+    userId: null,
+    activityId: null,
     user: {},
     token: localStorage.getItem('token') || null
   },
   mutations: {
+    setActivity(state, payload) {
+      state.userName = payload.name
+      state.userId = payload.user_id
+      state.activityId = payload.id
+    },
     setUser(state, payload) {
       state.user = payload
       state.token = payload.token
@@ -21,7 +29,9 @@ export default {
         axios
           .post('http://127.0.0.1:3001/users/login', payload)
           .then(response => {
+            console.log(response.data)
             context.commit('setUser', response.data.data)
+            context.commit('setActivity', response.data.pagination)
             localStorage.setItem('token', response.data.data.token)
             resolve(response.data)
           })
@@ -31,20 +41,31 @@ export default {
       })
     },
     logout(context) {
-      localStorage.removeItem('token')
-      context.commit('delUser')
-      router.push('/login')
+      axios
+        .patch(
+          `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+        )
+        .then(response => {
+          console.log(response.data)
+          localStorage.removeItem('token')
+          context.commit('delUser')
+          router.push('/login')
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      // localStorage.removeItem('token')
+      // context.commit('delUser')
+      // router.push('/login')
     },
     interceptorRequest(context) {
       console.log('interceptorRequest')
       axios.interceptors.request.use(
         function(config) {
           config.headers.Authorization = `Bearer ${context.state.token}`
-          // Do something before request is sent
           return config
         },
         function(error) {
-          // Do something with request error
           return Promise.reject(error)
         }
       )
@@ -52,8 +73,6 @@ export default {
     interceptorResponse(context) {
       axios.interceptors.response.use(
         function(response) {
-          // Any status code that lie within the range of 2xx cause this function to trigger
-          // Do something with response data
           return response
         },
         function(error) {
@@ -63,14 +82,40 @@ export default {
               error.response.data.msg === 'invalid token' ||
               error.response.data.msg === 'invalid signature'
             ) {
-              localStorage.removeItem('token')
-              context.commit('delUser')
-              router.push('/login')
+              axios
+                .patch(
+                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                )
+                .then(response => {
+                  console.log(response.data)
+                  localStorage.removeItem('token')
+                  context.commit('delUser')
+                  router.push('/login')
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+              // localStorage.removeItem('token')
+              // context.commit('delUser')
+              // router.push('/login')
               alert('Invalid Token, Relogin required')
             } else if (error.response.data.msg === 'jwt expired') {
-              localStorage.removeItem('token')
-              context.commit('delUser')
-              router.push('/login')
+              axios
+                .patch(
+                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                )
+                .then(response => {
+                  console.log(response.data)
+                  localStorage.removeItem('token')
+                  context.commit('delUser')
+                  router.push('/login')
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+              // localStorage.removeItem('token')
+              // context.commit('delUser')
+              // router.push('/login')
               alert('Token Expired, Relogin required')
             }
           }
@@ -82,6 +127,9 @@ export default {
   getters: {
     isLogin(state) {
       return state.token !== null
+    },
+    getUserName(state) {
+      return state.userName
     }
   }
 }

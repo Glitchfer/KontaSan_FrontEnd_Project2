@@ -2,19 +2,14 @@
   <b-container fluid class="bag">
     <Header
       v-bind:count="num"
-      v-bind:srcNextPage="nextPage"
       @addShow="addOn"
       @isSrcClicked="isSrcClicked"
       @srcValue="srcValue"
       @srcResponse="srcResponse"
     />
     <Fixednav @addShow="addOn" />
-    <!-- @searchBy="searchBy" -->
     <b-row class="slot-two">
-      <!-- aside-left -->
       <Left @addShow="addOn" />
-      <!-- Main -->
-      <!-- <Mid /> -->
       <Main
         v-bind:count="num"
         v-bind:srcData="srcResData"
@@ -23,11 +18,9 @@
         v-bind:valSrc="srcVal"
         @increment="cartCount"
         @selectedItem="selectedItem"
-        @srcCrnPage="srcCrnPage"
         @cashierName="cashierName"
         @invoiceData="invoiceData"
       />
-      <!-- aside-right -->
       <Right
         v-bind:count="num"
         @resetCount="reset"
@@ -42,11 +35,7 @@
         v-bind:ordersId="orders_id"
       />
     </b-row>
-    <!-- Responsive Navbar-->
-    <!-- <Fixednav @addShow="addOn" /> -->
-    <!-- Add Modal -->
     <Addmodal v-if="isHide === true" @addOff="addHide" />
-    <!-- Checkout Modal -->
     <Checkoutmodal
       v-if="checkoutHide === true"
       @reset="reset"
@@ -84,7 +73,6 @@ export default {
       srcVal: '',
       srcResData: [],
       srcResPage: [],
-      nextPage: 1,
       cartItem: [],
       cartItemMap: [],
       form: {
@@ -217,10 +205,10 @@ export default {
     srcResponse(valA, valB) {
       this.srcResData = valA
       this.srcResPage = valB
-    },
-    srcCrnPage(nxtPage) {
-      this.nextPage = nxtPage
     }
+    // srcCrnPage(nxtPage) {
+    //   this.nextPage = nxtPage
+    // }
   }
 }
 </script>

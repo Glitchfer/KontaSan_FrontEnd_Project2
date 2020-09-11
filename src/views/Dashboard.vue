@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <b-container>
+      <h4>{{ userName }}</h4>
       <a class="logout" @click="onLogout">Logout</a>
       <b-card>
         <h1>WELCOME</h1>
@@ -30,14 +31,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 export default {
   name: 'Dashboar',
   data() {
     return {}
   },
   components: {},
-  computed: {},
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters({
+      userName: 'getUserName'
+    })
+  },
   methods: {
     ...mapActions({ onLogout: 'logout' })
     // onLogout() {
@@ -48,6 +54,13 @@ export default {
 </script>
 
 <style scoped>
+h4 {
+  position: absolute;
+  right: 115px;
+  z-index: 2;
+  font-size: 18px;
+  top: 10px;
+}
 .logout {
   width: 80px;
   height: 30px;

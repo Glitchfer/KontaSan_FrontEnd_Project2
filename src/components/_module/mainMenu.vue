@@ -14,7 +14,7 @@
           <option value="recent">Newcomer</option>
         </select>
         <h4>{{ sortBy }}</h4>
-        <input type="text" placeholder="Cashier.." v-on:keyup.enter="cashierName" v-model="cashier" />
+        <input type="text" :placeholder="userName" v-on:keyup.enter="cashierName" v-model="cashier" />
         <button type="button" class="getInvoice" @click="getData">Get id</button>
         <h6>{{ invoice_id }}</h6>
       </form>
@@ -46,12 +46,7 @@
       </b-col>
     </b-row>
     <div cols="12" sm="12" md="12" lg="12" class="paginationBorder">
-      <Pagination
-        v-bind:productInfo="menuData"
-        v-bind:paginationInfo="btnPage"
-        @crntPage="currenPage"
-        @nextPage="nxtPage"
-      />
+      <Pagination v-bind:productInfo="menuData" v-bind:paginationInfo="btnPage" />
     </div>
   </b-col>
 </template>
@@ -69,9 +64,6 @@ export default {
       invoiceData: [],
       invoiceMsg: [],
       sortBy: 'Home',
-      // page: 1,
-      // limit: 6,
-      // products: [],
       isActive: null,
       displayOnn: {
         display: 'block'
@@ -79,8 +71,6 @@ export default {
       displayOff: {
         display: 'none'
       }
-      // ,
-      // paginationInfo: {}
     }
   },
   props: ['count', 'srcData', 'srcPage', 'srcIsClick', 'valSrc'],
@@ -89,14 +79,14 @@ export default {
   },
   created() {
     this.get_product()
-    // this.getProduct()
   },
   computed: {
     ...mapGetters({
       limit: 'getLimit',
       page: 'getPage',
       paginationInfo: 'getPaginationInfo',
-      products: 'getProduct'
+      products: 'getProduct',
+      userName: 'getUserName'
     }),
     mainOrSrc() {
       if (this.srcIsClick === true) {
@@ -124,10 +114,10 @@ export default {
     ...mapActions({ get_product: 'getProducts', throwSorting: 'throwSorting' }),
     ...mapMutations(['setPage']),
     dummy() {},
-    cashierName() {
-      alert('Request Id by:' + this.cashier)
-      this.$emit('cashierName', this.cashier)
-    },
+    // cashierName() {
+    //   alert('Request Id by:' + this.cashier)
+    //   this.$emit('cashierName', this.cashier)
+    // },
     selectMenu(index, item) {
       this.$emit('increment', 1, index, item)
       this.isActive = index
@@ -137,7 +127,6 @@ export default {
       this.products.some((item) => item.product_id === data.product_id)
     },
     getData() {
-      // this.invoice_id = (2)
       axios
         .post('http://127.0.0.1:3001/trigger/invoice')
         .then((response) => {
@@ -156,41 +145,13 @@ export default {
           console.log(error)
         })
     },
-    // get_product() {
-    //   if (this.sortBy === 'Home') {
-    //     axios
-    //       .get(
-    //         `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
-    //       )
-    //       .then((response) => {
-    //         this.products = response.data.data
-    //         this.paginationInfo = response.data.pagination
-    //       })
-    //       .catch((error) => {
-    //         console.log(error)
-    //       })
-    //   } else {
-    //     axios
-    //       .get(`http://127.0.0.1:3001/product/sort?sort_by=${this.sortBy}`)
-    //       .then((response) => {
-    //         this.products = response.data.data
-    //         // this.paginationInfo = response.data.pagination
-    //       })
-    //       .catch((error) => {
-    //         console.log(error)
-    //       })
-    //   }
-    // },
-    // turnOff the comment to active pagination
     currenPage(value) {
-      // this.page = value
       this.setPage(value)
       if (this.srcIsClick === false) {
         this.get_product()
         if (this.sortBy === 'Home') {
           this.$router.push(`?page=${value}`)
         }
-        // this.$router.push(`?page=${this.page}`)
       }
     },
     sorting() {
@@ -199,9 +160,6 @@ export default {
       if (this.srcIsClick === false) {
         this.$router.push(`?sort_by=${this.sortBy}`)
       }
-    },
-    nxtPage(value) {
-      this.$emit('srcCrnPage', value)
     }
   }
 }

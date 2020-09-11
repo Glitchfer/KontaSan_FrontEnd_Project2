@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-
+// import axios from 'axios'
+import { mapActions } from 'vuex'
 export default {
   name: 'Header',
   data() {
@@ -43,36 +43,51 @@ export default {
       limit: 15
     }
   },
-  props: ['count', 'srcNextPage'],
+  props: ['count'],
   components: {},
-  computed: {},
-  methods: {
-    search() {
-      this.isSrcClicked = true
-      alert('search by: ' + this.srcInput + ' is ' + this.isSrcClicked)
-      axios
-        .get(
-          `http://127.0.0.1:3001/product/search?name=${this.srcInput}&page=${this.page}&limit=${this.limit}`
-        )
-        .then((response) => {
-          this.$router.push(`?name=${this.srcInput}`)
-          this.$emit('srcValue', this.srcInput)
-          this.$emit('searchBy', this.srcInput)
-          this.$emit('isSrcClicked', this.isSrcClicked)
-          this.$emit(
-            'srcResponse',
-            response.data.data,
-            response.data.pagination
-          )
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    },
-    nextPage() {
-      this.page = this.srcNextPage
-      this.search(this.page)
+  computed: {
+    searching() {
+      return console.log(this.srcInput)
     }
+  },
+  methods: {
+    srcV(val) {
+      console.log(val)
+    },
+    ...mapActions(['throwSearch', 'getProducts']),
+    search() {
+      if (this.srcInput.length > 0) {
+        this.throwSearch([this.srcInput, true])
+      } else {
+        this.throwSearch(['', false])
+      }
+      this.getProducts()
+      // console.log(true)
+      // this.isSrcClicked = true
+      // alert('search by: ' + this.srcInput + ' is ' + this.isSrcClicked)
+      // axios
+      //   .get(
+      //     `http://127.0.0.1:3001/product/search?name=${this.srcInput}&page=${this.page}&limit=${this.limit}`
+      //   )
+      //   .then((response) => {
+      //     this.$router.push(`?name=${this.srcInput}`)
+      //     this.$emit('srcValue', this.srcInput)
+      //     this.$emit('searchBy', this.srcInput)
+      //     this.$emit('isSrcClicked', this.isSrcClicked)
+      //     this.$emit(
+      //       'srcResponse',
+      //       response.data.data,
+      //       response.data.pagination
+      //     )
+      //   })
+      //   .catch((error) => {
+      //     console.log(error)
+      //   })
+    }
+    // nextPage() {
+    //   this.page = this.srcNextPage
+    //   this.search(this.page)
+    // }
   }
 }
 </script>
