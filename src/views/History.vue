@@ -126,7 +126,6 @@
         <div class="revenue">
           <div class="revenue-graph">
             <div class="line-chart">
-              <!-- <line-chart :data="{'2017-01-01': 11, '2017-01-02': 6}"></line-chart> -->
               <line-chart :colors="['#00f1ff']" :data="cashFlowIn" class="line"></line-chart>
             </div>
             <h3>Revenue</h3>
@@ -140,7 +139,7 @@
               <select v-model="chartRevenue" @change="cashFlow">
                 <option value="hours">Hours</option>
                 <option value="year">This Year</option>
-                <option value="lastYears">Last Year</option>
+                <option value="lastYear">Last Year</option>
               </select>
             </div>
           </div>
@@ -240,7 +239,8 @@
 <script>
 import Left from '../components/_base/sideLeft'
 import Addmodal from '../components/_base/addModal'
-import axios from 'axios'
+// import axios from 'axios'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -249,17 +249,17 @@ export default {
       ordersBtn: false,
       todaysBtn: true,
       todayIncome: 0,
-      totalOrder: 0,
-      yearIncome: 0,
-      cashFlowIn: null,
+      // totalOrder: 0,
+      // yearIncome: 0,
+      // cashFlowIn: null,
       isHide: false,
       isTrue: null,
       calendar: 'day',
-      history: [],
-      chartRevenue: 'hours',
-      yesterdayIncome: 0,
-      lastweekOrder: 0,
-      lastyearIncome: 0
+      // history: [],
+      chartRevenue: 'hours'
+      // yesterdayIncome: 0,
+      // lastweekOrder: 0
+      // lastyearIncome: 0
     }
   },
   components: {
@@ -276,61 +276,36 @@ export default {
     this.lastDayIncome()
     this.lastWeekOrders()
   },
+  computed: {
+    ...mapGetters({
+      history: 'getRecentOrder',
+      totalOrder: 'getWeaklyOrder',
+      yearIncome: 'getThisYearIncome',
+      cashFlowIn: 'getRevenueChart',
+      lastyearIncome: 'getLastYearIncome',
+      yesterdayIncome: 'getYesterdayIncome',
+      lastweekOrder: 'getLastWeekOrder'
+    })
+  },
   methods: {
+    ...mapActions([
+      'recentOrder',
+      'incomeToday',
+      'weaklyOrder',
+      'incomeYear',
+      'revenueChart',
+      'incomeLastYear',
+      'incomeYesterday',
+      'orderLastWeek'
+    ]),
     lastWeekOrders() {
-      axios
-        .get('http://127.0.0.1:3001/income/orders')
-        .then((response) => {
-          console.log(response.data.data[0])
-          if (response.data.data[0].total_order === 0) {
-            const nilai = response.data.data[0].total_order
-            const hasil = (this.totalOrder - nilai) * 100
-            this.lastweekOrder = hasil
-          } else {
-            const nilai2 = response.data.data[0].total_order
-            const hasil2 = ((this.totalOrder - nilai2) / nilai2) * 100
-            this.lastweekOrder = hasil2.toFixed(2)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.orderLastWeek()
     },
     lastDayIncome() {
-      axios
-        .get('http://127.0.0.1:3001/income')
-        .then((response) => {
-          if (response.data.data[0].sub_total === null) {
-            const nilai = 0
-            const hasil = (this.todayIncome - nilai) * 100
-            this.yesterdayIncome = hasil
-          } else {
-            const nilai2 = response.data.data[0].sub_total
-            const hasil2 = ((this.todayIncome - nilai2) / nilai2) * 100
-            this.yesterdayIncome = hasil2.toFixed(2)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.incomeYesterday()
     },
     lastYearIncome() {
-      axios
-        .post('http://127.0.0.1:3001/income/income')
-        .then((response) => {
-          if (response.data.data[0].sub_total === null) {
-            const nilai = 0
-            const hasil = (this.yearIncome - nilai) * 100
-            this.lastyearIncome = hasil
-          } else {
-            const nilai2 = response.data.data[0].sub_total
-            const hasil2 = ((this.yearIncome - nilai2) / nilai2) * 100
-            this.lastyearIncome = hasil2.toFixed(2)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.incomeLastYear()
     },
     cardFunc(val) {
       if (val === 3) {
@@ -348,53 +323,16 @@ export default {
       }
     },
     cashFlow() {
-      axios
-        .post(
-          `http://127.0.0.1:3001/history/revenue?select=${this.chartRevenue}`
-        )
-        .then((response) => {
-          const dateData = response.data.data.map(function (e) {
-            return e.Date
-          })
-          const totalData = response.data.data.map(function (e) {
-            return e.Total
-          })
-          var arr2 = []
-          for (var i = 0; i < dateData.length; i++) {
-            arr2.push([`${dateData[i]}`])
-          }
-          for (var x = 0; x < dateData.length; x++) {
-            arr2[x].push(totalData[x])
-          }
-          this.cashFlowIn = arr2
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.revenueChart(this.chartRevenue)
     },
     yearsIncome() {
-      axios
-        .post('http://127.0.0.1:3001/history')
-        .then((response) => {
-          this.yearIncome = response.data.data[0].ThisYears_Income
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.incomeYear()
     },
     totalOrders() {
-      axios
-        .get('http://127.0.0.1:3001/history/orders')
-        .then((response) => {
-          this.totalOrder = response.data.data[0].Total_Orders
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.weaklyOrder()
     },
     todaysIncome() {
-      axios
-        .get('http://127.0.0.1:3001/history')
+      this.incomeToday()
         .then((response) => {
           if (response.data.data.length === undefined) {
             this.todayIncome = 0
@@ -403,19 +341,11 @@ export default {
           }
         })
         .catch((error) => {
-          console.log('ini error')
           console.log(error)
         })
     },
     ordersGrouping() {
-      axios
-        .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${this.calendar}`)
-        .then((response) => {
-          this.history = response.data.data
-        })
-        .catch((error) => {
-          console.log(error)
-        })
+      this.recentOrder(this.calendar)
     },
     addOn(dat) {
       this.isHide = dat

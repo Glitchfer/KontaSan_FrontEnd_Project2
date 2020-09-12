@@ -83,16 +83,15 @@ export default {
               error.response.data.msg === 'invalid token' ||
               error.response.data.msg === 'invalid signature'
             ) {
-              localStorage.removeItem('token')
-              context.commit('delUser')
-              router.push('/login')
-              alert('Invalid Token, Relogin required')
               axios
                 .patch(
                   `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
                 )
                 .then(response => {
-                  console.log(response.data)
+                  localStorage.removeItem('token')
+                  context.commit('delUser')
+                  router.push('/login')
+                  alert('Invalid Token, Relogin required')
                 })
                 .catch(error => {
                   console.log(error)
@@ -102,16 +101,16 @@ export default {
               context.commit('delUser')
               router.push('/login')
               alert('Token Expired, Relogin required')
-              axios
-                .patch(
-                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
-                )
-                .then(response => {
-                  console.log(response.data)
-                })
-                .catch(error => {
-                  console.log(error)
-                })
+              // axios
+              //   .patch(
+              //     `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+              //   )
+              //   .then(response => {
+              //     console.log(response.data)
+              //   })
+              //   .catch(error => {
+              //     console.log(error)
+              //   })
             }
           }
           return Promise.reject(error)
