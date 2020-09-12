@@ -80,7 +80,6 @@ export default {
       this.$emit('increase', 1)
       // ===== Data untuk total harga (blm kelar) ===================
       const total = val.itemDetail.product_price * inc.qty
-      // this.total = [...this.total, total]
       this.total += total
       console.log(inc.qty)
 
@@ -96,9 +95,7 @@ export default {
             `http://127.0.0.1:3001/trigger/orders/${this.orders_id}`,
             this.form
           )
-          .then((response) => {
-            // console.log('update orders')
-          })
+          .then((response) => {})
           .catch((error) => {
             console.log(error.response.data.msg)
           })
@@ -110,7 +107,6 @@ export default {
           .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
           .then((response) => {
             this.$emit('ordersData', response.data.data)
-            // console.log('get order by invoice id berhasil')
           })
           .catch((error) => {
             console.log('get order by invoice id gagal')
@@ -125,14 +121,10 @@ export default {
             `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
           )
           .then((response) => {
-            // this.invoiceData.invoice_num = response.data.data.invoice_number
             this.invoiceData.total_price = response.data.data.total_price
             this.invoiceData.tax = response.data.data.tax
             this.invoiceData.sub_total = response.data.data.sub_total
             this.invoiceData.update_at = response.data.data.updated_at
-            // console.log('Update Invoice')
-            // console.log('invoice data in wishlist')
-            // console.log(response.data.data)
             this.$emit(
               'invoiceData',
               response.data.data,
@@ -157,7 +149,6 @@ export default {
       } else {
         this.$emit('decrease', 1)
       }
-      // const total = val.itemDetail.product_price * dec.qty
       this.total = this.total === 0 ? 0 : (this.total = this.total - sum)
       console.log(dec.qty)
       this.form.item_quantity = dec.qty
@@ -171,9 +162,7 @@ export default {
             `http://127.0.0.1:3001/trigger/orders/${this.orders}`,
             this.form
           )
-          .then((response) => {
-            // console.log('update order')
-          })
+          .then((response) => {})
           .catch((error) => {
             console.log(error)
           })
@@ -186,13 +175,10 @@ export default {
           )
           .then((response) => {
             console.log('patch invoice')
-            // this.invoiceData.invoice_num = response.data.data.invoice_number
             this.invoiceData.total_price = response.data.data.total_price
             this.invoiceData.tax = response.data.data.tax
             this.invoiceData.sub_total = response.data.data.sub_total
             this.invoiceData.update_at = response.data.data.updated_at
-            // console.log('invoice data in wishlist')
-            // console.log(response.data.data)
             this.$emit(
               'invoiceData',
               response.data.data,
@@ -213,7 +199,6 @@ export default {
           .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
           .then((response) => {
             this.$emit('ordersData', response.data.data)
-            // console.log('get order by invoice id')
           })
           .catch((error) => {
             console.log(error.response.data.msg)
@@ -222,10 +207,6 @@ export default {
     }
   }
 }
-// syntax SQL untuk menampilkan revenue berdasarkan hari/minggu/bulan/tahun
-// SELECT COUNT(*) as Orders WHERE YEARWEEK()
-// SELECT COUNT(*) as Orders from history WHERE YEARWEEK(history_created_at) = YEARWEEK(NOW()) <- untuk minggu ini
-// SELECT COUNT(*) as Orders from history WHERE WEEK(history_created_at) = WEEK(NOW()) GROUP BY WEEK(NOW())
 </script>
 
 <style scoped>

@@ -8,29 +8,58 @@
       <div class="history-img">
         <router-link to="/history" class="histo">history</router-link>
       </div>
-      <div id="addclk" class="add-img" v-on:click="addOn()"></div>
+      <div id="addclk" class="add-img" v-on:click="addOn()" v-if="user.user_role === 1"></div>
+      <div id="addclk" class="add-img" v-on:click="addOn2()" v-else></div>
+    </div>
+    <div v-if="alertOn === true" class="msgAlert">
+      <p>"You can't access this feature"</p>
     </div>
   </b-col>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Left',
   data() {
-    return {}
+    return {
+      alertOn: false
+    }
   },
   components: {},
-  computed: {},
+  computed: {
+    ...mapGetters({
+      user: 'getDataUser'
+    })
+  },
   methods: {
     addOn() {
       this.$emit('addShow', true)
-      // document.querySelector('#addModal').style.display = 'block'
+    },
+    addOn2() {
+      this.alertOn = true
+      setTimeout(() => {
+        this.alertOn = false
+      }, 2000)
     }
   }
 }
 </script>
 
 <style scoped>
+.msgAlert {
+  padding-top: 25px;
+  background-color: rgba(255, 8, 90, 0.616);
+  left: 10%;
+  top: 10px;
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  z-index: 5;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.329);
+}
 .beranda {
   width: 30px;
   height: 30px;

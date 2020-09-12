@@ -85,7 +85,8 @@ export default {
       page: 'getPage',
       paginationInfo: 'getPaginationInfo',
       products: 'getProduct',
-      userName: 'getUserName'
+      userName: 'getUserName',
+      dataUser: 'getDataUser'
     }),
     mainOrSrc() {
       return this.products
@@ -99,6 +100,7 @@ export default {
     ...mapMutations(['setPage']),
     dummy() {},
     selectMenu(index, item) {
+      console.log(this.dataUser)
       this.$emit('increment', 1, index, item)
       this.isActive = index
       this.$emit('selectedItem', item)

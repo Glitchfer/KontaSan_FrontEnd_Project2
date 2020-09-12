@@ -54,9 +54,6 @@ export default {
         .catch(error => {
           console.log(error)
         })
-      // localStorage.removeItem('token')
-      // context.commit('delUser')
-      // router.push('/login')
     },
     interceptorRequest(context) {
       console.log('interceptorRequest')
@@ -124,6 +121,9 @@ export default {
     },
     getUserName(state) {
       return state.userName
+    },
+    getDataUser(state) {
+      return state.user
     }
   }
 }

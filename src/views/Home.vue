@@ -89,7 +89,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userName: 'getUserName'
+      userName: 'getUserName',
+      dataUser: 'getDataUser'
     })
   },
   methods: {
