@@ -90,7 +90,8 @@ export default {
   computed: {
     ...mapGetters({
       userName: 'getUserName',
-      dataUser: 'getDataUser'
+      dataUser: 'getDataUser',
+      invoiceId: 'getInvoiceId'
     })
   },
   methods: {
@@ -149,6 +150,7 @@ export default {
       }
       // ====== POST INVOICE ======
       this.form.cashier_name = this.userName
+      // this.form.invoice_id = this.invoiceId
       console.log(this.form)
       axios
         .post('http://127.0.0.1:3001/trigger/orders', this.form)
@@ -161,11 +163,9 @@ export default {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []
-          console.log('error in home.vue (line 180)')
-          console.log(error.response.data.msg)
-          alert(
-            'Cashier name & invoice id must be filled before process the orders'
-          )
+          console.log('error in /views/Home.vue (line 180)')
+          alert(error.response.data.msg)
+          alert('Invoice id must be filled before process the orders')
         })
     },
     inc(val) {

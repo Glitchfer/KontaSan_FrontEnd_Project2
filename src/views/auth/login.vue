@@ -1,5 +1,8 @@
 <template>
   <b-container>
+    <div v-if="alertOn === true" class="msgAlert">
+      <p>{{this.msg}}</p>
+    </div>
     <div class="loginPage">
       <div class="loginForm">
         <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
@@ -9,7 +12,7 @@
           <br />
           <button type="submit">Login</button>
           <button type="reset">Reset</button>
-          <a href="#">Lupa password?</a>
+          <a href="#" @click="lupa">Lupa password?</a>
           <div class="register">
             <div @click="onRegBtn" class="regBtn">
               <h6>Register New Account</h6>
@@ -38,6 +41,8 @@ export default {
   name: 'Login',
   data() {
     return {
+      msg: '',
+      alertOn: false,
       form: {
         user_email: '',
         user_password: ''
@@ -60,6 +65,13 @@ export default {
   },
   methods: {
     ...mapActions(['login']),
+    lupa() {
+      this.msg = 'Please contact an admin'
+      this.alertOn = true
+      setTimeout(() => {
+        this.alertOn = false
+      }, 2000)
+    },
     onSubmit() {
       //   console.log(this.form)
       this.login(this.form)
@@ -67,7 +79,11 @@ export default {
           this.$router.push('/')
         })
         .catch((error) => {
-          console.log(error)
+          this.alertOn = true
+          setTimeout(() => {
+            this.alertOn = false
+          }, 2000)
+          this.msg = error.data.msg
         })
     },
     onReset() {
@@ -87,6 +103,25 @@ export default {
 </script>
 
 <style scoped>
+.msgAlert {
+  text-align: center;
+  padding-top: 25px;
+  background-color: rgba(255, 8, 90, 0.616);
+  left: 10px;
+  top: 10px;
+  margin: 0 auto;
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  z-index: 5;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.329);
+}
+.msgAlert p {
+  margin: 3px auto;
+  width: 150px;
+}
 .registerPage {
   top: 0;
   left: 0;

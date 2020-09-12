@@ -1,5 +1,8 @@
 <template>
   <div class="blok1">
+    <div v-if="alertOn === true" class="msgAlert">
+      <p>{{this.msg}}</p>
+    </div>
     <div class="formRegis">
       <h4>Create new account</h4>
       <p>* (important)</p>
@@ -25,6 +28,8 @@ export default {
   name: 'Register',
   data() {
     return {
+      msg: '',
+      alertOn: false,
       form: {
         user_email: '',
         user_password: '',
@@ -38,10 +43,14 @@ export default {
     onSubmit() {
       this.regist(this.form)
         .then((response) => {
-          console.log(response.data)
+          alert('Register Success')
         })
         .catch((error) => {
-          console.log(error)
+          this.alertOn = true
+          setTimeout(() => {
+            this.alertOn = false
+          }, 2000)
+          this.msg = error.data.msg
         })
     },
     close() {
@@ -52,6 +61,25 @@ export default {
 </script>
 
 <style scoped>
+.msgAlert {
+  text-align: center;
+  padding-top: 0px;
+  background-color: rgba(255, 8, 90, 0.568);
+  left: 10px;
+  top: 10px;
+  margin: 0 auto;
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  z-index: 5;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.329);
+}
+.msgAlert p {
+  margin: 0px auto;
+  width: 150px;
+}
 .blok1 {
   position: relative;
   display: flex;

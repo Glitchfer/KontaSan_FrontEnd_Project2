@@ -4,11 +4,12 @@ import Auth from './modules/auth'
 import Product from './modules/product'
 import Register from './modules/register'
 import User from './modules/user'
+import Order from './modules/order'
 import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { Auth, Product, Register, User },
+  modules: { Auth, Product, Register, User, Order },
   state: {},
   mutations: {},
   actions: {},

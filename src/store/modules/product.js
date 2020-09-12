@@ -26,7 +26,6 @@ export default {
       state.sortBy = payload
     },
     setSearch(state, payload) {
-      console.log(payload)
       state.srcClicked = payload[1]
       state.srcInput = payload[0]
     },
@@ -69,13 +68,12 @@ export default {
               `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
             )
             .then(response => {
-              console.log(response)
               context.commit('setProduct', response.data)
               context.state.products = response.data.data
               context.state.paginationInfo = response.data.pagination
             })
             .catch(error => {
-              console.log(error)
+              alert(error.response.data.msg)
             })
         } else {
           context.state.srcClicked = false

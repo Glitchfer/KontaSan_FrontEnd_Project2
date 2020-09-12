@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <div v-if="alertOn === true" class="msgAlert">
+      <p>{{this.msg}}</p>
+    </div>
     <b-container>
       <a class="logout" @click="onLogout">Logout</a>
       <h4 v-if="user.user_role === 1">Admin</h4>
@@ -55,6 +58,8 @@ export default {
   name: 'Dashboar',
   data() {
     return {
+      msg: '',
+      alertOn: false,
       onSetting: false,
       userId: null,
       form: {
@@ -87,10 +92,14 @@ export default {
       this.throwUserId(this.userId)
       this.patchUser(this.form)
         .then((response) => {
-          console.log(response.data)
+          console.log('Update success')
         })
         .catch((error) => {
-          console.log(error)
+          this.alertOn = true
+          setTimeout(() => {
+            this.alertOn = false
+          }, 2000)
+          this.msg = error.data.msg
         })
     },
     onReset() {
@@ -105,6 +114,25 @@ export default {
 </script>
 
 <style scoped>
+.msgAlert {
+  text-align: center;
+  padding-top: 0px;
+  background-color: rgba(255, 8, 90, 0.568);
+  left: 10px;
+  top: 10px;
+  margin: 0 auto;
+  position: absolute;
+  width: 200px;
+  height: 100px;
+  z-index: 5;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.329);
+}
+.msgAlert p {
+  margin: 0px auto;
+  width: 150px;
+}
 .userPage {
   top: 0;
   left: 0;

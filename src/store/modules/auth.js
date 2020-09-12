@@ -21,6 +21,8 @@ export default {
     delUser(state) {
       state.user = {}
       state.token = null
+      state.userId = null
+      state.activityId = null
     }
   },
   actions: {
@@ -41,22 +43,25 @@ export default {
       })
     },
     logout(context) {
-      axios
-        .patch(
-          `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
-        )
-        .then(response => {
-          console.log(response.data)
-          localStorage.removeItem('token')
-          context.commit('delUser')
-          router.push('/login')
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      if (context.state.userId === null && context.state.activityId === null) {
+        return null
+      } else {
+        axios
+          .patch(
+            `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+          )
+          .then(response => {
+            console.log(response.data)
+            localStorage.removeItem('token')
+            context.commit('delUser')
+            router.push('/login')
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     },
     interceptorRequest(context) {
-      console.log('interceptorRequest')
       axios.interceptors.request.use(
         function(config) {
           config.headers.Authorization = `Bearer ${context.state.token}`
@@ -73,7 +78,6 @@ export default {
           return response
         },
         function(error) {
-          console.log(error.response)
           if (error.response.status === 400) {
             if (
               error.response.data.msg === 'invalid token' ||

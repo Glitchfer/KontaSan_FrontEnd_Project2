@@ -3,9 +3,7 @@
   <div class="checkout" v-bind:style="num > 0 ? isTrue : isFalse">
     <div class="btn-gate">
       <div class="check-button">
-        <button id="checkout" class="button" v-on:click="checkoutModalOn()">
-          Checkout
-        </button>
+        <button id="checkout" class="button" v-on:click="checkoutModalOn()">Checkout</button>
       </div>
       <div class="cancel-button cancelBtn">
         <button v-on:click="cancel()" class="button">Cancel</button>
@@ -15,6 +13,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Checkoutbtn',
   data() {
@@ -28,12 +27,20 @@ export default {
     }
   },
   props: ['num'],
-  computed: {},
+  computed: {
+    ...mapGetters({
+      invoiceId: 'getInvoiceId'
+    })
+  },
   methods: {
+    ...mapActions(['cancelOrder', 'cancelInvoice', 'delTrigger']),
     checkoutModalOn() {
       this.$emit('checkoutModalOn', true)
     },
     cancel() {
+      this.cancelOrder(this.invoiceId)
+      this.cancelInvoice(this.invoiceId)
+      this.delTrigger()
       this.$emit('reset', 0, [], '', null)
     }
   }

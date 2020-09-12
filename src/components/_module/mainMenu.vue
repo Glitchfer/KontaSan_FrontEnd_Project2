@@ -96,11 +96,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ get_product: 'getProducts', throwSorting: 'throwSorting' }),
+    ...mapActions({
+      get_product: 'getProducts',
+      throwSorting: 'throwSorting',
+      triggerInvoice: 'triggerInvoice'
+    }),
     ...mapMutations(['setPage']),
     dummy() {},
     selectMenu(index, item) {
-      console.log(this.dataUser)
       this.$emit('increment', 1, index, item)
       this.isActive = index
       this.$emit('selectedItem', item)
@@ -113,15 +116,13 @@ export default {
         .post('http://127.0.0.1:3001/trigger/invoice')
         .then((response) => {
           alert('Get id success')
-          this.invoiceData = response.data
-          this.invoiceMsg = response.msg
-          this.invoice_id = response.data.data.invoice_id
           this.$emit(
             'invoiceData',
             response.data,
             response.data.data.invoice_id,
             response.data.data.invoice_number
           )
+          this.triggerInvoice(response.data.data.invoice_id)
         })
         .catch((error) => {
           console.log(error)
