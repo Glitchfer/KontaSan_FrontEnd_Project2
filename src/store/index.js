@@ -6,11 +6,12 @@ import Register from './modules/register'
 import User from './modules/user'
 import Order from './modules/order'
 import History from './modules/history'
+import Category from './modules/category'
 import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { Auth, Product, Register, User, Order, History },
+  modules: { Auth, Product, Register, User, Order, History, Category },
   state: {},
   mutations: {},
   actions: {},

@@ -249,17 +249,10 @@ export default {
       ordersBtn: false,
       todaysBtn: true,
       todayIncome: 0,
-      // totalOrder: 0,
-      // yearIncome: 0,
-      // cashFlowIn: null,
       isHide: false,
       isTrue: null,
       calendar: 'day',
-      // history: [],
       chartRevenue: 'hours'
-      // yesterdayIncome: 0,
-      // lastweekOrder: 0
-      // lastyearIncome: 0
     }
   },
   components: {

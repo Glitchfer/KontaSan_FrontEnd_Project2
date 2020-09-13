@@ -4,7 +4,7 @@
     <div class="list">
       <!-- selected item -->
       <div class="no_1" v-for="(item, index) in cartItemMap" :key="index">
-        <img :src="item.itemDetail.img" alt="#" />
+        <img :src="`http://127.0.0.1:3001/${item.itemDetail.img}`" alt="#" />
         <p>{{ item.itemDetail.product_name }}</p>
         <p>{{ 'Rp. ' + item.itemDetail.product_price * item.qty }}</p>
         <div class="count">
