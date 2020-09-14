@@ -15,7 +15,7 @@
         </select>
         <h4>{{ sortBy }}</h4>
         <input type="text" :placeholder="userName" />
-        <button type="button" class="getInvoice" @click="getData">Get id</button>
+        <button type="button" class="getInvoice" @click="getData">Add order</button>
         <h6>{{ invoice_id }}</h6>
       </form>
       <b-col
@@ -321,7 +321,8 @@ p.harga {
   position: absolute;
   width: 50px;
   height: 25px;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 10px;
   top: 1.5px;
   left: 170px;
   box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.363);
