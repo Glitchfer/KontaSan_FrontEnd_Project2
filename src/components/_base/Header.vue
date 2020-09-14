@@ -9,7 +9,7 @@
           </div>
         </b-col>
         <b-col cols="10" sm="10" md="10" lg="10" class="title">
-          <h1 class="judul">Food Items</h1>
+          <h1 class="judul">Konta Meal</h1>
         </b-col>
         <b-col cols="1" sm="1" md="1" lg="1" class="search">
           <div type="submit" class="search-img" @click.prevent="search"></div>
