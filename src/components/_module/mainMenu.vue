@@ -29,7 +29,7 @@
       >
         <div
           class="img1 a1"
-          v-bind:style="{ backgroundImage: `url(http://172.31.59.4:3001/${item.img})` }"
+          v-bind:style="{ backgroundImage: `url(http://127.0.0.1:3001/${item.img})` }"
           v-on:click="selectMenu(index, item)"
         >
           <div v-if="count < 1" class="selected">
