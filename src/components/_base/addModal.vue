@@ -83,7 +83,7 @@
                     type="text"
                     name
                     id="input-price"
-                    :placeholder="'Rp. ' + this.selectedItem.product_price"
+                    :placeholder="this.selectedItem.product_price"
                     v-model="form.product_price"
                     :disabled="btnName1 === 'Delete'"
                   />
