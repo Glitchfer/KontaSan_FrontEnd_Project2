@@ -240,7 +240,7 @@ export default {
             this.getCategoryData()
           })
           .catch((error) => {
-            console.log(error.data.msg)
+            console.log(error.data)
           })
       }
     },

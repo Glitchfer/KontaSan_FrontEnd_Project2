@@ -1,6 +1,7 @@
 import axios from 'axios'
 export default {
   state: {
+    urlApi: process.env.VUE_APP_URL,
     categoryData: {}
   },
   mutations: {
@@ -12,7 +13,7 @@ export default {
     getCategory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get('http://127.0.0.1:3001/category')
+          .get(`${context.state.urlApi}category`)
           .then(response => {
             resolve(response.data.data)
             context.commit('seCategoryData', response.data.data)
@@ -25,7 +26,7 @@ export default {
     categoryAdd(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/category', payload)
+          .post(`${context.state.urlApi}category`, payload)
           .then(response => {
             resolve(response)
           })
@@ -37,7 +38,7 @@ export default {
     updateCategory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://127.0.0.1:3001/category/${payload[0]}`, payload[1])
+          .patch(`${context.state.urlApi}category/${payload[0]}`, payload[1])
           .then(response => {
             resolve(response)
           })
