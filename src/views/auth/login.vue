@@ -73,7 +73,6 @@ export default {
       }, 2000)
     },
     onSubmit() {
-      //   console.log(this.form)
       this.login(this.form)
         .then((result) => {
           this.$router.push('/')
