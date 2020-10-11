@@ -146,6 +146,7 @@ export default {
   name: 'Addmodal',
   data() {
     return {
+      urlAPI: process.env.VUE_APP_URL,
       productId: null,
       productData: [],
       selectedItem: [],

@@ -54,6 +54,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      urlAPI: process.env.VUE_APP_URL,
       respon: false,
       num: 0,
       isHide: false,

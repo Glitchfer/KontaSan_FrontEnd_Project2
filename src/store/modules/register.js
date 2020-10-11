@@ -1,6 +1,8 @@
 import axios from 'axios'
 export default {
-  state: {},
+  state: {
+    urlAPI: process.env.VUE_APP_URL
+  },
   mutations: {},
   actions: {
     regist(context, payload) {

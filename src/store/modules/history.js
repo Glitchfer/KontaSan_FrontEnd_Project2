@@ -1,6 +1,7 @@
 import axios from 'axios'
 export default {
   state: {
+    urlAPI: process.env.VUE_APP_URL,
     todayIncome: 0,
     thisYearIncome: 0,
     weaklyOrder: 0,

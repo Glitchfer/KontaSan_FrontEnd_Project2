@@ -44,6 +44,7 @@ export default {
   name: 'Wishlist',
   data() {
     return {
+      urlAPI: process.env.VUE_APP_URL,
       isSame: 1,
       itemInfo: [],
       isTrue: {

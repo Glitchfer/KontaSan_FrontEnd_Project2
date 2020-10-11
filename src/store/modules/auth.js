@@ -2,6 +2,7 @@ import axios from 'axios'
 import router from '../../router/index'
 export default {
   state: {
+    urlAPI: process.env.VUE_APP_URL,
     userName: '',
     userId: null,
     activityId: null,

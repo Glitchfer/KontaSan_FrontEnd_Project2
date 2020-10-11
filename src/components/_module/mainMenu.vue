@@ -59,7 +59,7 @@ export default {
   name: 'Main',
   data() {
     return {
-      urlApi: process.env.VUE_APP_URL,
+      urlAPI: process.env.VUE_APP_URL,
       urlApi2: process.env.VUE_APP_URL,
       invoice_id: '',
       invoiceData: [],

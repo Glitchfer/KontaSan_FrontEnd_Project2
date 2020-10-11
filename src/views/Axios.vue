@@ -54,6 +54,7 @@ export default {
   },
   data() {
     return {
+      urlAPI: process.env.VUE_APP_URL,
       count: 0,
       cart: [],
       page: 1,

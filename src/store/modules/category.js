@@ -1,7 +1,7 @@
 import axios from 'axios'
 export default {
   state: {
-    urlApi: process.env.VUE_APP_URL,
+    urlAPI: process.env.VUE_APP_URL,
     categoryData: {}
   },
   mutations: {
