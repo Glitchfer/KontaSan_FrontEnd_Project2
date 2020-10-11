@@ -29,7 +29,7 @@
       >
         <div
           class="img1 a1"
-          v-bind:style="{ backgroundImage: `url(http://127.0.0.1:3001/${item.img})` }"
+          v-bind:style="{ backgroundImage: `url(${urlAPI}${item.img})` }"
           v-on:click="selectMenu(index, item)"
         >
           <div v-if="count < 1" class="selected">
@@ -115,7 +115,8 @@ export default {
     },
     getData() {
       axios
-        .post('http://127.0.0.1:3001/trigger/invoice')
+        // .post('http://127.0.0.1:3001/trigger/invoice')
+        .post(`${this.urlAPI}trigger/invoice`)
         .then((response) => {
           alert('Get id success')
           this.$emit(

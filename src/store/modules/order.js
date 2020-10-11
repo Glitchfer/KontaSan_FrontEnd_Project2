@@ -19,7 +19,8 @@ export default {
     cancelOrder(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`http://127.0.0.1:3001/trigger/invoice/${payload}`, payload)
+          // .delete(`http://127.0.0.1:3001/trigger/invoice/${payload}`, payload)
+          .delete(`${context.state.urlAPI}trigger/invoice/${payload}`, payload)
           .then(response => {
             resolve(response)
             console.log(response)
@@ -32,7 +33,8 @@ export default {
     cancelInvoice(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`http://127.0.0.1:3001/trigger/orders/${payload}`, payload)
+          // .delete(`http://127.0.0.1:3001/trigger/orders/${payload}`, payload)
+          .delete(`${context.state.urlAPI}trigger/orders/${payload}`, payload)
           .then(response => {
             resolve(response)
             console.log(response)

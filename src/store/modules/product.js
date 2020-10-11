@@ -40,7 +40,8 @@ export default {
         if (context.state.sortBy === 'Home') {
           axios
             .get(
-              `http://127.0.0.1:3001/product?page=${context.state.page}&limit=${context.state.limit}`
+              // `http://127.0.0.1:3001/product?page=${context.state.page}&limit=${context.state.limit}`
+              `${context.state.urlAPI}product?page=${context.state.page}&limit=${context.state.limit}`
             )
             .then(response => {
               context.commit('setProduct', response.data)
@@ -53,7 +54,8 @@ export default {
         } else {
           axios
             .get(
-              `http://127.0.0.1:3001/product/sort?sort_by=${context.state.sortBy}`
+              // `http://127.0.0.1:3001/product/sort?sort_by=${context.state.sortBy}`
+              `${context.state.urlAPI}product/sort?sort_by=${context.state.sortBy}`
             )
             .then(response => {
               context.state.products = response.data.data
@@ -66,7 +68,8 @@ export default {
         if (context.state.inputLength > 0) {
           axios
             .get(
-              `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
+              // `http://127.0.0.1:3001/product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
+              `${context.state.urlAPI}product/search?name=${context.state.srcInput}&page=${context.state.page}&limit=${context.state.limit}`
             )
             .then(response => {
               context.commit('setProduct', response.data)
@@ -84,7 +87,8 @@ export default {
     addProduct(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/product', payload)
+          // .post('http://127.0.0.1:3001/product', payload)
+          .post(`${context.state.urlAPI}product`, payload)
           .then(response => {
             resolve(response)
           })
@@ -110,7 +114,9 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .patch(
-            `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`,
+            // `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`,
+            // payload
+            `${context.state.urlAPI}product/${context.state.selectedItem.product_id}`,
             payload
           )
           .then(response => {
@@ -125,7 +131,8 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .delete(
-            `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`
+            // `http://127.0.0.1:3001/product/${context.state.selectedItem.product_id}`
+            `${context.state.urlAPI}product/${context.state.selectedItem.product_id}`
           )
           .then(response => {
             resolve(response)

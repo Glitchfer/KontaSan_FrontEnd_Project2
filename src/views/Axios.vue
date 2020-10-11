@@ -90,7 +90,8 @@ export default {
     get_product() {
       axios
         .get(
-          `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
+          // `http://127.0.0.1:3001/product?page=${this.page}&limit=${this.limit}`
+          `${this.urlAPI}product?page=${this.page}&limit=${this.limit}`
         )
         .then((response) => {
           this.products = response.data.data
@@ -103,7 +104,8 @@ export default {
     addProduct() {
       console.log(this.form)
       axios
-        .post('http://127.0.0.1:3001/product', this.form)
+        // .post('http://127.0.0.1:3001/product', this.form)
+        .post(`${this.urlAPI}product`, this.form)
         .then((response) => {
           console.log(response)
           this.alert = true
@@ -125,7 +127,8 @@ export default {
     },
     patchProduct() {
       axios
-        .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
+        // .patch(`http://127.0.0.1:3001/product/${this.product_id}`, this.form)
+        .patch(`${this.urlAPI}product/${this.product_id}`, this.form)
         .then((response) => {
           console.log(response)
           this.alert = true
@@ -140,7 +143,8 @@ export default {
     },
     deleteProduct(data) {
       axios
-        .patch(`http://127.0.0.1:3001/product/${data.product_id}`)
+        // .patch(`http://127.0.0.1:3001/product/${data.product_id}`)
+        .patch(`${this.urlAPI}product/${data.product_id}`)
         .then((response) => {
           this.alert = true
           this.isMsg = response.data.msg

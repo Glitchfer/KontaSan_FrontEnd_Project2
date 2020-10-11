@@ -191,7 +191,8 @@ export default {
         this.btnName2 = 'Update'
         this.btnName3 = 'Add'
         axios
-          .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          // .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          .get(`${this.urlAPI}product?page=1&limit=100`)
           .then((response) => {
             this.productData = response.data.data
           })
@@ -203,7 +204,8 @@ export default {
         this.btnName2 = 'Add'
         this.btnName3 = 'Delete'
         axios
-          .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          // .get('http://127.0.0.1:3001/product?page=1&limit=100')
+          .get(`${this.urlAPI}product?page=1&limit=100`)
           .then((response) => {
             this.productData = response.data.data
           })

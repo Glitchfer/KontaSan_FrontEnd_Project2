@@ -30,7 +30,8 @@ export default {
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://127.0.0.1:3001/users/login', payload)
+          // .post('http://127.0.0.1:3001/users/login', payload)
+          .post(`${context.state.urlAPI}users/login`, payload)
           .then(response => {
             console.log(response.data)
             context.commit('setUser', response.data.data)
@@ -49,7 +50,8 @@ export default {
       } else {
         axios
           .patch(
-            `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+            // `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+            `${context.state.urlAPI}users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
           )
           .then(response => {
             console.log(response.data)
@@ -86,7 +88,8 @@ export default {
             ) {
               axios
                 .patch(
-                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                  // `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                  `${context.state.urlAPI}users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
                 )
                 .then(response => {})
                 .catch(error => {
@@ -99,7 +102,8 @@ export default {
             } else if (error.response.data.msg === 'jwt expired') {
               axios
                 .patch(
-                  `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                  // `http://127.0.0.1:3001/users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
+                  `${context.state.urlAPI}users/?activity_id=${context.state.activityId}&user_id=${context.state.userId}`
                 )
                 .then(response => {
                   console.log(response.data)

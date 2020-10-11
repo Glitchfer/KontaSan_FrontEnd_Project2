@@ -41,7 +41,8 @@ export default {
     recentOrder(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${payload}`)
+          // .get(`http://127.0.0.1:3001/trigger/invoice?calendar=${payload}`)
+          .get(`${context.state.urlAPI}trigger/invoice?calendar=${payload}`)
           .then(response => {
             resolve(response)
             context.commit('setRecentOrder', response.data.data)
@@ -55,7 +56,8 @@ export default {
     incomeToday(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get('http://127.0.0.1:3001/history')
+          // .get('http://127.0.0.1:3001/history')
+          .get(`${context.state.urlAPI}history`)
           .then(response => {
             resolve(response)
             context.commit(
@@ -70,7 +72,8 @@ export default {
     },
     weaklyOrder(context, payload) {
       axios
-        .get('http://127.0.0.1:3001/history/orders')
+        // .get('http://127.0.0.1:3001/history/orders')
+        .get(`${context.state.urlAPI}history/orders`)
         .then(response => {
           context.commit('setWeaklyOrder', response.data.data[0].Total_Orders)
         })
@@ -80,7 +83,8 @@ export default {
     },
     incomeYear(context, payload) {
       axios
-        .post('http://127.0.0.1:3001/history')
+        // .post('http://127.0.0.1:3001/history')
+        .post(`${context.state.urlAPI}history`)
         .then(response => {
           context.commit(
             'setThisYearIncome',
@@ -93,7 +97,8 @@ export default {
     },
     revenueChart(context, payload) {
       axios
-        .post(`http://127.0.0.1:3001/history/revenue?select=${payload}`)
+        // .post(`http://127.0.0.1:3001/history/revenue?select=${payload}`)
+        .post(`${context.state.urlAPI}history/revenue?select=${payload}`)
         .then(response => {
           const dateData = response.data.data.map(function(e) {
             return e.Date
@@ -116,7 +121,8 @@ export default {
     },
     incomeLastYear(context, payload) {
       axios
-        .post('http://127.0.0.1:3001/income/income')
+        // .post('http://127.0.0.1:3001/income/income')
+        .post(`${context.state.urlAPI}income/income`)
         .then(response => {
           if (response.data.data[0].sub_total === null) {
             const nilai = 0
@@ -135,7 +141,8 @@ export default {
     },
     incomeYesterday(context, payload) {
       axios
-        .get('http://127.0.0.1:3001/income')
+        // .get('http://127.0.0.1:3001/income')
+        .get(`${context.state.urlAPI}income`)
         .then(response => {
           if (response.data.data[0].sub_total === null) {
             const nilai = 0
@@ -153,7 +160,8 @@ export default {
     },
     orderLastWeek(context, payload) {
       axios
-        .get('http://127.0.0.1:3001/income/orders')
+        // .get('http://127.0.0.1:3001/income/orders')
+        .get(`${context.state.urlAPI}income/orders`)
         .then(response => {
           if (response.data.data[0].total_order === 0) {
             const nilai = response.data.data[0].total_order

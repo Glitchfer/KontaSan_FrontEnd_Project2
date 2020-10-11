@@ -15,7 +15,11 @@ export default {
       console.log(payload)
       return new Promise((resolve, reject) => {
         axios
-          .patch(`http://127.0.0.1:3001/users/${context.state.userId}`, payload)
+          // .patch(`http://127.0.0.1:3001/users/${context.state.userId}`, payload)
+          .patch(
+            `${context.state.urlAPI}users/${context.state.userId}`,
+            payload
+          )
           .then(response => {
             resolve(response)
           })

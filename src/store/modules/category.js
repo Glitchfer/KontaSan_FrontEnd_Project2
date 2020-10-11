@@ -38,7 +38,7 @@ export default {
     updateCategory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .patch(`${context.state.urlApi}category/${payload[0]}`, payload[1])
+          .patch(`${context.state.urlAPI}category/${payload[0]}`, payload[1])
           .then(response => {
             resolve(response)
           })
@@ -50,7 +50,8 @@ export default {
     deleteCategory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`http://127.0.0.1:3001/category/${payload}`)
+          // .delete(`http://127.0.0.1:3001/category/${payload}`)
+          .delete(`${context.state.urlAPI}category/${payload}`)
           .then(response => {
             resolve(response)
           })

@@ -4,7 +4,7 @@
     <div class="list">
       <!-- selected item -->
       <div class="no_1" v-for="(item, index) in cartItemMap" :key="index">
-        <img :src="`http://127.0.0.1:3001/${item.itemDetail.img}`" alt="#" />
+        <img :src="`${urlAPI}${item.itemDetail.img}`" alt="#" />
         <p>{{ item.itemDetail.product_name }}</p>
         <p>{{ 'Rp. ' + item.itemDetail.product_price * item.qty }}</p>
         <div class="count">
@@ -93,7 +93,8 @@ export default {
       setTimeout(() => {
         axios
           .patch(
-            `http://127.0.0.1:3001/trigger/orders/${this.orders_id}`,
+            // `http://127.0.0.1:3001/trigger/orders/${this.orders_id}`,
+            `${this.urlAPI}trigger/orders/${this.orders_id}`,
             this.form
           )
           .then((response) => {})
@@ -105,7 +106,8 @@ export default {
       // ===== Get Orders By Invoice Id====
       setTimeout(() => {
         axios
-          .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          // .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          .get(`${this.urlAPI}trigger/orders/${this.form.invoice_id}`)
           .then((response) => {
             this.$emit('ordersData', response.data.data)
           })
@@ -119,7 +121,8 @@ export default {
       setTimeout(() => {
         axios
           .patch(
-            `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+            // `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+            `${this.urlAPI}trigger/invoice/${this.form.invoice_id}`
           )
           .then((response) => {
             this.invoiceData.total_price = response.data.data.total_price
@@ -160,7 +163,8 @@ export default {
       setTimeout(() => {
         axios
           .patch(
-            `http://127.0.0.1:3001/trigger/orders/${this.orders}`,
+            // `http://127.0.0.1:3001/trigger/orders/${this.orders}`,
+            `${this.urlAPI}trigger/orders/${this.orders}`,
             this.form
           )
           .then((response) => {})
@@ -172,7 +176,8 @@ export default {
       setTimeout(() => {
         axios
           .patch(
-            `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+            // `http://127.0.0.1:3001/trigger/invoice/${this.form.invoice_id}`
+            `${this.urlAPI}trigger/invoice/${this.form.invoice_id}`
           )
           .then((response) => {
             console.log('patch invoice')
@@ -197,7 +202,8 @@ export default {
       // ===== Get Orders By Invoice Id====
       setTimeout(() => {
         axios
-          .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          // .get(`http://127.0.0.1:3001/trigger/orders/${this.form.invoice_id}`)
+          .get(`${this.urlAPI}trigger/orders/${this.form.invoice_id}`)
           .then((response) => {
             this.$emit('ordersData', response.data.data)
           })

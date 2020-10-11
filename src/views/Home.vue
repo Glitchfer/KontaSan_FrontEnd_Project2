@@ -154,7 +154,8 @@ export default {
       // this.form.invoice_id = this.invoiceId
       console.log(this.form)
       axios
-        .post('http://127.0.0.1:3001/trigger/orders', this.form)
+        // .post('http://127.0.0.1:3001/trigger/orders', this.form)
+        .post(`${this.urlAPI}trigger/orders`, this.form)
         .then((response) => {
           console.log(response.data)
           this.orders_id = response.data.data.orders_id
