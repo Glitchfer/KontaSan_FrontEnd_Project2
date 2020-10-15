@@ -130,7 +130,7 @@ export default {
       }
       this.cartItem = [...this.cartItem, setCart]
       const data = this.cartItem.find(
-        (item) => item.itemDetail.product_id === itemDetail.product_id
+        item => item.itemDetail.product_id === itemDetail.product_id
       )
 
       this.form.product_id = data.itemDetail.product_id
@@ -141,7 +141,7 @@ export default {
         this.num += 1
       } else if (
         this.cartItemMap.find(
-          (item) => item.itemDetail.product_id === data.itemDetail.product_id
+          item => item.itemDetail.product_id === data.itemDetail.product_id
         )
       ) {
         return null
@@ -156,18 +156,26 @@ export default {
       axios
         // .post('http://127.0.0.1:3001/trigger/orders', this.form)
         .post(`${this.urlAPI}trigger/orders`, this.form)
-        .then((response) => {
-          console.log(response.data)
+        .then(response => {
           this.orders_id = response.data.data.orders_id
-          console.log(response.data.msg)
         })
-        .catch((error) => {
+        .catch(error => {
           this.num = 0
           this.cartItem = []
           this.cartItemMap = []
-          console.log('error in /views/Home.vue (line 180)')
-          alert(error.response.data.msg)
-          alert('Invoice id must be filled before process the orders')
+          this.$bvToast.toast(`${error.response.data.msg}`, {
+            title: 'Warning',
+            variant: 'danger',
+            solid: true
+          })
+          this.$bvToast.toast(
+            'Invoice id must be filled before process the orders',
+            {
+              title: 'Warning',
+              variant: 'danger',
+              solid: true
+            }
+          )
         })
     },
     inc(val) {

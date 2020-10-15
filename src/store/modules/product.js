@@ -77,7 +77,7 @@ export default {
               context.state.paginationInfo = response.data.pagination
             })
             .catch(error => {
-              alert(error.response.data.msg)
+              console.log(error.response.data.msg)
             })
         } else {
           context.state.srcClicked = false

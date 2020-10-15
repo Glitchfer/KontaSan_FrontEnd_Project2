@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div v-if="alertOn === true" class="msgAlert">
-      <p>{{this.msg}}</p>
+      <p>{{ this.msg }}</p>
     </div>
     <b-container>
       <a class="logout" @click="onLogout">Logout</a>
@@ -23,7 +23,12 @@
     </b-container>
     <br />
     <div class="userSetting">
-      <h6 v-if="user.user_role === 1 && onCategory === false" @click="userSetting">User setting</h6>
+      <h6
+        v-if="user.user_role === 1 && onCategory === false"
+        @click="userSetting"
+      >
+        User setting
+      </h6>
       <br v-else />
     </div>
     <p>
@@ -38,7 +43,9 @@
         <h6
           v-if="user.user_role === 1 && onSetting === false"
           @click="categorySetting"
-        >Category setting</h6>
+        >
+          Category setting
+        </h6>
       </div>
     </footer>
     <div v-if="onSetting === true" class="userPage">
@@ -46,9 +53,17 @@
         <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
           <input type="text" v-model="userId" placeholder="User id" />
           <br />
-          <input type="password" v-model="form.user_password" placeholder="User password" />
+          <input
+            type="password"
+            v-model="form.user_password"
+            placeholder="User password"
+          />
           <br />
-          <input type="text" v-model="form.user_status" placeholder="User status" />
+          <input
+            type="text"
+            v-model="form.user_status"
+            placeholder="User status"
+          />
           <br />
           <button type="submit">Submit</button>
           <button type="reset">Reset</button>
@@ -63,7 +78,11 @@
             <label>Category</label>
             <label>Status</label>
           </div>
-          <div v-for="(item, index) in categoryData" :key="index" class="categoryData">
+          <div
+            v-for="(item, index) in categoryData"
+            :key="index"
+            class="categoryData"
+          >
             <input disabled type="text" :placeholder="item.category_id" />
             <input
               :disabled="btnChange === true"
@@ -71,7 +90,11 @@
               :placeholder="item.category_name"
               v-model="nameUpdate"
             />
-            <input :disabled="isStatus === true" type="text" :placeholder="'Active'" />
+            <input
+              :disabled="isStatus === true"
+              type="text"
+              :placeholder="'Active'"
+            />
             <select :disabled="btnChange === true">
               <option value="1">Active</option>
               <option value="0">Inactive</option>
@@ -81,21 +104,42 @@
               :disabled="btnSetting !== 'update'"
               type="button"
               @click="onUpdate(item.category_id)"
-            >u</button>
+            >
+              u
+            </button>
             <button
               v-if="btnSetting !== 'add'"
               :disabled="btnSetting !== 'delete'"
               type="button"
               @click="onDelete(item.category_id)"
-            >d</button>
+            >
+              d
+            </button>
           </div>
           <div v-if="isAdd === true && btnSetting === 'add'" class="tambahData">
-            <input type="text" :placeholder="'Category..'" v-model="add.category_name" />
+            <input
+              type="text"
+              :placeholder="'Category..'"
+              v-model="add.category_name"
+            />
             <button type="button" @click="onCreate">Add</button>
           </div>
-          <div v-if="isUpdate === true && btnSetting === 'update'" class="tambahData">
-            <input type="text" :placeholder="'Type..'" v-model="add.category_name" />
-            <button style="background-color: red;" type="button" @click="resetName">Reset</button>
+          <div
+            v-if="isUpdate === true && btnSetting === 'update'"
+            class="tambahData"
+          >
+            <input
+              type="text"
+              :placeholder="'Type..'"
+              v-model="add.category_name"
+            />
+            <button
+              style="background-color: red;"
+              type="button"
+              @click="resetName"
+            >
+              Reset
+            </button>
           </div>
         </b-form>
         <button
@@ -103,19 +147,25 @@
           class="addData"
           type="button"
           @click="onAdd"
-        >Create category</button>
+        >
+          Create category
+        </button>
         <button
           v-if="btnSetting === 'update'"
           class="addData"
           type="button"
           @click="btnUpdate"
-        >Update</button>
+        >
+          Update
+        </button>
         <button
           v-if="btnSetting === 'delete'"
           class="addData"
           type="button"
           @click="btnDelete"
-        >Delete</button>
+        >
+          Delete
+        </button>
         <select class="btnSetting" v-model="btnSetting">
           <option value="add">Add</option>
           <option value="update">Update</option>
@@ -178,12 +228,13 @@ export default {
     }),
     getCategory() {
       this.getCategoryData()
-        .then((response) => {})
-        .catch((error) => {
+        .then(response => {})
+        .catch(error => {
           console.log(error)
         })
     },
     onAdd() {
+      console.log(this.categoryData)
       if (this.isAdd === false) {
         this.isAdd = true
       } else {
@@ -199,10 +250,10 @@ export default {
         this.msg = 'Form must be filled'
       } else {
         this.categoryAdd(this.add)
-          .then((response) => {
+          .then(response => {
             this.getCategoryData()
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error.data.msg)
           })
       }
@@ -218,11 +269,11 @@ export default {
     },
     onDelete(val) {
       this.deleteCategory(val)
-        .then((response) => {
+        .then(response => {
           console.log('Delete success')
           this.getCategoryData()
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error.data.msg)
         })
     },
@@ -236,11 +287,11 @@ export default {
       } else {
         const arr = [this.category_id, this.add]
         this.updateCategory(arr)
-          .then((response) => {
+          .then(response => {
             console.log('Update success')
             this.getCategoryData()
           })
-          .catch((error) => {
+          .catch(error => {
             console.log(error.data)
           })
       }
@@ -266,10 +317,10 @@ export default {
     onSubmit() {
       this.throwUserId(this.userId)
       this.patchUser(this.form)
-        .then((response) => {
+        .then(response => {
           console.log('Update success')
         })
-        .catch((error) => {
+        .catch(error => {
           this.alertOn = true
           setTimeout(() => {
             this.alertOn = false

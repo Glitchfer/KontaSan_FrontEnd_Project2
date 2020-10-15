@@ -174,6 +174,9 @@ export default {
           }
         })
         .catch(error => {
+          const nilai = 0
+          const hasil = (context.state.weaklyOrder - nilai) * 100
+          context.commit('setLastWeekOrder', hasil)
           console.log(error)
         })
     }

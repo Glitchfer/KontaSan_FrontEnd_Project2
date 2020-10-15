@@ -1,7 +1,7 @@
 <template>
   <div class="blok1">
     <div v-if="alertOn === true" class="msgAlert">
-      <p>{{this.msg}}</p>
+      <p>{{ this.msg }}</p>
     </div>
     <div class="formRegis">
       <h4>Create new account</h4>
@@ -10,7 +10,11 @@
       <form @submit.prevent="onSubmit">
         <input type="email" v-model="form.user_email" placeholder="Email *" />
         <br />
-        <input type="password" v-model="form.user_password" placeholder="Password *" />
+        <input
+          type="password"
+          v-model="form.user_password"
+          placeholder="Password *"
+        />
         <br />
         <input type="text" v-model="form.user_role" placeholder="Role" />
         <br />
@@ -42,10 +46,14 @@ export default {
     ...mapActions(['regist']),
     onSubmit() {
       this.regist(this.form)
-        .then((response) => {
-          alert('Register Success')
+        .then(response => {
+          this.$bvToast.toast('Register Success', {
+            title: 'Success',
+            variant: 'success',
+            solid: true
+          })
         })
-        .catch((error) => {
+        .catch(error => {
           this.alertOn = true
           setTimeout(() => {
             this.alertOn = false

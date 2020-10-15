@@ -126,7 +126,11 @@
         <div class="revenue">
           <div class="revenue-graph">
             <div class="line-chart">
-              <line-chart :colors="['#00f1ff']" :data="cashFlowIn" class="line"></line-chart>
+              <line-chart
+                :colors="['#00f1ff']"
+                :data="cashFlowIn"
+                class="line"
+              ></line-chart>
             </div>
             <h3>Revenue</h3>
             <div class="legend">
@@ -326,14 +330,14 @@ export default {
     },
     todaysIncome() {
       this.incomeToday()
-        .then((response) => {
+        .then(response => {
           if (response.data.data.length === undefined) {
             this.todayIncome = 0
           } else {
             this.todayIncome = response.data.data[0].todays_income
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },

@@ -46,6 +46,28 @@ export default {
     },
     delTrigger(context, payload) {
       context.commit('delId')
+    },
+    sendCheckout(context, payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`${context.state.urlAPI}users/sendemail`)
+          .then(response => {
+            payload[0].toast(`${response.data.msg}`, {
+              title: 'Success',
+              variant: 'success',
+              solid: true
+            })
+            resolve(response.data)
+          })
+          .catch(error => {
+            payload[0].toast(`${error.response.data.msg}`, {
+              title: 'warning',
+              variant: 'danger',
+              solid: true
+            })
+            reject(error.response)
+          })
+      })
     }
   },
   getters: {

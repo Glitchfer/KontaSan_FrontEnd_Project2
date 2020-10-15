@@ -1,14 +1,18 @@
 <template>
   <b-container>
     <div v-if="alertOn === true" class="msgAlert">
-      <p>{{this.msg}}</p>
+      <p>{{ this.msg }}</p>
     </div>
     <div class="loginPage">
       <div class="loginForm">
         <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
           <input type="email" v-model="form.user_email" placeholder="Email" />
           <br />
-          <input type="password" v-model="form.user_password" placeholder="Password" />
+          <input
+            type="password"
+            v-model="form.user_password"
+            placeholder="Password"
+          />
           <br />
           <button type="submit">Login</button>
           <button type="reset">Reset</button>
@@ -37,8 +41,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import Register from '../auth/register'
+import mixin from '../../mixin/mixin'
+
 export default {
   name: 'Login',
+  mixins: [mixin],
   data() {
     return {
       msg: '',
@@ -54,13 +61,6 @@ export default {
     Register
   },
   computed: {
-    //   cara ke-1 untuk menggunakan data dari store
-    // dataName() {
-    //   return this.$store.state.name
-    // }
-    // cara ke-2
-    // ...mapState({ dataName: 'name' })
-    // cara ke-3
     ...mapState(['name'])
   },
   methods: {
@@ -74,10 +74,18 @@ export default {
     },
     onSubmit() {
       this.login(this.form)
-        .then((result) => {
-          this.$router.push('/')
+        .then(result => {
+          this.loginMsg = result.msg
+          this.$bvToast.toast(this.loginMsg, {
+            title: 'Success',
+            variant: 'success',
+            solid: true
+          })
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 2000)
         })
-        .catch((error) => {
+        .catch(error => {
           this.alertOn = true
           setTimeout(() => {
             this.alertOn = false

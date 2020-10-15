@@ -13,7 +13,7 @@ export default {
     getCategory(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`${context.state.urlApi}category`)
+          .get(`${context.state.urlAPI}category`)
           .then(response => {
             resolve(response.data.data)
             context.commit('seCategoryData', response.data.data)
@@ -26,7 +26,7 @@ export default {
     categoryAdd(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`${context.state.urlApi}category`, payload)
+          .post(`${context.state.urlAPI}category`, payload)
           .then(response => {
             resolve(response)
           })

@@ -1,7 +1,14 @@
 <template>
   <b-col cols="12" sm="12" md="8" lg="7" class="mid">
     <b-row cols="12" sm="12" md="12" lg="12" class="menu">
-      <form cols="12" sm="12" md="12" lg="12" class="sortMenu" v-on:submit.prevent="dummy">
+      <form
+        cols="12"
+        sm="12"
+        md="12"
+        lg="12"
+        class="sortMenu"
+        v-on:submit.prevent="dummy"
+      >
         <label for="input-ctgr">Sort By</label>
         <select v-model="sortBy" @change="sorting">
           <option value="Home"></option>
@@ -15,7 +22,9 @@
         </select>
         <h4>{{ sortBy }}</h4>
         <input type="text" :placeholder="userName" />
-        <button type="button" class="getInvoice" @click="getData">Add order</button>
+        <button type="button" class="getInvoice" @click="getData">
+          Add order
+        </button>
         <h6>{{ invoice_id }}</h6>
       </form>
       <b-col
@@ -37,7 +46,11 @@
             <!-- v-bind:style="isActive === index ? isTrue : isFalse" -->
             <div class="ceklis"></div>
           </div>
-          <div v-else class="selected" v-bind:style="isActive === index ? displayOnn : displayOff">
+          <div
+            v-else
+            class="selected"
+            v-bind:style="isActive === index ? displayOnn : displayOff"
+          >
             <div class="ceklis"></div>
           </div>
           <p class="nama">{{ item.product_name }}</p>
@@ -55,8 +68,10 @@
 import axios from 'axios'
 import Pagination from '../_base/pagination'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import mixin from '../../mixin/mixin'
 export default {
   name: 'Main',
+  mixins: [mixin],
   data() {
     return {
       urlAPI: process.env.VUE_APP_URL,
@@ -111,14 +126,18 @@ export default {
       this.$emit('selectedItem', item)
     },
     checkMenu(data) {
-      this.products.some((item) => item.product_id === data.product_id)
+      this.products.some(item => item.product_id === data.product_id)
     },
     getData() {
       axios
         // .post('http://127.0.0.1:3001/trigger/invoice')
         .post(`${this.urlAPI}trigger/invoice`)
-        .then((response) => {
-          alert('Get id success')
+        .then(response => {
+          this.$bvToast.toast(this.orderMsg, {
+            title: 'Success',
+            variant: 'success',
+            solid: true
+          })
           this.$emit(
             'invoiceData',
             response.data,
@@ -127,7 +146,7 @@ export default {
           )
           this.triggerInvoice(response.data.data.invoice_id)
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error)
         })
     },

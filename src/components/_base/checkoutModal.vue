@@ -47,11 +47,15 @@
 
           <div class="btn-gate2">
             <div class="print-button">
-              <button class="button" @click="reset()">Print</button>
+              <button class="button" type="button" @click="download()">
+                Print
+              </button>
             </div>
             <p>Or</p>
             <div class="send-button">
-              <button class="button" @click="reset()">Send Email</button>
+              <button class="button" type="button" @click="sendEmail()">
+                Send Email
+              </button>
             </div>
           </div>
         </form>
@@ -61,7 +65,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import JsPDF from 'jspdf'
 export default {
   name: 'Checkoutmodal',
   data() {
@@ -85,10 +90,38 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['sendCheckout']),
     checkoutModalOff() {
       this.$emit('checkoutModalOff', false)
     },
-    reset() {
+    sendEmail() {
+      this.sendCheckout([this.$bvToast])
+      this.$emit('reset', 0, [])
+    },
+    download() {
+      const doc = new JsPDF()
+      doc.setFontSize(14)
+      doc.text(
+        `Checkout  
+        
+      Cashier : Rey  
+
+      Invoice number : #43482
+
+      Expresso (1x) : Rp.10,000
+
+      Black Forrest (2x) : Rp. 60,000
+
+      PPN(10%) : Rp. 7,000
+
+      Total : Rp. 77,000
+
+      Payment : Cash`,
+        15,
+        15
+      )
+
+      doc.save('pdf.pdf')
       this.$emit('reset', 0, [])
     }
   }
