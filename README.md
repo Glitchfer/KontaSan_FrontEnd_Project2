@@ -1,3 +1,16 @@
+<h1 align='center'>Vue JS - KONTASAN</h1>
+  <p align="center">
+    <a href="https://kontasan.netlify.app/">View Demo</a>
+    ·
+    <a href="https://github.com/Glitchfer/bug/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/Glitchfer/issues">Request Feature</a>
+  </p>
+
+![Image Banner](https://raw.githubusercontent.com/alfaritsi21/pellet/master/Pellet-Dashboard.jpg)
+
+## About The Project
+
 KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk membantu kasir dalam pengelolaan order. Khususnya pada project ini merupakan proses development dalam segi backend dalam penyediaan RESTfull API yang nantinya dibutuhkan untuk menjalankan aplikasi kontasan secara menyeluruh. [More about Vue](https://vuejs.org/)
 
 ## Built With
@@ -9,36 +22,33 @@ KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk memba
 
 1. <a href="https://nodejs.org/en/download/">Node Js</a>
 2. Node_modules `npm install` or `yarn install`
-3. Backend API #Kontasan_backend [`here`](https://github.com/Glitchfer/KontaSan_Backend_Project1)
+3. Backend API KONTASAN [`here`](https://github.com/Glitchfer/KontaSan_Backend_Project1)
 
-## How to Install
+## Getting Started
 
-1. Download this Project or you can type `git clone #link_git`
+1. Download this Project or you can type `git clone https://github.com/Glitchfer/KontaSan_FrontEnd_Project2.git`
 2. Open app's directory in CMD or Terminal
 3. Type `npm install` or `yarn install`
-4. Type `npm start`
+4. Add .env file at root folder project
+
+```
+VUE_APP_URL1 = http://127.0.0.1:3001/
+VUE_APP_URL = https://backend-kontasan.fwdev.online/
+
+```
+
+5. Type `npm start`
 
 ## Visit the Web
 
 You can visit the web [`here`](https://kontasan.netlify.app/)
 
-### Compiles and hot-reloads for development
+## Acknowledgements
 
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
+- [Axios](https://www.npmjs.com/package/axios)
+- [Vuex](https://vuex.vuejs.org/)
+- [Express](https://www.npmjs.com/package/express)
+- [vue-Bootstrap](https://bootstrap-vue.org/)
 
 ### Customize configuration
 
