@@ -7,7 +7,7 @@
     <a href="https://github.com/Glitchfer/issues">Request Feature</a>
   </p>
 
-![Image Banner](https://raw.githubusercontent.com/alfaritsi21/pellet/master/Pellet-Dashboard.jpg)
+![Image Banner](https://https://raw.githubusercontent.com/Glitchfer/KontaSan_FrontEnd_Project2/master/Konta-cover.jpg)
 
 ## About The Project
 
