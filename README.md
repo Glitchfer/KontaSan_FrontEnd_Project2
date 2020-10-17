@@ -39,10 +39,6 @@ VUE_APP_URL = https://backend-kontasan.fwdev.online/
 
 5. Type `npm start`
 
-## Visit the Web
-
-You can visit the web [`here`](https://kontasan.netlify.app/)
-
 ## Acknowledgements
 
 - [Axios](https://www.npmjs.com/package/axios)
