@@ -2,16 +2,16 @@
   <p align="center">
     <a href="https://kontasan.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/Glitchfer/bug/issues">Report Bug</a>
+    <a href="https://github.com/Glitchfer/KontaSan_FrontEnd_Project2/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Glitchfer/issues">Request Feature</a>
+    <a href="https://github.com/Glitchfer/KontaSan_FrontEnd_Project2/issues">Request Feature</a>
   </p>
 
 ![Image Banner](https://raw.githubusercontent.com/Glitchfer/KontaSan_FrontEnd_Project2/master/Konta-cover.jpg)
 
 ## About The Project
 
-KontaSan Project adalah aplikasi pos berbasis website yang digunakan untuk membantu kasir dalam pengelolaan order. Khususnya pada project ini merupakan proses development dalam segi backend dalam penyediaan RESTfull API yang nantinya dibutuhkan untuk menjalankan aplikasi kontasan secara menyeluruh. [More about Vue](https://vuejs.org/)
+Kontasan is a website-based POS application used to help cashier in managing orders. [More about Vue](https://vuejs.org/)
 
 ## Built With
 
