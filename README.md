@@ -37,7 +37,7 @@ VUE_APP_URL = https://backend-kontasan.fwdev.online/
 
 ```
 
-5. Type `npm start`
+5. Type `npm run serve`
 
 ## Acknowledgements
 
