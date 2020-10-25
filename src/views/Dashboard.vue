@@ -37,8 +37,10 @@
     </p>
     <br />
     <footer>
-      <p>created by: Arif Rahman</p>
-      <p>supported by: Arkademy</p>
+      <p>
+        Author: Arif Rahman |
+        <a href="https://www.instagram.com/ar.if.rh/">instagram</a>
+      </p>
       <div class="categorySetting">
         <h6
           v-if="user.user_role === 1 && onSetting === false"

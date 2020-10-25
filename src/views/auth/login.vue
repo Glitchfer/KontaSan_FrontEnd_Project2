@@ -27,8 +27,7 @@
       <div class="appTitle">
         <h1>Kontainer Santai</h1>
         <p>
-          KontaSan adalah aplikasi berbasis website yang mempermudah pekerjaan
-          anda untuk mengelola data orderan.
+          Kontasan adalah web app yang digunakan untuk mengelola orderan.
         </p>
       </div>
     </div>

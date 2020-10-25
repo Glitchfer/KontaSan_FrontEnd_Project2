@@ -17,8 +17,9 @@ Kontasan is a website-based POS application used to help cashier in managing ord
 
 You can regsiter with dummy email to try the app, or use this account below if registered account not able to show the menu after login page.
 
-email: rey1234@gmail.com
-password: adaakudisini
+- email: sibotak@gmail.com
+
+- password: Ada4adaada.
 
 ## Built With
 
