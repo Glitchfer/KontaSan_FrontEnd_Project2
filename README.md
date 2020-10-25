@@ -13,6 +13,13 @@
 
 Kontasan is a website-based POS application used to help cashier in managing orders. [More about Vue](https://vuejs.org/)
 
+## How To Login
+
+You can regsiter with dummy email to try the app, or use this account below if registered account not able to show the menu after login page.
+
+email: rey1234@gmail.com
+password: adaakudisini
+
 ## Built With
 
 [![Vue](https://img.shields.io/badge/Vue-v2.6.11-green)](https://github.com/vuejs/vue)
