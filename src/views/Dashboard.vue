@@ -1,46 +1,59 @@
 <template>
   <div class="home">
-    <div v-if="alertOn === true" class="msgAlert">
-      <p>{{ this.msg }}</p>
+    <div class="background">
+      <img class="vectr" src="../assets/gambar/cocktailVector4.png" alt="" />
+      <div class="vectr2">
+        <img src="../assets/gambar/cocktailVectorImg1.png" alt="" />
+      </div>
     </div>
-    <b-container>
-      <a class="logout" @click="onLogout">Logout</a>
-      <h4 v-if="user.user_role === 1">Admin</h4>
-      <h4 v-else>Cashier</h4>
-      <b-card>
+    <main>
+      <div class="kontaLogo">
+        <a href="/">
+          <div>
+            <img src="../assets/gambar/img1.png" alt="" />
+          </div>
+          <h5>Kontasan</h5>
+        </a>
+      </div>
+      <!-- <b-card class="helloCard" style="background: none;">
         <h1>HELLO {{ userName }}</h1>
-      </b-card>
-      <h5>Welcome To My</h5>
-      <img alt="Vue logo" src="../assets/logo.png" />
-      <br />
-      <h3>
-        KONTASAN PROJECT
-        <h6>V.4</h6>
-      </h3>
-      <br />
-      <router-link to="/home">Get Started</router-link>
-      <br />
-    </b-container>
-    <br />
-    <div class="userSetting">
-      <h6
-        v-if="user.user_role === 1 && onCategory === false"
-        @click="userSetting"
-      >
-        User setting
-      </h6>
-      <br v-else />
-    </div>
-    <p>
-      property in this project such as an image and the other things used for
-      practice purpose
-    </p>
-    <br />
-    <footer>
-      <p>
-        Author: Arif Rahman |
-        <a href="https://www.instagram.com/ar.if.rh/">instagram</a>
-      </p>
+      </b-card> -->
+      <div v-if="alertOn === true" class="msgAlert">
+        <p>{{ this.msg }}</p>
+      </div>
+      <b-container fluid class="bContainer">
+        <div class="leftMain">
+          <h2>
+            Kontainer <br />
+            Santai
+          </h2>
+          <p>
+            Kontasan adalah sebuah aplikasi point of sale berbasis website yang
+            digunakan untuk membantu kasir dalam mengelola orderan. Lalu-lintas
+            data yang terjadi pada aplikasi ini menggunakan database MySql.
+          </p>
+          <router-link to="/home">Get Started</router-link>
+        </div>
+      </b-container>
+    </main>
+    <button class="btnAdminSetting" @click="adminSetting()">
+      <img src="../assets/gambar/setting.png" alt="" />
+    </button>
+    <nav class="adminSetting">
+      <div class="account">
+        <h4 v-if="user.user_role === 1">Admin</h4>
+        <h4 v-else>Public</h4>
+        <a v-if="user.user_role" class="logout" @click="onLogout">Logout</a>
+      </div>
+      <div class="userSetting">
+        <h6
+          v-if="user.user_role === 1 && onCategory === false"
+          @click="userSetting"
+        >
+          User setting
+        </h6>
+        <br v-else />
+      </div>
       <div class="categorySetting">
         <h6
           v-if="user.user_role === 1 && onSetting === false"
@@ -49,142 +62,164 @@
           Category setting
         </h6>
       </div>
+    </nav>
+    <footer>
+      <p>
+        Created by
+        <a href="https://www.instagram.com/ar.if.rh/" target="_blank">Arrah</a>,
+        2020.
+      </p>
+      <p>
+        property in this project such as an image and the other things used for
+        practice purpose
+      </p>
+      <p>
+        <a href="https://www.freepik.com/psd/template"
+          >Template psd created by freepik - www.freepik.com</a
+        >
+      </p>
     </footer>
-    <div v-if="onSetting === true" class="userPage">
-      <div class="userModal">
-        <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
-          <input type="text" v-model="userId" placeholder="User id" />
-          <br />
-          <input
-            type="password"
-            v-model="form.user_password"
-            placeholder="User password"
-          />
-          <br />
-          <input
-            type="text"
-            v-model="form.user_status"
-            placeholder="User status"
-          />
-          <br />
-          <button type="submit">Submit</button>
-          <button type="reset">Reset</button>
-        </b-form>
+    <div class="userManage">
+      <div v-if="onSetting === true" class="userPage">
+        <div class="userModal">
+          <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+            <input type="text" v-model="userId" placeholder="User id" />
+            <br />
+            <input
+              type="password"
+              v-model="form.user_password"
+              placeholder="User password"
+            />
+            <br />
+            <input
+              type="text"
+              v-model="form.user_status"
+              placeholder="User status"
+            />
+            <br />
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </b-form>
+        </div>
+      </div>
+      <div v-if="onCategory === true" class="categoryPage">
+        <div class="categoryModal">
+          <b-form>
+            <div class="categoryJudul">
+              <label>Id</label>
+              <label>Category</label>
+              <label>Status</label>
+            </div>
+            <div
+              v-for="(item, index) in categoryData"
+              :key="index"
+              class="categoryData"
+            >
+              <input disabled type="text" :placeholder="item.category_id" />
+              <input
+                :disabled="btnChange === true"
+                type="text"
+                :placeholder="item.category_name"
+                v-model="nameUpdate"
+              />
+              <input
+                :disabled="isStatus === true"
+                type="text"
+                :placeholder="'Active'"
+              />
+              <select :disabled="btnChange === true">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+              </select>
+              <button
+                v-if="btnSetting !== 'add'"
+                :disabled="btnSetting !== 'update'"
+                type="button"
+                @click="onUpdate(item.category_id)"
+              >
+                u
+              </button>
+              <button
+                v-if="btnSetting !== 'add'"
+                :disabled="btnSetting !== 'delete'"
+                type="button"
+                @click="onDelete(item.category_id)"
+              >
+                d
+              </button>
+            </div>
+            <div
+              v-if="isAdd === true && btnSetting === 'add'"
+              class="tambahData"
+            >
+              <input
+                type="text"
+                :placeholder="'Category..'"
+                v-model="add.category_name"
+              />
+              <button type="button" @click="onCreate">Add</button>
+            </div>
+            <div
+              v-if="isUpdate === true && btnSetting === 'update'"
+              class="tambahData"
+            >
+              <input
+                type="text"
+                :placeholder="'Type..'"
+                v-model="add.category_name"
+              />
+              <button
+                style="background-color: red;"
+                type="button"
+                @click="resetName"
+              >
+                Reset
+              </button>
+            </div>
+          </b-form>
+          <button
+            v-if="btnSetting === 'add'"
+            class="addData"
+            type="button"
+            @click="onAdd"
+          >
+            Create category
+          </button>
+          <button
+            v-if="btnSetting === 'update'"
+            class="addData"
+            type="button"
+            @click="btnUpdate"
+          >
+            Update
+          </button>
+          <button
+            v-if="btnSetting === 'delete'"
+            class="addData"
+            type="button"
+            @click="btnDelete"
+          >
+            Delete
+          </button>
+          <select class="btnSetting" v-model="btnSetting">
+            <option value="add">Add</option>
+            <option value="update">Update</option>
+            <option value="delete">Delete</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div v-if="onCategory === true" class="categoryPage">
-      <div class="categoryModal">
-        <b-form>
-          <div class="categoryJudul">
-            <label>Id</label>
-            <label>Category</label>
-            <label>Status</label>
-          </div>
-          <div
-            v-for="(item, index) in categoryData"
-            :key="index"
-            class="categoryData"
-          >
-            <input disabled type="text" :placeholder="item.category_id" />
-            <input
-              :disabled="btnChange === true"
-              type="text"
-              :placeholder="item.category_name"
-              v-model="nameUpdate"
-            />
-            <input
-              :disabled="isStatus === true"
-              type="text"
-              :placeholder="'Active'"
-            />
-            <select :disabled="btnChange === true">
-              <option value="1">Active</option>
-              <option value="0">Inactive</option>
-            </select>
-            <button
-              v-if="btnSetting !== 'add'"
-              :disabled="btnSetting !== 'update'"
-              type="button"
-              @click="onUpdate(item.category_id)"
-            >
-              u
-            </button>
-            <button
-              v-if="btnSetting !== 'add'"
-              :disabled="btnSetting !== 'delete'"
-              type="button"
-              @click="onDelete(item.category_id)"
-            >
-              d
-            </button>
-          </div>
-          <div v-if="isAdd === true && btnSetting === 'add'" class="tambahData">
-            <input
-              type="text"
-              :placeholder="'Category..'"
-              v-model="add.category_name"
-            />
-            <button type="button" @click="onCreate">Add</button>
-          </div>
-          <div
-            v-if="isUpdate === true && btnSetting === 'update'"
-            class="tambahData"
-          >
-            <input
-              type="text"
-              :placeholder="'Type..'"
-              v-model="add.category_name"
-            />
-            <button
-              style="background-color: red;"
-              type="button"
-              @click="resetName"
-            >
-              Reset
-            </button>
-          </div>
-        </b-form>
-        <button
-          v-if="btnSetting === 'add'"
-          class="addData"
-          type="button"
-          @click="onAdd"
-        >
-          Create category
-        </button>
-        <button
-          v-if="btnSetting === 'update'"
-          class="addData"
-          type="button"
-          @click="btnUpdate"
-        >
-          Update
-        </button>
-        <button
-          v-if="btnSetting === 'delete'"
-          class="addData"
-          type="button"
-          @click="btnDelete"
-        >
-          Delete
-        </button>
-        <select class="btnSetting" v-model="btnSetting">
-          <option value="add">Add</option>
-          <option value="update">Update</option>
-          <option value="delete">Delete</option>
-        </select>
-      </div>
-    </div>
-    <div class="sass"></div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Dashboar',
   data() {
     return {
+      urlAPI: process.env.VUE_APP_URL,
       btnSetting: 'add',
       btnChange: true,
       isStatus: true,
@@ -217,6 +252,16 @@ export default {
   },
   created() {
     this.getCategory()
+    if (this.userId !== null) {
+      axios
+        .get(`${this.urlAPI}product?page=1&limit=10`)
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
   },
   methods: {
     ...mapActions({
@@ -228,6 +273,16 @@ export default {
       updateCategory: 'updateCategory',
       deleteCategory: 'deleteCategory'
     }),
+    adminSetting() {
+      var style = document.querySelector('.adminSetting').style.transform
+      if (style === '' || style === 'translateX(100%)') {
+        document.querySelector('.adminSetting').style.transform =
+          'translateX(0)'
+      } else {
+        document.querySelector('.adminSetting').style.transform =
+          'translateX(100%)'
+      }
+    },
     getCategory() {
       this.getCategoryData()
         .then(response => {})
@@ -342,6 +397,247 @@ export default {
 </script>
 
 <style scoped>
+.adminSetting {
+  width: 150px;
+  height: 200px;
+  background: #eeeeee;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 4;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px 10px;
+  border-radius: 10% 0 0 10%;
+  transform: translateX(100%);
+}
+.account {
+  position: relative;
+  top: -30px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* text-align: end; */
+  /* padding: 5px 70px 5px 15px; */
+  width: 100%;
+  height: 70px;
+  border-bottom: 1px solid rgba(126, 126, 126, 0.267);
+}
+
+.account h4 {
+  font-size: 16px;
+  width: 70px;
+  border-bottom: 1px solid black;
+  margin: 1px 0;
+}
+.logout {
+  margin-top: 1px;
+  border: 1px solid black;
+  font-size: 18px;
+  width: 60px;
+  border-radius: 5px;
+  color: #ff00b3;
+  cursor: pointer;
+}
+.btnAdminSetting {
+  border: 1px solid rgba(0, 0, 0, 0);
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  width: 35px;
+  height: 30px;
+  background: none;
+  outline: none;
+  z-index: 5;
+}
+.btnAdminSetting img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.5);
+}
+.btnAdminSetting img:hover {
+  transform: scale(1.3);
+}
+
+.kontaLogo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 150px;
+}
+.kontaLogo a {
+  position: relative;
+  width: 100px;
+  z-index: 1;
+  text-decoration: none;
+  height: 96px;
+}
+.kontaLogo h5 {
+  position: relative;
+  top: -15px;
+  left: 0;
+  font-family: 'Lobster Two', cursive;
+  font-style: italic;
+  font-size: 22px;
+  color: #fdd682;
+  border-top: 1px solid white;
+  filter: drop-shadow(5px 5px 2px #0000009d);
+}
+.kontaLogo div {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  padding: 0 5px;
+}
+.kontaLogo div img {
+  position: relative;
+  top: -5px;
+  width: 80px;
+  height: 85px;
+  animation: icon 2s infinite alternate ease-in-out forwards;
+  filter: drop-shadow(5px 5px 2px #0000009d);
+}
+@keyframes icon {
+  0% {
+    width: 80px;
+    height: 85px;
+  }
+  100% {
+    width: 60px;
+    height: 65px;
+  }
+}
+
+.helloCard {
+  position: absolute;
+  top: 25%;
+  right: 5px;
+  border: none;
+}
+.bContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+.bContainer .leftMain {
+  width: 50%;
+  text-align: left;
+  padding: 190px 20px 20px 130px;
+}
+.bContainer .leftMain h2 {
+  font-family: 'Lobster', cursive;
+  /* font-family: 'Lobster Two', cursive; */
+  font-size: 68px;
+  font-weight: 500;
+  line-height: 60px;
+  height: 140px;
+  color: #f24f8a;
+}
+.bContainer .leftMain p {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #2a565a;
+  height: 120px;
+}
+.bContainer .leftMain p {
+  font-family: 'Josefin Sans', sans-serif;
+  color: #2a565a;
+  height: 120px;
+}
+.bContainer .leftMain a {
+  font-family: 'Josefin Sans', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #252525c9;
+  background: #ff77a9;
+  padding: 15px 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.bContainer .leftMain a:hover {
+  color: #ffffffc9;
+  background: #fda471;
+  border-radius: 10px;
+}
+.rightMain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  /* text-align: end; */
+  padding: 5px 70px 5px 15px;
+  width: 50%;
+  height: 50px;
+}
+
+.rightMain h4 {
+  font-size: 12px;
+  width: 60px;
+  border-bottom: 1px solid black;
+  margin: 1px 0;
+}
+.logout {
+  margin-top: 1px;
+  border: 1px solid black;
+  font-size: 14px;
+  width: 60px;
+  border-radius: 5px;
+  color: #ff00b3;
+  cursor: pointer;
+}
+.vectr {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+}
+.vectr2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  /* background-image: url(../assets/gambar/cocktailVectorImg.png); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 0;
+}
+.vectr2 img:nth-child(1) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+.vectr2 img:nth-child(2) {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 700px;
+  height: 550px;
+}
 .btnSetting {
   position: relative;
   top: 2px;
@@ -490,22 +786,21 @@ export default {
   font-size: 14px;
 }
 .categorySetting {
-  margin: 0 auto;
   position: relative;
-  width: 80px;
-  height: 32px;
+  width: 90px;
   text-align: center;
-  top: 20px;
   z-index: 4;
 }
 .categorySetting h6 {
+  margin: 0;
   position: relative;
   color: rgb(255, 255, 255);
   font-size: 14px;
   background-color: #f24f8a;
-  border-radius: 10px;
+  padding: 5px 5px;
   cursor: pointer;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.329);
+  border-radius: 5px;
 }
 .categorySetting h6:hover {
   background-color: #f75e96;
@@ -639,19 +934,18 @@ export default {
 }
 
 .userSetting {
-  margin: 0 auto;
+  width: 90px;
   position: relative;
-  width: 80px;
-  height: 32px;
   z-index: 4;
 }
 .userSetting h6 {
+  border-radius: 5px;
   position: relative;
-  height: 21px;
+  padding: 5px;
   color: white;
   font-size: 14px;
   background-color: rgb(6, 170, 170);
-  border-radius: 5px;
+  padding: 5px 5px;
   cursor: pointer;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.329);
 }
@@ -659,58 +953,52 @@ export default {
   background-color: rgb(0, 189, 189);
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.329);
 }
-h1 {
-  text-transform: uppercase;
-}
-h4 {
-  position: absolute;
-  right: 115px;
-  z-index: 2;
-  font-size: 12px;
-  top: 10px;
-  border-bottom: 1px solid black;
-}
-.logout {
-  width: 80px;
-  height: 30px;
-  border: 1px solid black;
-  border-radius: 5px;
-  top: 30px;
-  position: absolute;
-  right: 90px;
-  z-index: 2;
-  cursor: pointer;
+.home {
+  overflow: hidden;
+  font-family: 'Josefin Sans', sans-serif;
+  background: #f3f3dc;
+  /* background: #1f1d32; */
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 footer {
   background-color: rgba(32, 32, 32, 0.952);
   width: 100%;
   height: 90px;
   color: aliceblue;
-  padding: 10px 0px 5px 0;
+  padding: 10px 20px 0px 20px;
   box-sizing: border-box;
-  text-align: right;
+  text-align: left;
   position: relative;
-}
-.home {
-  margin: 0;
-  text-align: center;
-  position: relative;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
 }
 footer p:nth-of-type(1) {
   width: 100%;
-  margin: 0 auto;
   font-size: 14px;
-  position: absolute;
-  top: 30px;
-  right: 5px;
+  margin: 0;
+  margin-bottom: 5px;
+}
+footer p:nth-of-type(2) {
+  width: 100%;
+  font-size: 14px;
+  margin: 0;
+  border-top: 1px solid white;
 }
 
-footer p:nth-of-type(2) {
-  position: absolute;
+footer p:nth-of-type(3) {
+  width: 100%;
   font-size: 14px;
-  bottom: 1px;
-  right: 5px;
+  margin: 0;
 }
 </style>
 <style scoped src="../assets/css/sass.css"></style>

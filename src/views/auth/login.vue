@@ -24,12 +24,12 @@
           </div>
         </b-form>
       </div>
-      <div class="appTitle">
+      <!-- <div class="appTitle">
         <h1>Kontainer Santai</h1>
         <p>
           Kontasan adalah web app yang digunakan untuk mengelola orderan.
         </p>
-      </div>
+      </div> -->
     </div>
     <div v-if="onRegis === true" class="registerPage">
       <Register @onClose="clickClose" />
